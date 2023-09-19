@@ -1,0 +1,38 @@
+.shiny-effect {
+  animation: shiny 2s infinite;
+  cursor: pointer;
+}
+
+div.shiny-font {
+  animation: color-change 2s infinite;
+}
+
+.regular-font {
+  color: #101010;
+}
+
+@keyframes color-change {
+  0%, 100% {
+    color: #efefef;
+  }
+  50% {
+    color: #101010;
+  }
+}
+
+@keyframes shiny {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+div {
+  user-select: none;
+}
+
+.purple-black {
+  color: #140014;
+}

@@ -11,8 +11,7 @@ import CapturedPieces from './CapturedPieces';
 import BoardCell from './BoardCell';
 import ConfigForm from './ConfigForm';
 import MoveLog from './MoveLog';
-import PlayerLabel from './PlayerLabel';
-import TurnCounter from './TurnCounter'
+import PlayerLabels from './labels/PlayerLabels';
 import useFetch from "../hooks/useFetch";
 import { useDisableClicks } from '../hooks/useDisableClicks';
 
@@ -33,6 +32,11 @@ function GameBoard({ id }) {
   const [capturedPieces, setCapturedPieces] = useState({ b: [], w: [] });
   const [gameOver, setGameOver] = useState(false);
   const [poll, setPoll] = useState(null);
+
+  const ids = {
+    'b': chatFirst ? id : 'chat',
+    'w': chatFirst ? 'chat': id
+  };
 
   // todo: catch error and re-get the board
   // todo: disable everything until result, or board is re-gotten. 
@@ -261,7 +265,8 @@ function GameBoard({ id }) {
 
   // row - index    column - i 
   return (
-    <div style={{ marginTop: '0px', marginLeft: 'auto', marginRight: 'auto', maxWidth: 'fit-content' }}>
+    <div style={{ marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', maxWidth: 'fit-content' }}>
+      <div style={{ transform: "scale(0.96)" }} >
       { board.map((row, index) => {
         return (
           <div key={`row${index}`} className='hex-row' style={{ marginLeft: Math.abs(index - 5) * 53 }}>
@@ -294,9 +299,9 @@ function GameBoard({ id }) {
           </div>
         );
       }) }
+      </div>
       <CapturedPieces capturedPieces={capturedPieces} />
-      <TurnCounter chatFirst={chatFirst} turn={turn} turnCount={turnCount} gameOver={gameOver} />
-      <PlayerLabel chatFirst={chatFirst} turn={turn} gameOver={gameOver} />
+      <PlayerLabels chatFirst={chatFirst} turn={turn} gameOver={gameOver} ids={ids} />
       <Popup isVisible={promotion} color={turn} onConfirm={promote} />
       <ConfigForm ref={formRef} />
       {gameOver ? (<button onClick={()=>{postMove({})}}>new game</button>): ''}

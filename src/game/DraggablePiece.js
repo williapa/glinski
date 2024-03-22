@@ -10,11 +10,11 @@ function DraggablePiece({ turn, onStart, cellContent, row, col, chatFirst }) {
   const handleDragStart = (e) => {
     // Create a new element
     if (clicksDisabled) {
-      console.log("clicks are disabled.");
+      console.log("clicks are disabled so no moves.");
       return;
     }
     if ((chatFirst && turn === 'w') || (!chatFirst && turn === 'b')) {
-      console.log("its not your turn so no clicking");
+      console.log("its not your turn so no moves!");
       return;
     }
     const el = document.createElement('span');

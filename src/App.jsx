@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useParams } from 'react-router-dom';
 import DataTable from './DataTable'; // Assuming DataTable is in the same directory
-import GameBoard from './game/GameBoard';
+import GameLayout from './game/GameLayout';
 import { DisableClicksProvider } from './hooks/useDisableClicks';
 
 const HomePage = () => {
@@ -15,7 +15,7 @@ const IdPage = () => {
   const params = useParams();
   return (
     <DisableClicksProvider>
-      <GameBoard id={params.id}/>
+      <GameLayout id={params.id}/>
     </DisableClicksProvider>
   );
 };

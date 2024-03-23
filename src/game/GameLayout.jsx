@@ -1,4 +1,5 @@
 import './GameBoard.css';
+import './GameLayout.css';
 import pieceColor from '../util/pieceColor';
 import { useEffect, useRef, useState } from 'react';
 import Moves from '../moves';
@@ -14,16 +15,16 @@ import MoveLog from './MoveLog';
 import PlayerLabels from './labels/PlayerLabels';
 import useFetch from "../hooks/useFetch";
 import { useDisableClicks } from '../hooks/useDisableClicks';
+import Ftr from "../footer/Ftr";
 
 const cellColors = ['beige', 'peach', 'brown']; // these correspond to class names they are not the real colors im sorry
 
-function GameBoard({ id }) {
+function GameLayout({ id }) {
   const formRef = useRef(null);
   const { setClicksDisabled } = useDisableClicks();
   const [chatFirst, setChatFirst] = useState(true);
   const [promotion, setPromotion] = useState(false);
   const [turn, setTurn] = useState('w');
-  const [turnCount, setTurnCount] = useState(1);
   const [board, setBoard] = useState(newBoard());
   const [moves, setMoves] = useState([]);
   const [newMove, setNewMove] = useState({});
@@ -48,7 +49,6 @@ function GameBoard({ id }) {
       setEnPassantPawnPosition(false);
       setGameOver(false);
       setCapturedPieces({ 'b': [], 'w': [] });
-      setTurnCount(1);
       setTurn('w');
     } else if (gameOver) {
       return;
@@ -73,7 +73,6 @@ function GameBoard({ id }) {
         setGameOver(result.gameOver);
         setMoves(result.moves);
         setTurn((result.moves.length % 2) ? 'b' : 'w');
-        setTurnCount(result.moves.length + !result.gameOver);
         setEnPassantPawnPosition(result.enPassantPawnPosition);
       }
     } catch (e) {
@@ -164,7 +163,6 @@ function GameBoard({ id }) {
         setBoard([...board]);
         const nextTurn = (turn === 'w' ? 'b' : 'w');
         setTurn(nextTurn);
-        setTurnCount(turnCount + 1);
         // check mate 
         if (checkMate(board, nextTurn, enPassantPawnPosition)) {
           window.alert(`check mate - ${nextTurn} loses`);
@@ -198,7 +196,6 @@ function GameBoard({ id }) {
     board[row][column] = piece;
     setBoard([...board]);
     setTurn(newTurn);
-    setTurnCount(turnCount + 1);
     let gameOver = false;
     // check mate
     if (checkMate(board, newTurn, enPassantPawnPosition)) {
@@ -222,9 +219,7 @@ function GameBoard({ id }) {
   const { data, loading, error, fetchData } = useFetch(`http://localhost:3000/${id}`);
 
   useEffect(() => {
-    // todo: re-fetch every 10 seonds if it's not your turn and game is not over (this is called once per page so it means you got disconnected
-    // if you're disconnected, you will not auto receive the game update from postMove fn response.
-    // so re-fetch to make sure it comes without a refresh as long as those two conditions are true. 
+    // re-fetch every 15 seonds if it's not your turn and game is not over (this is called once per page so it means you got disconnected
     if (data && !data.gameOver && !poll && (data.chatFirst === !(data.moves.length % 2))) {
       console.log("setting timeout");
       const newPoll = setTimeout(async () => {
@@ -243,10 +238,9 @@ function GameBoard({ id }) {
     }
     if (data && data.moves) {
       setMoves(data.moves);
-      setTurn((moves.length % 2) ? 'b' : 'w');
-      setTurnCount(data.moves.length + !data.gameOver);
+      setTurn((data.moves.length % 2) ? 'b' : 'w');
     }
-    if (data) { // will be false if no pawn
+    if (data) {
       setGameOver(data.gameOver);
       setChatFirst(data.chatFirst);
       setEnPassantPawnPosition(data.enPassantPawnPosition);
@@ -265,8 +259,8 @@ function GameBoard({ id }) {
 
   // row - index    column - i 
   return (
-    <div style={{ marginTop: '20px', marginLeft: 'auto', marginRight: 'auto', maxWidth: 'fit-content' }}>
-      <div style={{ transform: "scale(0.96)" }} >
+    <div style={{ marginTop: '20px',  maxWidth: 'fit-content' }}>
+      <div className="scale" >
       { board.map((row, index) => {
         return (
           <div key={`row${index}`} className='hex-row' style={{ marginLeft: Math.abs(index - 5) * 53 }}>
@@ -304,10 +298,10 @@ function GameBoard({ id }) {
       <PlayerLabels chatFirst={chatFirst} turn={turn} gameOver={gameOver} ids={ids} />
       <Popup isVisible={promotion} color={turn} onConfirm={promote} />
       <ConfigForm ref={formRef} />
-      {gameOver ? (<button onClick={()=>{postMove({})}}>new game</button>): ''}
-      <MoveLog gameOver={gameOver} moves={moves} />
+      <MoveLog gameOver={gameOver} moves={moves} startGame={() => postMove({}) } />
+      <Ftr />
     </div>
   );
 }
 
-export default GameBoard;
+export default GameLayout;

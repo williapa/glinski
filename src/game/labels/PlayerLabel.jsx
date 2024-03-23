@@ -1,33 +1,42 @@
 import React from 'react';
 
-const margin = "1em";
-
-const opponentTurn = ' ⏳';
+const em = "20px";
+const yourTurn = ' ⏳';
 const winner = ' 🏆';
-const yourTurn = ' 🟢';
 
 // uses gameOver to store winner instead of true
 // chatFirst === are you second?
 const PlayerLabel = ({ chatFirst, turn, gameOver, ids, side }) => {
+  // todo: these might need to be part of the class 
   const style = {
     position: "absolute",
-    top: 10
+    top: 16,
+    wordBreak: "break-word",
   };
-  style[side === 'b' ? 'left': 'right'] = margin;
+  let className = '';
+  if (side === 'b') {
+    style['left'] = em;
+    className = 'left label';
+  } else {
+    className = 'right label';
+  }
   let turnIcon = '';
   if (!gameOver) {
     if ((turn === side)) {
-      turnIcon = chatFirst && ( turn === 'b') ? yourTurn : opponentTurn;
+      turnIcon = yourTurn;
     }
   }
 
   return (
     <div
+      className={className}
       style={style}
     >
       {ids[side]}
-      {turnIcon}
-      { gameOver === side ? winner : '' }
+      <span style={{ fontSize: "76%" }}>
+        {turnIcon}
+        { gameOver === side ? winner : '' }
+      </span>
     </div>
   )
 };

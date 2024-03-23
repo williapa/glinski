@@ -8,7 +8,9 @@ div.shiny-font {
 }
 
 .regular-font {
+  min-width: 33px;
   color: #101010;
+
 }
 
 @keyframes color-change {
@@ -35,4 +37,89 @@ div {
 
 .purple-black {
   color: #140014;
+}
+
+
+/* honeycomb stuffs */
+
+.hex {
+  float: left;
+  margin-left: 3px;
+  margin-bottom: -26px;
+}
+
+.hex .top {
+  width: 0;
+  border-left: 52px solid transparent;
+  border-right: 52px solid transparent;
+}
+
+.hex .top.beige {
+
+  border-bottom: 30px solid #D9BFFF;
+}
+
+.hex .top.peach {
+
+  border-bottom: 30px solid #8E44AD;
+}
+
+.hex .top.brown {
+  border-bottom: 30px solid #B398D6;
+}
+
+.hex .middle {
+  width: 104px;
+  height: 60px;
+  margin-top: -1px;
+  border-radius: 3px;
+}
+
+.hex .middle.beige {
+  background: #D9BFFF;
+}
+
+.hex .middle.peach {
+  background: #8E44AD;
+}
+
+.hex .middle.brown {
+  background: #B398D6;
+}
+
+.hex .bottom {
+  width: 0;
+  border-left: 52px solid transparent;
+  border-right: 52px solid transparent;
+  margin-top: -1px;
+}
+
+.hex .bottom.peach {
+  border-top: 30px solid #8E44AD;
+}
+
+.hex .bottom.beige {
+  border-top: 30px solid #D9BFFF;
+}
+
+.hex .bottom.brown {
+  border-top: 30px solid #B398D6;
+}
+
+.hex-row {
+  clear: left;
+}
+
+.hex-row.even {
+  margin-left: 52px;
+}
+
+.hex-row {
+  display: flex;
+  flex-direction:row;
+  clear: left;
+}
+
+.hex-row.even {
+  margin-left: 52px;
 }

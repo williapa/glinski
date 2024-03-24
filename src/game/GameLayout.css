@@ -307,11 +307,11 @@
 @media (max-width: 1100px) and (min-width: 840px) {
   .label {
     font-size: 24px;
-    max-width: 13%;
+    max-width: 14%;
   }
 
   .label.right {
-    left: 490px;
+    left: 505px;
   }
 
   .label.left {
@@ -392,17 +392,17 @@
 
   .label {
     font-size: 50%;
-    max-width: 13%;
+    max-width: 15%;
   }
 
   .right.label {
     position: absolute !important;
-    left: 78%;
+    left: 505px;
   }
 
   .left.label {
     position: absolute !important;
-    left: 6%;
+    left: 36px;
   }
 
   .capture {
@@ -418,7 +418,7 @@
   }
 
   .right.capture {
-    right: 36px;
+    left: 560px;
   }
 
   .logo {
@@ -481,18 +481,18 @@
   }
 
   .label {
-    font-size: 50%;
-    max-width: 13%;
+    font-size: 40%;
+    max-width: 16%;
   }
 
   .right.label {
     position: absolute !important;
-    left: 78%;
+    left: 420px;
   }
 
   .left.label {
     position: absolute !important;
-    left: 6%;
+    left: 36px;
   }
 
   .capture {
@@ -508,7 +508,7 @@
   }
 
   .right.capture {
-    right: 36px;
+    left: 470px;
   }
 
   .logo {

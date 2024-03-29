@@ -6,7 +6,7 @@ const winner = ' 🏆';
 
 // uses gameOver to store winner instead of true
 // chatFirst === are you second?
-const PlayerLabel = ({ chatFirst, turn, gameOver, ids, side }) => {
+const PlayerLabel = ({ turn, gameOver, ids, side }) => {
   // todo: these might need to be part of the class 
   const style = {
     position: "absolute",

@@ -6,13 +6,11 @@ const Ftr = () => {
   return (
     <div className="footer">
       <span>
-        <span style={{ marginRight: em }}> Copyright © 2024 </span>
-        <a className="footer-link" href="https://github.com/williapa/honeycomb-client">gh</a>
-        <span style={{ marginLeft: em, marginRight: em }}>🔑  💸</span>
+        <span> Created by keyvalue & </span>
+        <span className="footer-link" style={{ marginLeft: em, marginRight: em }}>🔑  💸</span>
         <a className="footer-link" href="https://twitter.com/keyvalue">x</a>
-        <span style={{ marginLeft: em, marginRight: em }}>🔀  🥱</span>
-        <a className="footer-link" href="https://youtube.com/@prodbykeyvalue">yt</a>
-        <span style={{ marginLeft: em }}> keyvalue & shufflebored </span>
+        <span className="footer-link" style={{ marginLeft: em, marginRight: em }}>🔀  🥱</span>
+        <span> the shufflebored company </span>
       </span>
     </div>
   )

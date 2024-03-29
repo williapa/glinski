@@ -18,18 +18,18 @@ const BoardCell = ({
   chatFirst,
 }) => (
   <div 
-    className={`hex`}
+    className={`hex ${isDestination ? 'shiny-effect' : ''}`}
     style={{ cursor: (movable) ? 'pointer': 'default' }}
   >
     <div 
-      className={isDestination ? 'shiny-font': 'regular-font'} 
-      style={{ position: "absolute", fontSize: "18px", marginLeft: "39px", marginTop: "12px", opacity: 1, zIndex: 999 }}
+      className={`${cellColor}a ${isDestination ? 'shiny-font': 'regular-font'}`} 
+      style={{ position: "absolute", fontSize: "18px", marginLeft: "33.5px", marginTop: "12px", opacity: 1, zIndex: 999 }}
     >
       {`${ROWS.charAt(index)} ${i}`}
     </div>
-    <div className={`top ${cellColor}  ${isDestination ? 'shiny-effect' : ''}`}/>
+    <div className={`top ${cellColor}`}/>
     <div 
-      className={`middle ${cellColor}  ${isDestination ? 'shiny-effect' : ''}`} 
+      className={`middle ${cellColor}`} 
       style={{ color: pieceColor }}
       onDragOver={onDragOver}
       onDrop={onDrop}
@@ -43,7 +43,7 @@ const BoardCell = ({
         chatFirst={chatFirst}
       />
     </div>
-    <div className={`bottom ${cellColor}  ${isDestination ? 'shiny-effect' : ''}`}/>
+    <div className={`bottom ${cellColor}`}/>
   </div>
 );
 

@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import Moves from '../moves';
 import isFirstOrLast from '../util/isFirstOrLast';
 import Popup from '../Popup/Popup';
+import calculateRemainingTime from '../util/calculateRemainingTime';
 import checkMate from '../util/checkMate';
 import filterMoves from '../util/filterMoves';
 import newBoard from '../util/newBoard';
@@ -16,12 +17,14 @@ import PlayerLabels from './labels/PlayerLabels';
 import useFetch from "../hooks/useFetch";
 import { useDisableClicks } from '../hooks/useDisableClicks';
 import Ftr from "../footer/Ftr";
+import Clocks from "./clock/Clocks";
 
 const cellColors = ['beige', 'peach', 'brown']; // these correspond to class names they are not the real colors im sorry
+const POLLING_INTERVAL = 10 * 1000;
 
 function GameLayout({ id }) {
   const formRef = useRef(null);
-  const { setClicksDisabled } = useDisableClicks();
+  const { clickDisabled, setClicksDisabled } = useDisableClicks();
   const [chatFirst, setChatFirst] = useState(true);
   const [promotion, setPromotion] = useState(false);
   const [turn, setTurn] = useState('w');
@@ -31,35 +34,89 @@ function GameLayout({ id }) {
   const [hilightedCells, setHilightedCells] = useState({});
   const [enPassantPawnPosition, setEnPassantPawnPosition] = useState(false);
   const [capturedPieces, setCapturedPieces] = useState({ b: [], w: [] });
-  const [gameOver, setGameOver] = useState(false);
+  const [gameOver, setGameOver] = useState(true);
+  const [turnMins, setTurnMins] = useState(.2);
+  const [startTime, setStartTime] = useState(null);
+  const [switchNextGame, setSwitchNextGame] = useState(false);
   const [poll, setPoll] = useState(null);
 
-  const ids = {
-    'b': chatFirst ? id : 'chat',
-    'w': chatFirst ? 'chat': id
+  const setResults = (result) => {
+    const currentTurn = (result.moves.length % 2) ? 'b' : 'w';
+    setBoard(result.board);
+    setCapturedPieces(result.capturedPieces);
+    setChatFirst(result.chatFirst);
+    setEnPassantPawnPosition(result.enPassantPawnPosition);
+    setMoves(result.moves);
+    setTurn(currentTurn);
+    if (result.gameConfig) {
+      setTurnMins(result.gameConfig.turnMins);
+      setStartTime(result.gameConfig.startTime);
+      if (formRef.current) {
+        formRef.current.turnMin.value = result.gameConfig.turnMins;
+        formRef.current.votes.value = result.gameConfig.votes;
+      }
+      setSwitchNextGame(!!result.gameConfig.switchNextGame);
+      
+    }
+    setGameOver(result.gameOver);
+    // re - enable clicking 
+    const urColor = (result.chatFirst) ? 'b' : 'w'; 
+    setClicksDisabled(result.gameOver ? true : currentTurn !== urColor);
   };
 
+  const resolveGameByClock = async (color) => {
+    setGameOver(color);
+    const postMoveResult = await fetch(`http://localhost:3000/${id}`, {
+      method: 'POST',
+      body: JSON.stringify({ checkTimeForWinner: color })
+    });
+    if (postMoveResult.status !== 200) {
+      // now you can click again if you'd like 
+      window.alert('something went wrong ending game. please reload.');
+    } else {
+      const result = await postMoveResult.json();
+      setResults(result);
+    }
+  }
+
   // todo: catch error and re-get the board
-  // todo: disable everything until result, or board is re-gotten. 
   const postMove = async (move) => {
-    // if you could post a move then you clicked. I'm cutting you off. 
+    setClicksDisabled(true);
+    // empty move = start game
     if (!move.piece && !move.startPosition && !move.endPosition) {
-      setBoard(newBoard());
-      setMoves([]);
-      setEnPassantPawnPosition(false);
-      setGameOver(false);
-      setCapturedPieces({ 'b': [], 'w': [] });
-      setTurn('w');
+      // todo: loading state
+      setResults({ 
+        board: newBoard(), 
+        capturedPieces: { 'b': [], 'w': [] },
+        chatFirst: move.newChatFirst, 
+        gameOver: false,
+        enPassantPawnPosition: false,
+        moves: [],
+        gameConfig: {
+          turnMins: formRef.current.turnMin.value,
+          votes: formRef.current.votes.value,
+          startTime: new Date().getTime(),
+        }
+      });
+
     } else if (gameOver) {
+      // if you're receving a move with a piece/position and the game is over, 
+      // something is wrong on the ui end, but the move shouldn't be posted so return
+      console.error('something is wrong on the front end');
       return;
     }
-    setClicksDisabled(true);
     try {
+      const gameConfig = {
+        startTime: new Date().getTime(),
+        turnMins: formRef.current.turnMin.value,
+        votes: formRef.current.votes.value,
+      };
+
       const postMoveResult = await fetch(`http://localhost:3000/${id}`, {
         method: 'POST',
-        body: JSON.stringify({ move })
+        body: JSON.stringify({ move, gameConfig })
       });
-      console.log(postMoveResult);
+
       if (postMoveResult.status !== 200) {
         // now you can click again if you'd like 
         window.alert('something went wrong posting your move. please reload.');
@@ -67,19 +124,19 @@ function GameLayout({ id }) {
         const result = await postMoveResult.json();
         // todo: this will take a long time, but contain chat's move as the response 
         // set those values here 
-        setBoard(result.board);
-        setCapturedPieces(result.capturedPieces);
-        setChatFirst(result.chatFirst);
-        setGameOver(result.gameOver);
-        setMoves(result.moves);
-        setTurn((result.moves.length % 2) ? 'b' : 'w');
-        setEnPassantPawnPosition(result.enPassantPawnPosition);
+        setResults(result);
       }
     } catch (e) {
-      window.alert("error: ", e);
+      console.error('you are exiting a game mid chat move. you will not get an immediate update for their next move.');
     }
-    // re - enable clicking 
-    setClicksDisabled(false);
+  };
+
+  const startGame = async () => {
+    let newChatFirst = chatFirst;
+    if (switchNextGame) {
+      newChatFirst = !chatFirst;
+    }
+    await postMove({ newChatFirst });
   };
 
   const hilightCells = (row, column, piece) => {
@@ -220,51 +277,52 @@ function GameLayout({ id }) {
 
   useEffect(() => {
     // re-fetch every 15 seonds if it's not your turn and game is not over (this is called once per page so it means you got disconnected
-    if (data && !data.gameOver && !poll && (data.chatFirst === !(data.moves.length % 2))) {
-      console.log("setting timeout");
+    if (!loading && data && !data.gameOver && !poll && (data.chatFirst === !(data.moves.length % 2))) {
+      console.log("setting poll");
       const newPoll = setTimeout(async () => {
         await fetchData();
         setPoll(null);
-      }, 15000);
+      }, POLLING_INTERVAL);
       setPoll(newPoll);
-    } else if (data && poll && (data.gameOver || (data.chatFirst === (data.moves.length % 2)))) {
-      console.log("clearing timeout because the data says its ok");
+    } else if (!loading && data && poll && (data.gameOver || (data.chatFirst === (data.moves.length % 2)))) {
+      console.log("clearing poll because the data says its ok");
       clearTimeout(poll);
       setPoll(null);
-      setClicksDisabled(false);
-    }
-    if (data && data.board) {
-      setBoard(data.board);
-    }
-    if (data && data.moves) {
-      setMoves(data.moves);
-      setTurn((data.moves.length % 2) ? 'b' : 'w');
-    }
-    if (data) {
-      setGameOver(data.gameOver);
-      setChatFirst(data.chatFirst);
-      setEnPassantPawnPosition(data.enPassantPawnPosition);
-      setCapturedPieces(data.capturedPieces);
-      // could look at color for last move but this is more direct
-      let turn = !!(data.moves.length % 2) ? 'b' : 'w';
-      const yourColor = (data.chatFirst) ? 'b' : 'w'; 
-      setClicksDisabled(turn !== yourColor)
-      setTurn(turn);
     }
 
-  }, [data]);
+    if (!loading && data.gameConfig) {
+      console.log('not loading, setting data...');
+      setResults(data);
+      const blackRemainingTime = calculateRemainingTime(data.moves, data.gameConfig, 'b');
+      const whiteRemainingTime = calculateRemainingTime(data.moves, data.gameConfig, 'w');
+      console.log(blackRemainingTime);
+      console.log(whiteRemainingTime);
+      if (turn === (data.chatFirst ? 'w': 'b') && (chatFirst ? whiteRemainingTime : blackRemainingTime) < 0) {
+        resolveGameByClock(turn === 'b' ? 'w' : 'b');
+        if (poll) {
+          clearTimeout(poll);
+          setPoll(null);
+        }
+      } 
+    }
 
+
+
+  }, [loading]);
+  
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
-
+  
   // row - index    column - i 
   return (
     <div style={{ marginTop: '20px',  maxWidth: 'fit-content' }}>
+      { error ? <p> { error } </p> : '' }
       <div className="scale" >
       { board.map((row, index) => {
         return (
           <div key={`row${index}`} className='hex-row' style={{ marginLeft: Math.abs(index - 5) * 53 }}>
             { row.map((cell, i) => {
+              // todo: marking this as important for when implementing client version 
               const movable = cell && cell.charAt(0) === turn;
               const rowColorOffset = index % 3;
               let cellColor = cellColors[(i + rowColorOffset) % 3];
@@ -294,11 +352,34 @@ function GameLayout({ id }) {
         );
       }) }
       </div>
+      <PlayerLabels chatFirst={chatFirst}
+        gameOver={gameOver}
+        id={id}
+        turn={turn}
+      />
+      <Clocks chatFirst={chatFirst}
+        endGame={resolveGameByClock}
+        gameOver={gameOver}
+        moves={moves}
+        startTime={startTime}
+        turn={turn}
+        turnMins={turnMins}
+      />
       <CapturedPieces capturedPieces={capturedPieces} />
-      <PlayerLabels chatFirst={chatFirst} turn={turn} gameOver={gameOver} ids={ids} />
-      <Popup isVisible={promotion} color={turn} onConfirm={promote} />
-      <ConfigForm ref={formRef} />
-      <MoveLog gameOver={gameOver} moves={moves} startGame={() => postMove({}) } />
+      <ConfigForm clickDisabled={clickDisabled}
+        gameOver={gameOver}
+        ref={formRef}
+      />
+      <MoveLog gameOver={gameOver} 
+        moves={moves}
+        startGame={startGame}
+        startTime={startTime}
+      />
+      <Popup 
+        isVisible={promotion}
+        color={turn}
+        onConfirm={promote}
+      />
       <Ftr />
     </div>
   );

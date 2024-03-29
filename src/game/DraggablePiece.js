@@ -21,6 +21,7 @@ function DraggablePiece({ turn, onStart, cellContent, row, col, chatFirst }) {
     el.textContent = piece; // Set the content to the chess piece
     el.style.background = 'none'; // Set background to none
     el.style.position = 'fixed'; // Set position to fixed to remove from the normal flow
+    el.style.fontSize = '66px'; // set font size of the piece
     el.style.top = '-10000px'; // Position it off-screen
     el.style.color = team === 'w' ? "white" : "black";
     document.body.appendChild(el); // Append to body

@@ -1,6 +1,6 @@
 /* all game layout css related to responsive classes here */
 .capture {
-  position: fixed;
+  position: absolute;
 }
 
 .captureContainer {
@@ -8,28 +8,12 @@
   bottom: 50%;
 }
 
-.footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  min-height: 4%;
-  max-height: 4%;
-  border-top: 1px solid #B398D6;
-  background-color: #D9BFFF;
-  color: #efefef;
-}
-
-.footer-link {
-  color: white;
-  font-size: 30px;
-}
-
 .bodyScroll {
-  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .moveLog {
-  position: absolute;
+  position: fixed;
   overflow-x: hidden;
   border: 1px solid black;
   border-radius: 3px;
@@ -84,11 +68,23 @@
     left: 1060px;
   }
 
+  .clock {
+    position: absolute;
+    top: 155px;
+    transform: scale(.6);
+  }
+  .left.clock {
+    left: -60px;
+  }
+  .right.clock {
+    left: 1035px;
+  }
+
   .capture {
     font-size: 30px;
     top: 670px;
-    min-width: 3%;
-    max-width: 3%;
+    min-width: 52px;
+    max-width: 52px;
   }
 
   .left.capture {
@@ -101,24 +97,24 @@
 
   .logo {
     width: 40px;
-    right: 26px;
+    left: 1666px;
   }
 
   .moveLog {
-    left: 79%;
+    left: 1370px;
     top: 10px;
     font-size: 24px;
-    height: 87%;
-    width: 20%;
+    height: 80%;
+    width: 345px;
   }
 
   .moveLog-list {
-    margin-top: 70px;
-    height: 89.65%;
+    margin-top: 68px;
+    height: 93%;
   }
 
   .moveLog-header {
-    width: 18.615%;
+    width: 320px;
     height: 40px;
   }
   
@@ -130,19 +126,24 @@
     font-size: 26px;
   }
 
+  form.configForm {
+    position: absolute;
+    top: 1074px;
+    left: 36px;
+  }
+
+  form.configForm label {
+    font-size: 22px;
+  }
+
+  form.configForm input {
+    font-size: 18px;
+  }
+
   .scale {
     margin-top: 80px;
     margin-left: 8%;
     transform: scale(1.1);
-  }
-
-  .footer {
-    padding-bottom: 0;
-    font-size: 22px;
-  }
-
-  .footer > span {
-    margin-right: 21.7%;
   }
 }
 
@@ -158,6 +159,20 @@
 
   .label.left {
     left: 0px;
+  }
+
+  .clock {
+    position: absolute;
+    top: 142px;
+    transform: scale(.4);
+  }
+
+  .left.clock {
+    left: -80px;
+  }
+
+  .right.clock {
+    left: 672px;
   }
 
   .capture {
@@ -181,16 +196,16 @@
   }
 
   .moveLog {
-    left: 68%;
-    top: 10px;
+    right: 10px;
+    top: 1%;
     font-size: 24px;
-    height: 87%;
+    height: 85%;
     max-height: 730px;
-    width: 31%;
+    width: 432px;
   }
 
   .moveLog-header {
-    width: 29.3%;
+    width: 408px;
     height: 36px;
   }
 
@@ -204,22 +219,27 @@
 
   .moveLog-list {
     margin-top: 70px;
-    height: 89.65%;
+    height: 88.65%;
   }
-  
+
+  form.configForm {
+    position: absolute;
+    top: 665px;
+    left: 12px;
+  }
+
+  form.configForm label {
+    font-size: 15.5px;
+  }
+
+  form.configForm input {
+    font-size: 13.5px;
+  }
+
   .scale {
     margin-top: -160px;
     margin-left: -110px;
     transform: scale(.70);
-  }
-
-  .footer {
-    padding-bottom: .5em;
-    font-size: 20px;
-  }
-
-  .footer > span {
-    margin-right: 34.4%;
   }
 }
 
@@ -235,6 +255,20 @@
 
   .label.left {
     left: 0px;
+  }
+
+  .clock {
+    position: absolute;
+    top: 132px;
+    transform: scale(.34);
+  }
+
+  .left.clock {
+    left: -106px;
+  }
+  
+  .right.clock {
+    left: 596px;
   }
 
   .capture {
@@ -254,20 +288,20 @@
   
   .logo {
     width: 28px;
-    right: 33px;
+    right: 28px;
   }
 
   .moveLog {
-    left: 76%;
+    right: 10px;
     top: 10px;
     font-size: 20px;
     height: 80%;
     max-height: 690px;
-    width: 22.2%;
+    width: 248px;
   }
 
   .moveLog-header {
-    width: 20%;
+    width: 224px;
     height: 30px;
   }
 
@@ -287,20 +321,25 @@
   .moveLog-item {
     font-size: 18px;
   }
+
+  form.configForm {
+    position: absolute;
+    top: 624px;
+    left: 10px;
+  }
+
+  form.configForm input {
+    font-size: 10px;
+  }
+
+  form.configForm label {
+    font-size: 14px;
+  }
   
   .scale {
     margin-left: -160px;
     margin-top: -180px;
     transform: scale(0.66);
-  }
-
-  .footer {
-    padding-bottom: 1em;
-    font-size: 20px;
-  }
-
-  .footer > span {
-    margin-right: 18.4%;
   }
 }
 
@@ -318,6 +357,20 @@
     left: 0px;
   }
 
+  .clock {
+    position: absolute;
+    top: 90px;
+    transform: scale(.22);
+  }
+
+  .left.clock {
+    left: -124px;
+  }
+  
+  .right.clock {
+    left: 386px;
+  }
+
   .capture {
     font-size: 18px;
     top: 340px;
@@ -330,7 +383,7 @@
   }
 
   .right.capture {
-    left: 560px;
+    left: 555px;
   }
 
   .logo {
@@ -339,16 +392,17 @@
   }
 
   .moveLog {
-    left: 72%;
+    right: 10px;
     top: 10px;
     font-size: 20px;
     height: 80%;
     max-height: 510px;
-    width: 26.8%;
+    width: 218px;
   }
 
   .moveLog-header {
-    width: 23.9%;
+    min-width: 193.8px;
+    max-width: 193.8px;
     height: 24px;
   }
 
@@ -369,18 +423,24 @@
     font-size: 18px;
   }
 
+
+  form.configForm {
+    position: absolute;
+    top: 450px;
+    left: 6px;
+  }
+  form.configForm label {
+    font-size: 8.4px;
+  }
+  
+  form.configForm input {
+    font-size: 7px;
+  }
+
   .scale {
     margin-left: -265px;
     margin-top: -270px;
     transform: scale(0.48);
-  }
-
-  .footer {
-    padding-bottom: 1em;
-    font-size: 22px;
-  }
-  .footer > span {
-    margin-right: 5%;
   }
 }
 
@@ -403,6 +463,20 @@
   .left.label {
     position: absolute !important;
     left: 36px;
+  }
+
+  .clock {
+    position: absolute;
+    top: 83px;
+    transform: scale(.26);
+  }
+
+  .left.clock {
+    left: -128px;
+  }
+  
+  .right.clock {
+    left: 388px;
   }
 
   .capture {
@@ -433,13 +507,13 @@
     left: 10px;
     top: 525px;
     font-size: 20px;
-    height: 20%;
+    height: 160px;
     width: 96.5%;
   }
 
   .moveLog-header {
     position: absolute;
-    width: 96%;
+    width: 96.75%;
     height: 24px;
   }
 
@@ -453,7 +527,13 @@
 
   .moveLog-list {
     margin-top: 50px;
-    height: 56%;
+    height: 100px;
+  }
+
+  form.configForm {
+    position: absolute;
+    top: 474px;
+    left: 200px;
   }
   
   .scale {
@@ -461,22 +541,11 @@
     margin-top: -285px;
     transform: scale(0.45);
   }
-
-  .footer {
-    position: fixed;
-    padding-bottom: 0;
-    font-size: 14px;
-    min-height: 46px; 
-    max-height: 46px;
-  }
-
-  .footer > span {
-    margin-right: 0%;
-  }
 }
 
 @media (max-width: 640px) {
   .bodyScroll {
+    overflow-x: auto;
     overflow-y: auto;
   }
 
@@ -493,6 +562,21 @@
   .left.label {
     position: absolute !important;
     left: 36px;
+  }
+
+
+  .clock {
+    position: absolute;
+    top: 81px;
+    transform: scale(.22);
+  }
+
+  .left.clock {
+    left: -132px;
+  }
+  
+  .right.clock {
+    left: 300px;
   }
 
   .capture {
@@ -523,7 +607,7 @@
     left: 10px;
     top: 480px;
     font-size: 20px;
-    height: 25%;
+    height: 180px;
     width: 96.5%;
   }
 
@@ -543,7 +627,21 @@
 
   .moveLog-list {
     margin-top: 50px;
-    height: 75%;
+    height: 128px;
+  }
+
+  form.configForm {
+    position: absolute;
+    top: 424px;
+    left: 180px;
+  }
+
+  form.configForm label {
+    font-size: 14px;
+  }
+
+  form.configForm input {
+    font-size: 10px;
   }
   
   .scale {
@@ -551,18 +649,4 @@
     margin-top: -300px;
     transform: scale(0.4);
   }
-
-  .footer {
-    position: fixed;
-    padding-bottom: 0;
-    font-size: 14px;
-    min-height: 46px; 
-    max-height: 46px;
-  }
-
-  .footer > span {
-    margin-right: 0%;
-  }
 }
-
-/* todo: - one final below 640px screen with a smaller scale */

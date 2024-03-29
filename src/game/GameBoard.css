@@ -5,13 +5,26 @@
 
 div.shiny-font {
   animation: color-change 2s infinite;
+  min-width: 33px;
+  font-weight: bolder;
+  letter-spacing: -1px;
 }
 
 .regular-font {
+  font-weight: bolder;
+  letter-spacing: -1px;
   min-width: 33px;
-  color: #101010;
-
 }
+.regular-font.peacha {
+  color: #cdcdcd;
+}
+.regular-font.browna {
+  color: #454545;
+}
+.regular-font.beigea {
+  color: #787878;
+}
+
 
 @keyframes color-change {
   0%, 100% {
@@ -39,6 +52,12 @@ div {
   color: #140014;
 }
 
+/* piece size - the actual board and pieces scale on screen sizes so this is fixed */
+.hex .middle span {
+  font-size: 66px;
+  position: relative;
+  top: -9px;
+}
 
 /* honeycomb stuffs */
 
@@ -46,6 +65,7 @@ div {
   float: left;
   margin-left: 3px;
   margin-bottom: -26px;
+  transition: border-opacity 1s ease;
 }
 
 .hex .top {

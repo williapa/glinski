@@ -1,11 +1,30 @@
 body {
+  font-family: 'Neue Montreal', sans-serif;
   font-size: 40px;
   text-align: center;
   background: #efefef;
   margin: 0px;
-  overflow-x: hidden;
 }
 
 label {
   font-size: 1.3rem;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid #B398D6;
+  background-color: #D9BFFF;
+  color: #efefef;
+  padding-bottom: 0px;
+  font-size: 13px;
+  min-height: 32px;
+  max-height: 32px;
+  padding-top: 6px;
+}
+
+.footer-link {
+  color: white;
+  font-size: 13px;
 }

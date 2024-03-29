@@ -3,9 +3,9 @@ import rowColToLetterCol from '../util/rowColToLetterCol';
 import pieceMap from '../util/pieceMap';
 import LogLabel from './labels/LogLabel';
 
-const MoveLog = ({ gameOver, moves, startGame }) => (
+const MoveLog = ({ gameOver, moves, startGame, startTime }) => (
   <div className="moveLog">
-    <LogLabel turnCount={moves.length} />
+    <LogLabel resetGame={startGame} gameOver={gameOver} turnCount={moves.length} />
     <ul className="moveLog-list">
       {
         gameOver ? (
@@ -16,11 +16,11 @@ const MoveLog = ({ gameOver, moves, startGame }) => (
           </li>
         ) : ''
       }
-      { gameOver && moves.length ? 
+      { (gameOver === 'b' || gameOver === 'w') ? 
         (
           <li key="f" className="moveLog-item">
             {
-              {'w': 'white', 'b': 'black' }[moves[0].piece.charAt(0)] + ' wins!'
+              {'w': 'white', 'b': 'black' }[gameOver] + ' wins!'
             }
           </li>
         ) : ''
@@ -35,6 +35,15 @@ const MoveLog = ({ gameOver, moves, startGame }) => (
           {move.promoted ? <span> (Promoted)</span> : ''}.
         </li>
       ))}
+      { /* todo: switch this back to .toLocaleTimeString() */ }
+      { startTime ? (
+        <li className="moveLog-item">
+          <span>
+            {new Date(startTime).getTime()}: 
+          </span>
+          <span> game started.</span>
+        </li>): ''
+      }
     </ul>
   </div>
 );

@@ -1,0 +1,80 @@
+.clock {
+  text-align: center;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.digit-container.blinking {
+  animation: blink .5s alternate infinite;
+  box-sizing: border-box;
+  color: white;
+}
+
+@keyframes blink {
+  from {
+    background: rgba(252,0,0,.35);
+  }
+  to {
+    background: rgba(212,0,0,.7);
+
+  }
+}
+
+.digit-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;  /* Adjust as needed */
+  height: 104px; /* Adjust as needed */
+  margin: 4px;  /* Adjust for spacing between digits */
+  overflow: hidden;
+}
+
+.digit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 72px;
+  height: 96px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
+  border: 2px solid black;
+  border-radius: 5px;
+  text-align: center;
+  transition: transform 1s, opacity 1s;
+}
+
+.colon {
+  padding: 10px;
+  margin: 6px;
+  font-size: 24px;
+}
+
+/* Style for the previous digit */
+.previous {
+  transform: translateY(-100%);
+  opacity: 0;
+  animation: slide-out 1s forwards;
+}
+
+@keyframes slide-out {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-100%); opacity: 0; }
+}
+
+/* Style for the current digit */
+.current {
+  animation: slide-in 1s forwards;
+}
+
+@keyframes slide-in {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

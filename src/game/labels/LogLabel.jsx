@@ -1,11 +1,18 @@
 import React from 'react';
 import QueenBee from '../../img/queen-bee.png'
 
-const LogLabel = ({ turnCount }) => {
+const LogLabel = ({ gameOver, resetGame, turnCount }) => {
   
   return (
     <div className="moveLog-header">
-      <span className="log">log {turnCount ? <span className="count">({turnCount})</span>: ''}</span>
+      <span className="log">moves {turnCount ? <span className="count">({turnCount})</span>: ''}</span>
+      { 
+        !gameOver ? (
+          <button style={{ position: "relative", top: "-2px" }} onClick={resetGame}>
+            🔄
+          </button>
+        ) : ''
+      }
       <img className="logo" src={QueenBee} alt="Honeycomb chess mascot, Beatrice" />
     </div>
   );

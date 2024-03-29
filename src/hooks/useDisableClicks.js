@@ -5,7 +5,7 @@ const DisableClicksContext = createContext();
 
 // Provider component
 export const DisableClicksProvider = ({ children }) => {
-  const [clicksDisabled, setClicksDisabled] = useState(true);
+  const [clicksDisabled, setClicksDisabled] = useState(false);
 
   return (
     <DisableClicksContext.Provider value={{ clicksDisabled, setClicksDisabled }}>

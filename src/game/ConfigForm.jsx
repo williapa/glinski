@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 
 const ConfigForm = forwardRef(({ clickDisabled, gameOver }, ref) => (
   <form className="configForm" ref={ref}>
-    <label htmlFor="turnMin"> clock (min): </label>
+    <label htmlFor="turnMin"> minutes: </label>
     <input disabled={!gameOver} 
       id="turnMin"
       name="turnMin"

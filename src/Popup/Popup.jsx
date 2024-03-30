@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import pieceMap from '../util/pieceMap';
 import './Popup.css';
 
-function Popup({ isVisible, color, onConfirm }) {
+function Popup({ isVisible, color, onCancel, onConfirm }) {
   const [selectedOption, setSelectedOption] = useState(`${color}Queen`);
   const { row, col } = isVisible;
   const handleOptionClick = (option) => {
@@ -26,7 +26,7 @@ function Popup({ isVisible, color, onConfirm }) {
 
   return (
     isVisible && (
-      <div className="popup">
+      <div className="popup position" style={{ }}>
         <form className="form">
           <div className="options" style={{ display: 'flex' }}>
             {options.map((option, index) => (
@@ -42,6 +42,10 @@ function Popup({ isVisible, color, onConfirm }) {
               </button>
             ))}
           </div>
+          
+          <button type="button" className="cancel-button" onClick={onCancel}>
+            Cancel
+          </button>
           <button type="button" className="confirm-button" onClick={handleConfirm}>
             Confirm
           </button>

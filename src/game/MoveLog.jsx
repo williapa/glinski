@@ -35,11 +35,10 @@ const MoveLog = ({ gameOver, moves, startGame, startTime }) => (
           {move.promoted ? <span> (Promoted)</span> : ''}.
         </li>
       ))}
-      { /* todo: switch this back to .toLocaleTimeString() */ }
       { startTime ? (
         <li className="moveLog-item">
           <span>
-            {new Date(startTime).getTime()}: 
+            {new Date(startTime).toLocaleTimeString()}: 
           </span>
           <span> game started.</span>
         </li>): ''

@@ -273,6 +273,11 @@ function GameLayout({ id }) {
     postMove(thisIsTheMove);
   };
 
+  const cancelPromote = () => {
+    setNewMove({});
+    setPromotion(false);
+  }
+
   const { data, loading, error, fetchData } = useFetch(`http://localhost:3000/${id}`);
 
   useEffect(() => {
@@ -378,6 +383,7 @@ function GameLayout({ id }) {
       <Popup 
         isVisible={promotion}
         color={turn}
+        onCancel={cancelPromote}
         onConfirm={promote}
       />
       <Ftr />

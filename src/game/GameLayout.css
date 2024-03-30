@@ -74,7 +74,7 @@
     transform: scale(.6);
   }
   .left.clock {
-    left: -60px;
+    left: -30px;
   }
   .right.clock {
     left: 1035px;
@@ -97,15 +97,15 @@
 
   .logo {
     width: 40px;
-    left: 1666px;
+    left: 1644px;
   }
 
   .moveLog {
     left: 1370px;
     top: 10px;
     font-size: 24px;
-    height: 80%;
-    width: 345px;
+    min-height: 80%;
+    width: 322px;
   }
 
   .moveLog-list {
@@ -114,7 +114,7 @@
   }
 
   .moveLog-header {
-    width: 320px;
+    width: 298px;
     height: 40px;
   }
   
@@ -138,6 +138,11 @@
 
   form.configForm input {
     font-size: 18px;
+  }
+
+  .popup.position {
+    top: 194px;
+    left: 686px;
   }
 
   .scale {
@@ -168,11 +173,11 @@
   }
 
   .left.clock {
-    left: -80px;
+    left: -82px;
   }
 
   .right.clock {
-    left: 672px;
+    left: 670px;
   }
 
   .capture {
@@ -225,7 +230,7 @@
   form.configForm {
     position: absolute;
     top: 665px;
-    left: 12px;
+    left: 20px;
   }
 
   form.configForm label {
@@ -234,6 +239,11 @@
 
   form.configForm input {
     font-size: 13.5px;
+  }
+
+  .popup.position {
+    top: 180px;
+    left: 476px;
   }
 
   .scale {
@@ -268,7 +278,7 @@
   }
   
   .right.clock {
-    left: 596px;
+    left: 594px;
   }
 
   .capture {
@@ -335,6 +345,11 @@
   form.configForm label {
     font-size: 14px;
   }
+
+  .popup.position {
+    top: 166px;
+    left: 428px;
+  }
   
   .scale {
     margin-left: -160px;
@@ -360,11 +375,11 @@
   .clock {
     position: absolute;
     top: 90px;
-    transform: scale(.22);
+    transform: scale(.23);
   }
 
   .left.clock {
-    left: -124px;
+    left: -126px;
   }
   
   .right.clock {
@@ -427,7 +442,7 @@
   form.configForm {
     position: absolute;
     top: 450px;
-    left: 6px;
+    left: 16px;
   }
   form.configForm label {
     font-size: 8.4px;
@@ -435,6 +450,11 @@
   
   form.configForm input {
     font-size: 7px;
+  }
+
+  .popup.position {
+    top: 120px;
+    left: 312px;
   }
 
   .scale {
@@ -535,6 +555,11 @@
     top: 474px;
     left: 200px;
   }
+
+  .popup.position {
+    top: 118px;
+    left: 328px;
+  }
   
   .scale {
     margin-left: -27%;
@@ -572,11 +597,11 @@
   }
 
   .left.clock {
-    left: -132px;
+    left: -135px;
   }
   
   .right.clock {
-    left: 300px;
+    left: 297px;
   }
 
   .capture {
@@ -633,7 +658,7 @@
   form.configForm {
     position: absolute;
     top: 424px;
-    left: 180px;
+    left: 172px;
   }
 
   form.configForm label {
@@ -642,6 +667,11 @@
 
   form.configForm input {
     font-size: 10px;
+  }
+
+  .popup.position {
+    top: 118px;
+    left: 268px;
   }
   
   .scale {

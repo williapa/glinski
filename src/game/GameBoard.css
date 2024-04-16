@@ -1,4 +1,4 @@
-.shiny-effect {
+.hex.shiny-effect {
   animation: shiny 2s infinite;
   cursor: pointer;
 }
@@ -25,6 +25,14 @@ div.shiny-font {
   color: #787878;
 }
 
+/* these go with the hex classes to flash a chat vote / move */
+.from {
+  animation: animateFromKeyframes 1.5s ease-out;
+}
+
+.to {
+  animation: animateToKeyframes 1.5s ease-out;
+}
 
 @keyframes color-change {
   0%, 100% {
@@ -42,6 +50,16 @@ div.shiny-font {
   50% {
     opacity: 0.5;
   }
+}
+
+@keyframes animateFromKeyframes {
+  0%, 20%, 60%, 100% { opacity: 1; }
+  40% { opacity: 0.1; }
+}
+
+@keyframes animateToKeyframes {
+  0%, 60%, 100% { opacity: 1; } 
+  80% { opacity: 0.1; } 
 }
 
 div {

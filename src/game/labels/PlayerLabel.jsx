@@ -35,7 +35,7 @@ const PlayerLabel = ({ turn, gameOver, ids, side }) => {
       {ids[side]}
       <span style={{ fontSize: "76%" }}>
         {turnIcon}
-        { gameOver === side ? winner : '' }
+        { gameOver === side ? <span className="floating">{winner} </span> : '' }
       </span>
     </div>
   )

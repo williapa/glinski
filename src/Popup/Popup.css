@@ -1,6 +1,5 @@
 .popup {
   position: fixed;
-  margin-block: auto;
   transform: translate(-50%, -50%);
   background-color: white;
   border: 1px solid #ccc;
@@ -24,6 +23,7 @@
   background-color: #007BFF;
   color: white;
 }
+
 .cancel-button {
   margin-right: 6px;
   padding: 10px 20px;

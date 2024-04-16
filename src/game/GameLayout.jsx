@@ -1,10 +1,10 @@
 import './GameBoard.css';
 import './GameLayout.css';
 import pieceColor from '../util/pieceColor';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Moves from '../moves';
 import isFirstOrLast from '../util/isFirstOrLast';
-import Popup from '../Popup/Popup';
+import Popup from '../popup/Popup';
 import calculateRemainingTime from '../util/calculateRemainingTime';
 import checkMate from '../util/checkMate';
 import filterMoves from '../util/filterMoves';
@@ -18,6 +18,7 @@ import useFetch from "../hooks/useFetch";
 import { useDisableClicks } from '../hooks/useDisableClicks';
 import Ftr from "../footer/Ftr";
 import Clocks from "./clock/Clocks";
+import AudioPlayer from "../audio/AudioPlayer";
 
 const cellColors = ['beige', 'peach', 'brown']; // these correspond to class names they are not the real colors im sorry
 const POLLING_INTERVAL = 10 * 1000;
@@ -25,6 +26,11 @@ const POLLING_INTERVAL = 10 * 1000;
 function GameLayout({ id }) {
   const formRef = useRef(null);
   const { clickDisabled, setClicksDisabled } = useDisableClicks();
+  const [flash, setFlash] = useState({
+    startPosition: { row: -1, col: -1, },
+    endPosition: { row: -1, col: -1, },
+    keyCount: 0
+  });
   const [chatFirst, setChatFirst] = useState(true);
   const [promotion, setPromotion] = useState(false);
   const [turn, setTurn] = useState('w');
@@ -35,10 +41,44 @@ function GameLayout({ id }) {
   const [enPassantPawnPosition, setEnPassantPawnPosition] = useState(false);
   const [capturedPieces, setCapturedPieces] = useState({ b: [], w: [] });
   const [gameOver, setGameOver] = useState(true);
-  const [turnMins, setTurnMins] = useState(.2);
+  const [turnMins, setTurnMins] = useState(5);
+  const useMuted = useState(true);
+  const [sound, playSound] = useState(null);
   const [startTime, setStartTime] = useState(null);
   const [switchNextGame, setSwitchNextGame] = useState(false);
   const [poll, setPoll] = useState(null);
+  
+  const gameChanger = useCallback((newVal) => {
+    setGameOver((prev) => {
+      if (prev !== newVal && !!newVal && !poll) {
+        if (chatFirst === (newVal === 'b')) {
+          playSound('youWin');
+        } else if (chatFirst === (newVal === 'w')) {
+          playSound('youLose');
+        } else if (newVal === 'tie') {
+          playSound('draw');
+        } 
+      }
+      return newVal;
+    });
+  }, [gameOver, chatFirst]);
+
+  const setFlasher = (newFlash) => {
+    const keyCount = flash.keyCount + 1;
+    setFlash({
+      ...newFlash,
+      keyCount
+    });
+  }
+
+  const turnChanger = useCallback((newVal) => {
+    setTurn((previousTurn) => {
+      if (previousTurn !== newVal && !gameOver && newVal === (chatFirst ? 'b' : 'w')) {
+        playSound('yourMove');
+      }
+      return newVal;
+    });
+  }, [turn, chatFirst, gameOver]);
 
   const setResults = (result) => {
     const currentTurn = (result.moves.length % 2) ? 'b' : 'w';
@@ -47,7 +87,7 @@ function GameLayout({ id }) {
     setChatFirst(result.chatFirst);
     setEnPassantPawnPosition(result.enPassantPawnPosition);
     setMoves(result.moves);
-    setTurn(currentTurn);
+    turnChanger(currentTurn);
     if (result.gameConfig) {
       setTurnMins(result.gameConfig.turnMins);
       setStartTime(result.gameConfig.startTime);
@@ -58,14 +98,13 @@ function GameLayout({ id }) {
       setSwitchNextGame(!!result.gameConfig.switchNextGame);
       
     }
-    setGameOver(result.gameOver);
+    gameChanger(result.gameOver);
     // re - enable clicking 
     const urColor = (result.chatFirst) ? 'b' : 'w'; 
     setClicksDisabled(result.gameOver ? true : currentTurn !== urColor);
   };
 
   const resolveGameByClock = async (color) => {
-    setGameOver(color);
     const postMoveResult = await fetch(`http://localhost:3000/${id}`, {
       method: 'POST',
       body: JSON.stringify({ checkTimeForWinner: color })
@@ -82,20 +121,27 @@ function GameLayout({ id }) {
   // todo: catch error and re-get the board
   const postMove = async (move) => {
     setClicksDisabled(true);
+    const gameConfig = {
+      startTime: new Date().getTime(),
+      turnMins: formRef.current.turnMin.value,
+      votes: formRef.current.votes.value,
+    };
     // empty move = start game
     if (!move.piece && !move.startPosition && !move.endPosition) {
       // todo: loading state
+      const userChoice = formRef.current.chatFirst.value;
+      gameConfig.chatFirst = userChoice;
       setResults({ 
         board: newBoard(), 
         capturedPieces: { 'b': [], 'w': [] },
-        chatFirst: move.newChatFirst, 
+        chatFirst: userChoice === 'random' ? move.newChatFirst : userChoice === 'switch' ? !chatFirst : chatFirst,
         gameOver: false,
         enPassantPawnPosition: false,
         moves: [],
         gameConfig: {
+          startTime: new Date().getTime(),
           turnMins: formRef.current.turnMin.value,
           votes: formRef.current.votes.value,
-          startTime: new Date().getTime(),
         }
       });
 
@@ -106,12 +152,6 @@ function GameLayout({ id }) {
       return;
     }
     try {
-      const gameConfig = {
-        startTime: new Date().getTime(),
-        turnMins: formRef.current.turnMin.value,
-        votes: formRef.current.votes.value,
-      };
-
       const postMoveResult = await fetch(`http://localhost:3000/${id}`, {
         method: 'POST',
         body: JSON.stringify({ move, gameConfig })
@@ -131,11 +171,13 @@ function GameLayout({ id }) {
     }
   };
 
-  const startGame = async () => {
+  const startGame = async (e) => {
+    e.preventDefault();
     let newChatFirst = chatFirst;
     if (switchNextGame) {
       newChatFirst = !chatFirst;
     }
+    playSound('startGame');
     await postMove({ newChatFirst });
   };
 
@@ -143,10 +185,8 @@ function GameLayout({ id }) {
     const pieceClass = piece.substr(1);
     if (!Moves[pieceClass]) return;
     const moves = Moves[pieceClass](row,column,board,enPassantPawnPosition);
-
     // filter moves that would put the player in check
     const nonCheckCausingMoves = filterMoves(moves, board, [piece, { row, column }]);
-
     setHilightedCells(nonCheckCausingMoves);
   }
 
@@ -154,9 +194,11 @@ function GameLayout({ id }) {
   const buildHilightCells = (x,y) => {
     return (piece) => {
       if (piece) {
+        playSound('pickUp');
         hilightCells(x,y,piece);
       } else {
         setHilightedCells({});
+        if ((turn === 'b') === chatFirst) playSound('putDownCancel');
       }
     };
   }
@@ -187,8 +229,11 @@ function GameLayout({ id }) {
         }
       }
       if (removedPiece) {
+        playSound('putDownTake');
         capturedPieces[removedPiece.charAt(0)].push(removedPiece);
         setCapturedPieces({ ...capturedPieces });
+      } else {
+        playSound('putDownMove');
       }
       // check for en passant pawn move. This means the piece is a pawn and the column is changing by more than 1
       if (board[startPosition.row][startPosition.col].substring(1) === "Pawn" && Math.abs(col - startPosition.col) > 1) {
@@ -200,7 +245,8 @@ function GameLayout({ id }) {
       }
       // pawn upgrade logic 
       if (isFirstOrLast(board, row, col) && board[startPosition.row][startPosition.col].substring(1) === 'Pawn') {
-        setPromotion({ row, col });
+        setPromotion({ source: startPosition, dest: { row, col }});
+        board[row][col] = board[startPosition.row][startPosition.col];
         board[startPosition.row][startPosition.col] = 0;
         setHilightedCells({});
         setBoard([...board]);
@@ -219,12 +265,14 @@ function GameLayout({ id }) {
         setHilightedCells({});
         setBoard([...board]);
         const nextTurn = (turn === 'w' ? 'b' : 'w');
-        setTurn(nextTurn);
+        turnChanger(nextTurn);
         // check mate 
-        if (checkMate(board, nextTurn, enPassantPawnPosition)) {
-          window.alert(`check mate - ${nextTurn} loses`);
-          gameOver = true;
-        } 
+        const checkmate = checkMate(board, nextTurn, enPassantPawnPosition);
+        if (checkmate && checkmate !== 'tie') {
+          gameOver = turn;
+        } else if (checkmate === 'tie') {
+          gameOver = checkmate;
+        }
         // add move to move log
         const thisIsTheMove = {
           time: Date.now(),
@@ -252,13 +300,18 @@ function GameLayout({ id }) {
     setPromotion(false);
     board[row][column] = piece;
     setBoard([...board]);
-    setTurn(newTurn);
+    turnChanger(newTurn);
     let gameOver = false;
+    const checkmate = checkMate(board, newTurn, enPassantPawnPosition);
     // check mate
-    if (checkMate(board, newTurn, enPassantPawnPosition)) {
+    if (checkmate && checkmate !== 'tie') {
       window.alert(`checkmate - ${turn} wins`);
-      gameOver = true;
+      gameOver = turn;
+    } else if (checkmate === 'tie') {
+      window.alert("game is a tie");
+      gameOver = checkmate;
     }
+    newMove.promoted = true;
     const thisIsTheMove = {
       ...newMove,
       piece,
@@ -270,12 +323,19 @@ function GameLayout({ id }) {
       ...moves,
     ]);
     setNewMove({});
+    playSound('putDownPromote');
     postMove(thisIsTheMove);
   };
 
   const cancelPromote = () => {
+    const { source, dest } = promotion;
+    const { row, col } = source;
+    board[row][col] = board[dest.row][dest.col];
+    board[dest.row][dest.col] = 0;
     setNewMove({});
     setPromotion(false);
+    playSound('putDownCancel');
+    setBoard([...board]);
   }
 
   const { data, loading, error, fetchData } = useFetch(`http://localhost:3000/${id}`);
@@ -296,12 +356,9 @@ function GameLayout({ id }) {
     }
 
     if (!loading && data.gameConfig) {
-      console.log('not loading, setting data...');
       setResults(data);
       const blackRemainingTime = calculateRemainingTime(data.moves, data.gameConfig, 'b');
       const whiteRemainingTime = calculateRemainingTime(data.moves, data.gameConfig, 'w');
-      console.log(blackRemainingTime);
-      console.log(whiteRemainingTime);
       if (turn === (data.chatFirst ? 'w': 'b') && (chatFirst ? whiteRemainingTime : blackRemainingTime) < 0) {
         resolveGameByClock(turn === 'b' ? 'w' : 'b');
         if (poll) {
@@ -310,9 +367,6 @@ function GameLayout({ id }) {
         }
       } 
     }
-
-
-
   }, [loading]);
   
   if (loading) return <p>Loading...</p>;
@@ -321,8 +375,8 @@ function GameLayout({ id }) {
   // row - index    column - i 
   return (
     <div style={{ marginTop: '20px',  maxWidth: 'fit-content' }}>
-      { error ? <p> { error } </p> : '' }
-      <div className="scale" >
+      <AudioPlayer muted={useMuted[0]} sound={sound} />
+      <div className="scale position" >
       { board.map((row, index) => {
         return (
           <div key={`row${index}`} className='hex-row' style={{ marginLeft: Math.abs(index - 5) * 53 }}>
@@ -337,9 +391,10 @@ function GameLayout({ id }) {
               const isDestination = hilightedCells[index] && hilightedCells[index].indexOf(i) > -1;
               return (
                 <BoardCell
-                  key={`cell${index},${i}`}
+                  key={`cell${index},${i},${flash.keyCount}`}
                   cell={cell}
                   cellColor={cellColor}
+                  from={(flash.startPosition.row === index && flash.startPosition.col === i)}
                   i={i}
                   index={index}
                   isDestination={isDestination}
@@ -348,6 +403,7 @@ function GameLayout({ id }) {
                   onDrop={buildOnDrop(index, i)}
                   onStart={buildHilightCells(index,i)}
                   pieceColor={pieceColor(cell)}
+                  to={(flash.endPosition.row === index && flash.endPosition.col === i)}
                   turn={turn}
                   chatFirst={chatFirst}
                 />
@@ -375,10 +431,17 @@ function GameLayout({ id }) {
         gameOver={gameOver}
         ref={formRef}
       />
-      <MoveLog gameOver={gameOver} 
+      <MoveLog board={board}
+        channel={id} 
+        chatFirst={chatFirst}
+        enPassantPawnPosition={enPassantPawnPosition}
+        gameOver={gameOver} 
         moves={moves}
+        polling={poll}
+        setFlash={setFlasher}
         startGame={startGame}
         startTime={startTime}
+        useMuted={useMuted}
       />
       <Popup 
         isVisible={promotion}

@@ -19,26 +19,16 @@ const Clocks = ({
     // Function to start the timer
     const startTimer = () => {
       if (timerRef.current === null) {
-        console.log('starting timer');
         timerRef.current = setInterval(() => {
           const gameConfig = { startTime, turnMins };
           const blackRemainingTime = calculateRemainingTime(moves, gameConfig, 'b');
           const whiteRemainingTime = calculateRemainingTime(moves, gameConfig, 'w');
-          console.log(whiteRemainingTime);
-          console.log(blackRemainingTime);
-          console.log(turn);
           // if "player" (white or black?) remaining time is 0 now, post end game + loss. 
           // -3 is hack to avoid collision 
           if (turn === (chatFirst ? 'b' : 'w') && (chatFirst ? blackRemainingTime : whiteRemainingTime) < -3) {
             endGame(turn === 'b' ? 'w' : 'b');
-            console.log('stopping timer within timer');
             stopTimer();
-            // hacky, waiting extra 3 seconds on chat's turn in case server response is slow to end game
-          } /* else if (turn === (chatFirst ? 'w': 'b') && (chatFirst ? whiteRemainingTime : blackRemainingTime) < -5) {
-            endGame(turn === 'b' ? 'w' : 'b');
-            console.log('stopping timer within timer');
-            stopTimer();
-          } */
+          } 
           setBlackRemainingTime(Math.max(0, blackRemainingTime));
           setWhiteRemainingTime(Math.max(0, whiteRemainingTime));
         }, 1000);
@@ -48,7 +38,6 @@ const Clocks = ({
     // Function to stop the timer
     const stopTimer = () => {
       if (timerRef.current !== null) {
-        console.log("this time it actually stopped.");
         clearInterval(timerRef.current);
         timerRef.current = null;
       }
@@ -58,7 +47,6 @@ const Clocks = ({
     if (!gameOver) {
       startTimer();
     } else {
-      console.log('stopping timer because of game over');
       stopTimer();
     }
   

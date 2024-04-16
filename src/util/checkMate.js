@@ -1,7 +1,9 @@
 import Moves from "../moves";
 import filterMoves from "./filterMoves";
 import noMoves from "./noMoves";
+import check from "./check";
 
+// returns true if it's check mate and 'tie' if it's a tie 
 export default function checkMate(realBoard, color, enPassantPawnPosition) {
   
   const board = realBoard.map((row) => row.slice());
@@ -21,20 +23,10 @@ export default function checkMate(realBoard, color, enPassantPawnPosition) {
     }
   }
 
-  return true;
+  // this function actually returns true when there are NO MOVES LEFT...
+  // but no moves does not equate to checkmate! 
+  // you need to check the state of the CURRENT board for check. 
+  // if the current board is not check, then it's a tie bc there's no moves left and not check.
+  if (check(realBoard, color)) return true;
+  return 'tie';
 };
-
-
-// i am building shufflebored.co in public 
-// twitch link
-// youtube link
-// im on a fitness journey 
-// loves music comedy & iced coffee 
-
-// bikes
-// drones
-// music + recording
-// comedy + twitch
-// weed hehe
-// i do like games tbs are my favorite but i like shooters, nintendo type multiplayer games
-// 

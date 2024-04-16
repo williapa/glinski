@@ -1,4 +1,5 @@
 import React, { forwardRef } from 'react';
+import ColorButtonPanel from './ColorButtonPanel';
 
 const ConfigForm = forwardRef(({ clickDisabled, gameOver }, ref) => (
   <form className="configForm" ref={ref}>
@@ -7,10 +8,10 @@ const ConfigForm = forwardRef(({ clickDisabled, gameOver }, ref) => (
       id="turnMin"
       name="turnMin"
       type="number"
-      min={.1}
+      min={1.}
       max={10}
-      defaultValue={.2}
-      step={.1} 
+      defaultValue={5}
+      step={1} 
     />
     <label htmlFor="votes"> votes: </label>
     <input disabled={clickDisabled} 
@@ -22,6 +23,7 @@ const ConfigForm = forwardRef(({ clickDisabled, gameOver }, ref) => (
       defaultValue={1}
       step={1}
     />
+    <ColorButtonPanel gameOver={gameOver} />
   </form>
 )); 
 

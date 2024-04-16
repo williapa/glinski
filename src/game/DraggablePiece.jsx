@@ -2,6 +2,23 @@ import React from 'react';
 import pieceMap from '../util/pieceMap';
 import { useDisableClicks } from '../hooks/useDisableClicks';
 
+const baseFont = 66;
+
+const getMultiple = () => {
+  if (window.innerWidth > 1700) {
+    return 1.1;
+  } else if (window.innerWidth > 1400) {
+    return .7;
+  } else if (window.innerWidth > 1100) {
+    return .66;
+  } else if (window.innerWidth > 840 ) {
+    return .48;
+  } else if (window.innerWidth > 600) {
+    return .45;
+  }
+  return .4; 
+}
+
 function DraggablePiece({ turn, onStart, cellContent, row, col, chatFirst }) {
   const { clicksDisabled } = useDisableClicks();
   if (!cellContent) return null;
@@ -21,7 +38,8 @@ function DraggablePiece({ turn, onStart, cellContent, row, col, chatFirst }) {
     el.textContent = piece; // Set the content to the chess piece
     el.style.background = 'none'; // Set background to none
     el.style.position = 'fixed'; // Set position to fixed to remove from the normal flow
-    el.style.fontSize = '66px'; // set font size of the piece
+    const multiple = getMultiple();
+    el.style.fontSize = `${baseFont * multiple}px`; // set font size of the piece
     el.style.top = '-10000px'; // Position it off-screen
     el.style.color = team === 'w' ? "white" : "black";
     document.body.appendChild(el); // Append to body
@@ -32,7 +50,6 @@ function DraggablePiece({ turn, onStart, cellContent, row, col, chatFirst }) {
     e.dataTransfer.setData('application/json', JSON.stringify({ row, col }));
     // hilight cells
     onStart(cellContent);
-
     // Set a timeout to remove the element on the next event loop after drag has started
     setTimeout(() => {
       document.body.removeChild(el); // Remove the element from the body
@@ -44,7 +61,7 @@ function DraggablePiece({ turn, onStart, cellContent, row, col, chatFirst }) {
   }
 
   return (
-    <span draggable={team === turn} onDragStart={handleDragStart} onDragEnd={handleDragEnd} >{piece}</span>
+    <span draggable={(turn !== (chatFirst ? 'w' : 'b')) && (team === turn)} onDragStart={handleDragStart} onDragEnd={handleDragEnd} >{piece}</span>
   );
 }
 

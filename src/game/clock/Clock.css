@@ -11,15 +11,14 @@
 .digit-container.blinking {
   animation: blink .5s alternate infinite;
   box-sizing: border-box;
-  color: white;
 }
 
 @keyframes blink {
   from {
-    background: rgba(252,0,0,.35);
+    background: rgb(252, 235, 1);
   }
   to {
-    background: rgba(212,0,0,.7);
+    background: rgba(252,235,0,.5);
 
   }
 }

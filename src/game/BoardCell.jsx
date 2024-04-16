@@ -6,6 +6,7 @@ const ROWS = "ABCDEFGHIJK";
 const BoardCell = ({
   cell,
   cellColor,
+  from,
   i,
   index,
   isDestination,
@@ -14,12 +15,13 @@ const BoardCell = ({
   onDrop,
   onStart,
   pieceColor,
+  to,
   turn,
   chatFirst,
 }) => (
   <div 
-    className={`hex ${isDestination ? 'shiny-effect' : ''}`}
-    style={{ cursor: (movable) ? 'pointer': 'default' }}
+    className={`hex${isDestination ? ' shiny-effect' : ''}${from ? ' from':''}${to? ' to': ''}`}
+    style={{ cursor: (movable && pieceColor === (chatFirst ? 'black' : 'white')) ? 'pointer': 'default' }}
   >
     <div 
       className={`${cellColor}a ${isDestination ? 'shiny-font': 'regular-font'}`} 

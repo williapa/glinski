@@ -12,6 +12,42 @@
   overflow-x: hidden;
 }
 
+.floating {
+  position: absolute;
+  margin-left: 6px;
+  animation: floatAnimation .8s infinite linear;
+}
+
+.timeLabel {
+  position: relative;
+  background: black;
+  color: white;
+  border: 1px solid black;
+  border-radius: 9px;
+  padding: 3px;
+  padding-left: 6px;
+  font-size: 11px;
+  top: -4px;
+  margin-right: 4px;
+  transition: background-color .3s ease-in-out;
+}
+
+.timeLabel.user {
+  background: #8E44AD;
+}
+
+@keyframes floatAnimation {
+  0% {
+    transform: translateY(-4px);
+  }
+  50% {
+    transform: translateY(4px); /* Change this value to adjust the width of the screen you want the element to float across */
+  }
+  100% {
+    transform: translateY(-4px);
+  }
+}
+
 .moveLog {
   position: fixed;
   overflow-x: hidden;
@@ -29,9 +65,20 @@
 }
 
 .moveLog-item {
+  margin-top: 2px;
   margin-left: 12px;
   margin-right: 12px;
   text-align: left;
+  transition: background-color .3s ease-in-out;
+}
+
+.moveLog-item:hover {
+  background-color: rgb(244, 244, 76);
+}
+
+.moveLog-item:hover .timeLabel {
+  background-color: white;
+  color: black;
 }
 
 .moveLog-header {
@@ -47,6 +94,12 @@
 
 .logo {
   position: fixed;
+}
+
+.label {
+  box-shadow: 0px 1px 0px #8E44AD;
+  display: inline-block;
+  padding-bottom: 4px;
 }
 
 /* screen size specifics */
@@ -103,14 +156,19 @@
   .moveLog {
     left: 1370px;
     top: 10px;
+    bottom: 50px;
     font-size: 24px;
-    min-height: 80%;
+    max-height: 1164px;
     width: 322px;
   }
 
   .moveLog-list {
-    margin-top: 68px;
-    height: 93%;
+    position: fixed;
+    top: 80px;
+    left: 1370px;
+    bottom: 52px;
+    width: 322px;
+    max-height: 1090px;
   }
 
   .moveLog-header {
@@ -140,15 +198,23 @@
     font-size: 18px;
   }
 
+  .btn-group {
+    left: 1018px;
+    top: -30px;
+  }
+
   .popup.position {
     top: 194px;
     left: 686px;
   }
 
   .scale {
+    transform: scale(1.1);
+  }
+  
+  .scale.position {
     margin-top: 80px;
     margin-left: 8%;
-    transform: scale(1.1);
   }
 }
 
@@ -202,9 +268,9 @@
 
   .moveLog {
     right: 10px;
-    top: 1%;
+    top: 10px;
+    bottom: 50px;
     font-size: 24px;
-    height: 85%;
     max-height: 730px;
     width: 432px;
   }
@@ -223,8 +289,12 @@
   }
 
   .moveLog-list {
-    margin-top: 70px;
-    height: 88.65%;
+    position: fixed;
+    top: 74px;
+    right: 10px;
+    bottom: 52px;
+    width: 432px;
+    max-height: 666px;
   }
 
   form.configForm {
@@ -241,15 +311,23 @@
     font-size: 13.5px;
   }
 
+  .btn-group {
+    left: 688px;
+    top: -30px;
+  }
+
   .popup.position {
     top: 180px;
     left: 476px;
   }
 
   .scale {
+    transform: scale(.70);
+  }
+
+  .scale.position {
     margin-top: -160px;
     margin-left: -110px;
-    transform: scale(.70);
   }
 }
 
@@ -304,8 +382,8 @@
   .moveLog {
     right: 10px;
     top: 10px;
+    bottom: 51px;
     font-size: 20px;
-    height: 80%;
     max-height: 690px;
     width: 248px;
   }
@@ -324,8 +402,12 @@
   }
 
   .moveLog-list {
-    margin-top: 64px;
-    height: 84.8%;
+    position: fixed;
+    top: 70px;
+    right: 10px;
+    bottom: 52px;
+    width: 248px;
+    max-height: 630px;
   }
 
   .moveLog-item {
@@ -334,16 +416,21 @@
 
   form.configForm {
     position: absolute;
-    top: 624px;
+    top: 626px;
     left: 10px;
   }
 
-  form.configForm input {
+  form.configForm input .btn-group button{
     font-size: 10px;
   }
 
   form.configForm label {
     font-size: 14px;
+  }
+
+  .btn-group {
+    left: 638px;
+    top: -30px;
   }
 
   .popup.position {
@@ -352,13 +439,16 @@
   }
   
   .scale {
+    transform: scale(0.66);
+  }
+
+  .scale.position {
     margin-left: -160px;
     margin-top: -180px;
-    transform: scale(0.66);
   }
 }
 
-@media (max-width: 1100px) and (min-width: 840px) {
+@media (max-width: 1100px) and (min-width: 868px) {
   .label {
     font-size: 24px;
     max-width: 14%;
@@ -409,9 +499,9 @@
   .moveLog {
     right: 10px;
     top: 10px;
+    bottom: 51px;
     font-size: 20px;
-    height: 80%;
-    max-height: 510px;
+    max-height: 498px;
     width: 218px;
   }
 
@@ -430,26 +520,36 @@
   }
 
   .moveLog-list {
-    margin-top: 60px;
-    height: 86%;
+    position: fixed;
+    top: 62px;
+    right: 10px;
+    bottom: 52px;
+    width: 218px;
+    max-height: 440px;
   }
 
   .moveLog-item {
     font-size: 18px;
   }
 
-
   form.configForm {
     position: absolute;
-    top: 450px;
-    left: 16px;
+    top: 448px;
+    left: 8px;
   }
+
   form.configForm label {
     font-size: 8.4px;
   }
   
-  form.configForm input {
+  form.configForm input, .btn-group button {
     font-size: 7px;
+  }
+
+  .btn-group {
+    left: 464px;
+    top: -30px;
+    padding: 6.7px 10px;
   }
 
   .popup.position {
@@ -458,14 +558,17 @@
   }
 
   .scale {
+    transform: scale(0.48);
+  }
+
+  .scale.position {
     margin-left: -265px;
     margin-top: -270px;
-    transform: scale(0.48);
   }
 }
 
 /* below 840px the log is displayed below the board */
-@media (max-width: 840px) and (min-width:640px) {
+@media (max-width: 868px) and (min-width:640px) {
   .bodyScroll {
     overflow-y: auto;
   }
@@ -546,14 +649,20 @@
   }
 
   .moveLog-list {
-    margin-top: 50px;
-    height: 100px;
+    margin-top: 54px;
+    height: 102px;
   }
 
   form.configForm {
     position: absolute;
     top: 474px;
-    left: 200px;
+    left: 215px;
+  }
+
+  .btn-group {
+    left: -214px;
+    top: -38px;
+    padding: 6.7px 10px;
   }
 
   .popup.position {
@@ -562,9 +671,12 @@
   }
   
   .scale {
+    transform: scale(0.45);
+  }
+  
+  .scale.position {
     margin-left: -27%;
     margin-top: -285px;
-    transform: scale(0.45);
   }
 }
 
@@ -651,13 +763,13 @@
   }
 
   .moveLog-list {
-    margin-top: 50px;
-    height: 128px;
+    margin-top: 54px;
+    height: 122px;
   }
 
   form.configForm {
     position: absolute;
-    top: 424px;
+    top: 426px;
     left: 172px;
   }
 
@@ -665,8 +777,14 @@
     font-size: 14px;
   }
 
-  form.configForm input {
+  form.configForm input, .btn-group button {
     font-size: 10px;
+  }
+
+  .btn-group {
+    left: -172px;
+    top: -34px;
+    padding: 6.7px 10px;
   }
 
   .popup.position {
@@ -675,8 +793,11 @@
   }
   
   .scale {
+    transform: scale(0.4);
+  }
+  
+  .scale.position {
     margin-left: -35%;
     margin-top: -300px;
-    transform: scale(0.4);
   }
 }

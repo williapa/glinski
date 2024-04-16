@@ -4,12 +4,12 @@ import './Popup.css';
 
 function Popup({ isVisible, color, onCancel, onConfirm }) {
   const [selectedOption, setSelectedOption] = useState(`${color}Queen`);
-  const { row, col } = isVisible;
   const handleOptionClick = (option) => {
     setSelectedOption(option);
   };
 
   const handleConfirm = () => {
+    const { row, col } = isVisible.dest;
     onConfirm(selectedOption, row, col);
   };
 

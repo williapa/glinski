@@ -7,7 +7,6 @@ const calculateRemainingTime = (moves, gameConfig, player ) => {
   if (moves.length < 1 && player === 'w') {
     const currentTime = new Date().getTime();
     const usedMsThisTurn = (currentTime - startTime);
-    console.log(usedMsThisTurn);
     const remainingMs = allowedTime - usedMsThisTurn;
     const remainingSeconds = remainingMs / 1000;
     return remainingSeconds;

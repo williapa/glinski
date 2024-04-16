@@ -1,0 +1,23 @@
+button.newGame {
+  position: relative;
+  margin: 0 auto;
+  left: 6px;
+  top: -2px;
+  background-color: white; /* Green background */
+  border: 1px solid black; /* Green border */
+  color: black; /* White text */
+  padding: 1.5px 13.4px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+}
+
+button.volume {
+  position: relative;
+  margin: 0 auto;
+  left: 12px;
+  top: -2px;
+  background-color: white; /* Green background */
+  border: 1px solid black; /* Green border */
+  color: black; /* White text */
+  padding: 1.5px 13.4px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+}

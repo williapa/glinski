@@ -27,7 +27,7 @@ export default function hilightRookMoves(row, column, board) {
 
     directions.forEach((dir) => {
       let vector = getVector(row, column, dir);
-      for (let i = 1; i < 10; i++) {
+      for (let i = 0; i < 10; i++) {
         if (!vector) break; // is within board check
         const newRow = vector.row;
         const newCol = vector.col;

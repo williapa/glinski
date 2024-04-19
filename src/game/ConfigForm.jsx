@@ -14,7 +14,7 @@ const ConfigForm = forwardRef(({ clickDisabled, gameOver }, ref) => (
       step={1} 
     />
     <label htmlFor="votes"> votes: </label>
-    <input disabled={clickDisabled} 
+    <input disabled={clickDisabled && !gameOver} 
       id="votes"
       name="votes"
       type="number"

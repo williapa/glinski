@@ -10,6 +10,7 @@ const MoveLog = ({
   chatFirst,
   enPassantPawnPosition,
   gameOver,
+  initialVotes,
   moves,
   polling,
   useMuted,
@@ -18,7 +19,7 @@ const MoveLog = ({
   startTime,
 }) => {
   
-  const [votes, setVotes] = useState([]);
+  const [votes, setVotes] = useState(initialVotes);
   const [socket, setSocket] = useState(null);
 
   const addVote = (newVote) => {
@@ -49,7 +50,7 @@ const MoveLog = ({
       console.log('start log chat');
       const webSocket = logChat(addVote, board, () => setSocket(null), channel, enPassantPawnPosition);
       setSocket(webSocket);
-    } else if (socket && (chatTurn || polling)) {
+    } else if (socket && (!chatTurn || polling || gameOver)) {
       console.log('stop log chat');
       // close socket if not chat turn && still socket 
       socket.close();
@@ -57,10 +58,17 @@ const MoveLog = ({
     }
     // cleanup - close socket
     return () => {
-      if (socket) socket.close();
+      if (socket) {
+        socket.close();
+        setSocket(null);
+      }
     };
-  }, [board, channel, chatFirst, enPassantPawnPosition, gameOver, moves, polling /*, socket */]);
+  }, [board, channel, chatFirst, enPassantPawnPosition, gameOver, moves, polling, socket]);
 
+  useEffect(() => {
+    setVotes([...initialVotes]);
+  }, [initialVotes]);
+  
   const movesAndVotes = moves.concat(votes).sort((a, b) => b.time - a.time);
   
   return (

@@ -23,7 +23,7 @@ import AudioPlayer from "../audio/AudioPlayer";
 const cellColors = ['beige', 'peach', 'brown']; // these correspond to class names they are not the real colors im sorry
 const POLLING_INTERVAL = 10 * 1000;
 
-function GameLayout({ id }) {
+function GameLayout({ playerId, id }) {
   const formRef = useRef(null);
   const { clickDisabled, setClicksDisabled } = useDisableClicks();
   const [flash, setFlash] = useState({
@@ -36,6 +36,7 @@ function GameLayout({ id }) {
   const [turn, setTurn] = useState('w');
   const [board, setBoard] = useState(newBoard());
   const [moves, setMoves] = useState([]);
+  const [votes, setVotes] = useState([]);
   const [newMove, setNewMove] = useState({});
   const [hilightedCells, setHilightedCells] = useState({});
   const [enPassantPawnPosition, setEnPassantPawnPosition] = useState(false);
@@ -87,6 +88,7 @@ function GameLayout({ id }) {
     setChatFirst(result.chatFirst);
     setEnPassantPawnPosition(result.enPassantPawnPosition);
     setMoves(result.moves);
+    setVotes(result.votes);
     turnChanger(currentTurn);
     if (result.gameConfig) {
       setTurnMins(result.gameConfig.turnMins);
@@ -107,7 +109,7 @@ function GameLayout({ id }) {
   const resolveGameByClock = async (color) => {
     const postMoveResult = await fetch(`http://localhost:3000/${id}`, {
       method: 'POST',
-      body: JSON.stringify({ checkTimeForWinner: color })
+      body: JSON.stringify({ checkTimeForWinner: color, playerId })
     });
     if (postMoveResult.status !== 200) {
       // now you can click again if you'd like 
@@ -128,7 +130,7 @@ function GameLayout({ id }) {
     };
     // empty move = start game
     if (!move.piece && !move.startPosition && !move.endPosition) {
-      // todo: loading state
+      // todo: better loading state
       const userChoice = formRef.current.chatFirst.value;
       gameConfig.chatFirst = userChoice;
       setResults({ 
@@ -138,6 +140,7 @@ function GameLayout({ id }) {
         gameOver: false,
         enPassantPawnPosition: false,
         moves: [],
+        votes: [],
         gameConfig: {
           startTime: new Date().getTime(),
           turnMins: formRef.current.turnMin.value,
@@ -154,7 +157,7 @@ function GameLayout({ id }) {
     try {
       const postMoveResult = await fetch(`http://localhost:3000/${id}`, {
         method: 'POST',
-        body: JSON.stringify({ move, gameConfig })
+        body: JSON.stringify({ move, gameConfig, playerId })
       });
 
       if (postMoveResult.status !== 200) {
@@ -355,7 +358,7 @@ function GameLayout({ id }) {
       setPoll(null);
     }
 
-    if (!loading && data.gameConfig) {
+    if (!loading && data && data.gameConfig) {
       setResults(data);
       const blackRemainingTime = calculateRemainingTime(data.moves, data.gameConfig, 'b');
       const whiteRemainingTime = calculateRemainingTime(data.moves, data.gameConfig, 'w');
@@ -369,7 +372,7 @@ function GameLayout({ id }) {
     }
   }, [loading]);
   
-  if (loading) return <p>Loading...</p>;
+  if (loading && !data) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
   
   // row - index    column - i 
@@ -427,15 +430,16 @@ function GameLayout({ id }) {
         turnMins={turnMins}
       />
       <CapturedPieces capturedPieces={capturedPieces} />
-      <ConfigForm clickDisabled={clickDisabled}
+      <ConfigForm clickDisabled={chatFirst === (turn === 'w')}
         gameOver={gameOver}
         ref={formRef}
       />
       <MoveLog board={board}
-        channel={id} 
+        channel={id}
         chatFirst={chatFirst}
         enPassantPawnPosition={enPassantPawnPosition}
-        gameOver={gameOver} 
+        gameOver={gameOver}
+        initialVotes={votes}
         moves={moves}
         polling={poll}
         setFlash={setFlasher}

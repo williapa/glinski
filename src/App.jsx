@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useParams } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import GameLayout from './game/GameLayout';
 import { DisableClicksProvider } from './hooks/useDisableClicks';
 
@@ -15,6 +16,8 @@ const HomePage = () => {
 
 const IdPage = () => {
   const params = useParams();
+  // TODO: temp
+  const [playerId, setPlayerId] = useState('');
 
   const handleResize = () => {
     const sizes = [
@@ -35,11 +38,18 @@ const IdPage = () => {
   useEffect(() => {
     handleResize();
     window.addEventListener('resize', handleResize);
+    // TODO: this is temporary
+    let existingId = localStorage.getItem('playerId');
+    if (!existingId) {
+      existingId = uuidv4();
+      localStorage.setItem('playerId', existingId);
+    }
+    setPlayerId(existingId);
   }, []);
 
   return (
     <DisableClicksProvider>
-      <GameLayout id={params.id}/>
+      <GameLayout player={playerId} id={params.id}/>
     </DisableClicksProvider>
   );
 };

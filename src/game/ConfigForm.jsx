@@ -8,7 +8,7 @@ const ConfigForm = forwardRef(({ clickDisabled, gameOver }, ref) => (
       id="turnMin"
       name="turnMin"
       type="number"
-      min={1.}
+      min={1}
       max={10}
       defaultValue={5}
       step={1} 

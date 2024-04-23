@@ -185,6 +185,7 @@
   }
 
   form.configForm {
+    display: none; /* hide form */ 
     position: absolute;
     top: 1074px;
     left: 36px;

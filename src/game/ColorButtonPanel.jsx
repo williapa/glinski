@@ -11,6 +11,7 @@ const ColorButtonPanel = ({ gameOver }) => {
     e.preventDefault();
     setSelected(e.target.innerHTML);
   }
+  
   if (!gameOver) return '';
 
   return (

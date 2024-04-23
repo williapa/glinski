@@ -22,6 +22,7 @@ import AudioPlayer from "../audio/AudioPlayer";
 
 const cellColors = ['beige', 'peach', 'brown']; // these correspond to class names they are not the real colors im sorry
 const POLLING_INTERVAL = 10 * 1000;
+const SECRET = process.env.SECRET_CODE;
 
 function GameLayout({ playerId, id }) {
   const formRef = useRef(null);
@@ -48,6 +49,7 @@ function GameLayout({ playerId, id }) {
   const [startTime, setStartTime] = useState(null);
   const [switchNextGame, setSwitchNextGame] = useState(false);
   const [poll, setPoll] = useState(null);
+  const [opponent, setOpponent] = useState('');
   
   const gameChanger = useCallback((newVal) => {
     setGameOver((prev) => {
@@ -93,6 +95,7 @@ function GameLayout({ playerId, id }) {
     if (result.gameConfig) {
       setTurnMins(result.gameConfig.turnMins);
       setStartTime(result.gameConfig.startTime);
+      setOpponent(result.gameConfig.opponent);
       if (formRef.current) {
         formRef.current.turnMin.value = result.gameConfig.turnMins;
         formRef.current.votes.value = result.gameConfig.votes;
@@ -109,7 +112,7 @@ function GameLayout({ playerId, id }) {
   const resolveGameByClock = async (color) => {
     const postMoveResult = await fetch(`http://localhost:3000/${id}`, {
       method: 'POST',
-      body: JSON.stringify({ checkTimeForWinner: color, playerId })
+      body: JSON.stringify({ SECRET, checkTimeForWinner: color, playerId })
     });
     if (postMoveResult.status !== 200) {
       // now you can click again if you'd like 
@@ -145,6 +148,7 @@ function GameLayout({ playerId, id }) {
           startTime: new Date().getTime(),
           turnMins: formRef.current.turnMin.value,
           votes: formRef.current.votes.value,
+          opponent: move.username
         }
       });
 
@@ -157,7 +161,7 @@ function GameLayout({ playerId, id }) {
     try {
       const postMoveResult = await fetch(`http://localhost:3000/${id}`, {
         method: 'POST',
-        body: JSON.stringify({ move, gameConfig, playerId })
+        body: JSON.stringify({ SECRET, move, gameConfig, playerId })
       });
 
       if (postMoveResult.status !== 200) {
@@ -174,14 +178,11 @@ function GameLayout({ playerId, id }) {
     }
   };
 
-  const startGame = async (e) => {
+  const startGame = async (e, username = '') => {
     e.preventDefault();
-    let newChatFirst = chatFirst;
-    if (switchNextGame) {
-      newChatFirst = !chatFirst;
-    }
+    const newChatFirst = !switchNextGame ? chatFirst: !chatFirst;
     playSound('startGame');
-    await postMove({ newChatFirst });
+    await postMove({ newChatFirst, username });
   };
 
   const hilightCells = (row, column, piece) => {

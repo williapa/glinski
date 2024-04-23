@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import LogLabel from './labels/LogLabel';
+import letChatStartGame from '../util/letChatStartGame';
 import logChat from '../util/logChat';
 import pieceMap from '../util/pieceMap';
 import rowColToLetterCol from '../util/rowColToLetterCol';
@@ -21,6 +22,7 @@ const MoveLog = ({
   
   const [votes, setVotes] = useState(initialVotes);
   const [socket, setSocket] = useState(null);
+  const [startGameSocket, setStartGameSocket] = useState(null);
 
   const addVote = (newVote) => {
     const { startPosition, endPosition } = newVote;
@@ -41,6 +43,12 @@ const MoveLog = ({
     setVotes([]);
     startGame(args)
   }
+
+  const wrapSocketStartGame = (username) => {
+    setVotes([]);
+    startGame(new Event(), username);
+  }
+
   // use moves length as a trigger for the channel hook, kill it if 
   useEffect(() => {
     // use moves length to determine if chat turn
@@ -56,11 +64,24 @@ const MoveLog = ({
       socket.close();
       setSocket(null);
     }
+    if (gameOver && !startGameSocket) {
+      // setstartgamesocket and letchatstartgame
+      const s = letChatStartGame(wrapSocketStartGame, () => setStartGameSocket(null), channel);
+      setStartGameSocket(s);
+    } else if (!gameOver && startGameSocket) {
+      // kill it 
+      startGameSocket.close();
+      setStartGameSocket(null);
+    }
     // cleanup - close socket
     return () => {
       if (socket) {
         socket.close();
         setSocket(null);
+      }
+      if (startGameSocket) {
+        startGameSocket.close();
+        setStartGameSocket(null);
       }
     };
   }, [board, channel, chatFirst, enPassantPawnPosition, gameOver, moves, polling, socket]);
@@ -80,7 +101,7 @@ const MoveLog = ({
             <li key="f" className="moveLog-item">
               {
                 {'w': 'White', 'b': 'Black' }[gameOver] + ' wins!'
-              }
+              } Type "!play" to play. 
             </li>
           ) : ''
         }
@@ -91,7 +112,7 @@ const MoveLog = ({
             </li>
           ) : ''
         }
-        { polling? <li key="r" className="moveLog-item">Reconnected - there will be a delay until next move.</li> : ''}
+        { polling? <li key="r" className="moveLog-item">Reconnecting to chat...</li> : ''}
         {movesAndVotes.map((move, index) => (
           <li key={index} className="moveLog-item" onMouseEnter={() => hoverMove(move.startPosition, move.endPosition)}>
             { move.username ? 
@@ -112,7 +133,7 @@ const MoveLog = ({
         { startTime ? (
           <li className="moveLog-item">
             <span className="timeLabel">{new Date(startTime).toLocaleTimeString()} </span>
-            <span> Game started. </span>
+            <span> Game started. When it's your turn, type coordinates - ex: "B4 B5". </span>
           </li>): ''
         }
       </ul>

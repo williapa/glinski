@@ -46,7 +46,7 @@ const MoveLog = ({
 
   const wrapSocketStartGame = (username) => {
     setVotes([]);
-    startGame(new Event(), username);
+    startGame({ preventDefault: () => {} }, username);
   }
 
   // use moves length as a trigger for the channel hook, kill it if 
@@ -125,8 +125,8 @@ const MoveLog = ({
             }
             {move.promoted ? <span>Promotion to </span> : ''}
             <span>{pieceMap[move.piece]} </span>
-            from <span>{rowColToLetterCol(move.startPosition.row, move.startPosition.col)} </span>
-            to <span>{rowColToLetterCol(move.endPosition.row, move.endPosition.col)}</span>
+            <span>{rowColToLetterCol(move.startPosition.row, move.startPosition.col)} </span>
+            <span>{rowColToLetterCol(move.endPosition.row, move.endPosition.col)}</span>
             {move.removedPiece ? <span> taking {pieceMap[move.removedPiece]}</span> : ''}.
           </li>
         ))}

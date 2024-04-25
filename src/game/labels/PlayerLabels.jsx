@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import PlayerLabel from './PlayerLabel';
 
-const PlayerLabels = ({ chatFirst, id, gameOver, turn }) => {
+const PlayerLabels = ({ chatFirst, id, opponent, gameOver, turn }) => {
   const [ids, setIds] = useState({
-    'b': chatFirst ? id : 'chat',
-    'w': chatFirst ? 'chat': id
+    'b': chatFirst ? id : opponent,
+    'w': chatFirst ? opponent: id
   });
 
   useEffect(() => {
     setIds({
-      'b': chatFirst ? id : 'chat',
-      'w': chatFirst ? 'chat': id
+      'b': chatFirst ? id : opponent,
+      'w': chatFirst ? opponent: id
     });
-  }, [chatFirst, id ]);
+  }, [chatFirst, id, opponent ]);
   
   return (
     <>

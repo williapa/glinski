@@ -19,10 +19,11 @@ import { useDisableClicks } from '../hooks/useDisableClicks';
 import Ftr from "../footer/Ftr";
 import Clocks from "./clock/Clocks";
 import AudioPlayer from "../audio/AudioPlayer";
+import Worker from "../worker/worker.js";
 
 const cellColors = ['beige', 'peach', 'brown']; // these correspond to class names they are not the real colors im sorry
 const POLLING_INTERVAL = 10 * 1000;
-const SECRET = process.env.SECRET_CODE;
+const SECRET = '9904064c-048d-44a5-971a-1b8f7f83c540';
 
 function GameLayout({ playerId, id }) {
   const formRef = useRef(null);
@@ -50,6 +51,21 @@ function GameLayout({ playerId, id }) {
   const [switchNextGame, setSwitchNextGame] = useState(false);
   const [poll, setPoll] = useState(null);
   const [opponent, setOpponent] = useState('');
+
+  const aiMove = async () => {
+    const worker = new Worker();
+    // trigger async worker to come up with the best next move
+    const bestMove = await new Promise((resolve) => {
+      wrkr.addEventListener("message", (message) => {
+        // gives 2 best move
+        resolve(message.data);
+      });
+      wrkr.postMessage({ board, capturedPieces, chatFirst, enPassantPawnPosition });
+    });
+    console.log(bestMove);
+    // now post that bestmove you were promised, IF the clock aint run out yet 
+    // postMove(bestMove);
+  };
   
   const gameChanger = useCallback((newVal) => {
     setGameOver((prev) => {
@@ -78,6 +94,8 @@ function GameLayout({ playerId, id }) {
     setTurn((previousTurn) => {
       if (previousTurn !== newVal && !gameOver && newVal === (chatFirst ? 'b' : 'w')) {
         playSound('yourMove');
+        // trigger the async function which will post the move 
+        aiMove();
       }
       return newVal;
     });
@@ -136,6 +154,7 @@ function GameLayout({ playerId, id }) {
       // todo: better loading state
       const userChoice = formRef.current.chatFirst.value;
       gameConfig.chatFirst = userChoice;
+      gameConfig.opponent = move.username;
       setResults({ 
         board: newBoard(), 
         capturedPieces: { 'b': [], 'w': [] },
@@ -151,7 +170,7 @@ function GameLayout({ playerId, id }) {
           opponent: move.username
         }
       });
-
+      delete move.username;
     } else if (gameOver) {
       // if you're receving a move with a piece/position and the game is over, 
       // something is wrong on the ui end, but the move shouldn't be posted so return
@@ -364,7 +383,7 @@ function GameLayout({ playerId, id }) {
       const blackRemainingTime = calculateRemainingTime(data.moves, data.gameConfig, 'b');
       const whiteRemainingTime = calculateRemainingTime(data.moves, data.gameConfig, 'w');
       if (turn === (data.chatFirst ? 'w': 'b') && (chatFirst ? whiteRemainingTime : blackRemainingTime) < 0) {
-        resolveGameByClock(turn === 'b' ? 'w' : 'b');
+        if (!data.gameOver) resolveGameByClock(turn === 'b' ? 'w' : 'b');
         if (poll) {
           clearTimeout(poll);
           setPoll(null);
@@ -420,6 +439,7 @@ function GameLayout({ playerId, id }) {
       <PlayerLabels chatFirst={chatFirst}
         gameOver={gameOver}
         id={id}
+        opponent={opponent}
         turn={turn}
       />
       <Clocks chatFirst={chatFirst}

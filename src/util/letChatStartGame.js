@@ -36,8 +36,10 @@ const letChatStartGame = (startGame, cancel, channel) => {
 
   ws.onmessage = (event) => {
     const message = event.data;
-
-    if (message === 'PING :tmi.twitch.tv') {
+    console.log('hang on: we have a message!');
+    console.log(message);
+    // there's a new line at the end so i did it this way. go ahead, sue me! go ahead...
+    if (message.indexOf('PING :tmi.twitch.tv') > -1) {
       console.log('Received PING, sending PONG...');
       ws.send('PONG :tmi.twitch.tv'); // Responding with PONG to maintain the connection
     }
@@ -62,10 +64,13 @@ const letChatStartGame = (startGame, cancel, channel) => {
 
     // Filter for PRIVMSG which indicates a chat message
     if (parsedMessage.command === 'PRIVMSG') {
+      console.log('1');
       // get the message
       const text = parsedMessage.trailing.toUpperCase().trim();
+      console.log(text);
       // test to
-      if (/!play/.test(text)) {
+      if (/!play/.test(text.toLowerCase())) {
+        console.log('2');
         const username = parsedMessage.prefix.split('!')[0];
         // start game for user 
         startGame(username);

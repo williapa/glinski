@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 import ColorButtonPanel from './ColorButtonPanel';
 
 const ConfigForm = forwardRef(({ clickDisabled, gameOver }, ref) => (
-  <form className="configForm" ref={ref}>
+  <form style={{ display: 'none' }} className="configForm" ref={ref}>
     <label htmlFor="turnMin"> minutes: </label>
     <input disabled={!gameOver} 
       id="turnMin"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import LogLabel from './labels/LogLabel';
 import letChatStartGame from '../util/letChatStartGame';
 import logChat from '../util/logChat';
@@ -6,6 +6,7 @@ import pieceMap from '../util/pieceMap';
 import rowColToLetterCol from '../util/rowColToLetterCol';
 
 const MoveLog = ({
+  ai,
   board,
   channel,
   chatFirst,
@@ -15,6 +16,7 @@ const MoveLog = ({
   moves,
   polling,
   useMuted,
+  setColorChoice,
   setFlash,
   startGame,
   startTime,
@@ -23,6 +25,8 @@ const MoveLog = ({
   const [votes, setVotes] = useState(initialVotes);
   const [socket, setSocket] = useState(null);
   const [startGameSocket, setStartGameSocket] = useState(null);
+  const [startGameInterval, setStartGameInterval] = useState(null);
+  const topRef = useRef(null);
 
   const addVote = (newVote) => {
     const { startPosition, endPosition } = newVote;
@@ -37,6 +41,12 @@ const MoveLog = ({
   const hoverMove = (s, e) => {
     setFlash({ startPosition: s, endPosition: e });
   }
+
+  const scrollToTop = () => {
+    if (topRef.current) {
+      topRef.current.scrollTop = 0; // Scrolls to the top of the chat box
+    }
+  };
 
   // ugly, but done to clear votes from old game 
   const wrapStartGame = (args) => {
@@ -66,13 +76,17 @@ const MoveLog = ({
     }
     if (gameOver && !startGameSocket) {
       // setstartgamesocket and letchatstartgame
-      const s = letChatStartGame(wrapSocketStartGame, () => setStartGameSocket(null), channel);
+      const [i,s] = letChatStartGame(wrapSocketStartGame, () => setStartGameSocket(null), channel, setColorChoice);
       setStartGameSocket(s);
+      setStartGameInterval(i);
     } else if (!gameOver && startGameSocket) {
       // kill it 
       startGameSocket.close();
       setStartGameSocket(null);
-    }
+      // and the interval
+      clearInterval(startGameInterval);
+      setStartGameInterval(null);
+    } 
     // cleanup - close socket
     return () => {
       if (socket) {
@@ -82,6 +96,8 @@ const MoveLog = ({
       if (startGameSocket) {
         startGameSocket.close();
         setStartGameSocket(null);
+        clearInterval(startGameInterval);
+        setStartGameInterval(null);
       }
     };
   }, [board, channel, chatFirst, enPassantPawnPosition, gameOver, moves, polling, socket]);
@@ -89,19 +105,28 @@ const MoveLog = ({
   useEffect(() => {
     setVotes([...initialVotes]);
   }, [initialVotes]);
+
+  useEffect(() => scrollToTop(), [moves]);
   
   const movesAndVotes = moves.concat(votes).sort((a, b) => b.time - a.time);
   
   return (
     <div className="moveLog">
       <LogLabel useMuted={useMuted} startGame={wrapStartGame} gameOver={gameOver} turnCount={moves.length} />
-      <ul className="moveLog-list">
+      <ul ref={topRef} className="moveLog-list">
+      { (gameOver === 'b' || gameOver === 'w') ? 
+          (
+            <li key="bdf" className="moveLog-item">
+              Type "play" to play a new game.
+            </li>
+          ) : ''
+        }
         { (gameOver === 'b' || gameOver === 'w') ? 
           (
             <li key="f" className="moveLog-item">
               {
                 {'w': 'White', 'b': 'Black' }[gameOver] + ' wins!'
-              } Type "!play" to play. 
+              } 
             </li>
           ) : ''
         }
@@ -112,6 +137,7 @@ const MoveLog = ({
             </li>
           ) : ''
         }
+        <button style={{ display: 'none' }} onClick={ai}> refresh </button>
         { polling? <li key="r" className="moveLog-item">Reconnecting to chat...</li> : ''}
         {movesAndVotes.map((move, index) => (
           <li key={index} className="moveLog-item" onMouseEnter={() => hoverMove(move.startPosition, move.endPosition)}>
@@ -128,12 +154,15 @@ const MoveLog = ({
             <span>{rowColToLetterCol(move.startPosition.row, move.startPosition.col)} </span>
             <span>{rowColToLetterCol(move.endPosition.row, move.endPosition.col)}</span>
             {move.removedPiece ? <span> taking {pieceMap[move.removedPiece]}</span> : ''}.
+            { move.check ? <span> {move.piece.charAt(0) === 'b' ? 'white' : 'black' } king is in check. </span> : '' }
           </li>
         ))}
         { startTime ? (
           <li className="moveLog-item">
             <span className="timeLabel">{new Date(startTime).toLocaleTimeString()} </span>
-            <span> Game started. When it's your turn, type coordinates - ex: "B4 B5". </span>
+            <span> Game started. When it's your turn, type coordinates - "B4 B5". </span>
+            <span> Promoted pawns default to queens. Or, type the first letter of the piece after the coordinates. </span>
+            <span> Good luck! </span>
           </li>): ''
         }
       </ul>

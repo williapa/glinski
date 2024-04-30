@@ -1,5 +1,5 @@
 import parseIrcMessage from './parsedIrcMessage';
-import isFirstOrLast from './isFirstOrLast';
+import isValidPromotion from './isValidPromotion';
 import letterToNumber from './letterToNumber';
 import validateMove from "./validateMove";
 
@@ -89,7 +89,7 @@ const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition) => {
         if (text.split(' ').length > 2) {
           moveData.promoted = true;
           moveData.piece = piece.charAt(0) + { b: 'Bishop', k: 'Knight', q: 'Queen', r: 'Rook' }[text[2].toLowerCase()];
-        } else if (piece.length > 1 && piece.substring(1) === 'Pawn' && isFirstOrLast(board, endPosition.row, endPosition.col)) {
+        } else if (piece.length > 1 && piece.substring(1) === 'Pawn' && isValidPromotion(board, endPosition.row, endPosition.col)) {
           // case: promotion class not specified for a pawn. make it a queen
           moveData.promoted = true;
           moveData.piece = piece.charAt(0) + 'Queen';

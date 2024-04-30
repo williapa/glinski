@@ -9,7 +9,7 @@ let ws = null;
 // use web socket to connect to the twitch channel IRC chat
 // add moves from chat to the log 
 // disconnect when there's no time left
-const letChatStartGame = (startGame, cancel, channel) => {
+const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice) => {
 
   if (!channel) return;
 
@@ -36,7 +36,6 @@ const letChatStartGame = (startGame, cancel, channel) => {
 
   ws.onmessage = (event) => {
     const message = event.data;
-    console.log('hang on: we have a message!');
     console.log(message);
     // there's a new line at the end so i did it this way. go ahead, sue me! go ahead...
     if (message.indexOf('PING :tmi.twitch.tv') > -1) {
@@ -64,21 +63,53 @@ const letChatStartGame = (startGame, cancel, channel) => {
 
     // Filter for PRIVMSG which indicates a chat message
     if (parsedMessage.command === 'PRIVMSG') {
-      console.log('1');
       // get the message
-      const text = parsedMessage.trailing.toUpperCase().trim();
+      const text = parsedMessage.trailing.toLowerCase().trim();
       console.log(text);
       // test to
-      if (/!play/.test(text.toLowerCase())) {
-        console.log('2');
+      if (/!play/.test(text)) {
         const username = parsedMessage.prefix.split('!')[0];
         // start game for user 
         startGame(username);
+      } else if (text.startsWith('!random')) {
+        setColorChoice('random');
+      } else if (text.startsWith('!switch')) {
+        setColorChoice('switch');
+      } else if (text.startsWith('!stay')) {
+        setColorChoice('stay');
+      } else if (text.startsWith('!votes')) {
+        // split, if number isn't second part reject
+        // if number isn't less than 10 or greater than 0 reject
+        // set votes
+        const voteThreshold = parseInt(text.split(' ')[1].trim());
+        if(!isNaN(voteThreshold) && voteThreshold < 10 && voteThreshold > 0) {
+          // hack, no i do not care, react can't tell me how to use forms in the dom, go to hell.
+          document.querySelector(`form input[name='votes']`).value = voteThreshold;
+        }
+      } else if (text.startsWith('!minutes')) {
+        const mins = parseInt(text.split(' ')[1].trim());
+        if(!isNaN(mins) && mins < 16 && mins > 4) {
+          // hack, no i do not care, react can't tell me how to use forms in the dom, go to hell.
+          document.querySelector(`form input[name='turnMin']`).value = mins;
+        }
+      } else if (text.startsWith('!refresh')) {
+        window.location.reload();
+      } else {
+        console.log("no command executed.");
       }
     }
   };
 
   return ws;
+};
+
+const letChatStartGame = (startGame, cancel, channel, setColorChoice) => {
+  const intervalId = setInterval(() => {
+    console.log('interval firing');
+    internalLetChatStartGame(startGame, cancel, channel, setColorChoice);
+  }, 600000);
+  const socket = internalLetChatStartGame(startGame, cancel, channel, setColorChoice);
+  return [intervalId, socket];
 };
 
 export default letChatStartGame;

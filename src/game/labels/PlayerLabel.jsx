@@ -6,7 +6,7 @@ const winner = ' 🏆';
 
 // uses gameOver to store winner instead of true
 // chatFirst === are you second?
-const PlayerLabel = ({ turn, gameOver, ids, side }) => {
+const PlayerLabel = ({ check, turn, gameOver, ids, side }) => {
   // todo: these might need to be part of the class 
   const style = {
     position: "absolute",
@@ -24,9 +24,11 @@ const PlayerLabel = ({ turn, gameOver, ids, side }) => {
   if (!gameOver) {
     if ((turn === side)) {
       turnIcon = yourTurn;
+      if (check) {
+        className += ' check';
+      }
     }
   }
-
   return (
     <div
       className={className}
@@ -35,6 +37,7 @@ const PlayerLabel = ({ turn, gameOver, ids, side }) => {
       {ids[side]}
       <span style={{ fontSize: "76%" }}>
         {turnIcon}
+        {check && (turn === side) && (!gameOver) ? ' (check) ' : ''}
         { gameOver === side ? <span className="floating">{winner} </span> : '' }
       </span>
     </div>

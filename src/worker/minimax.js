@@ -1,16 +1,16 @@
-import evaluate from "./evaluate";
 import minimize from "./minimize";
 import maximize from "./maximize";
 
 // returns: [number, Move]
-const minimax = async (board, capturedPieces, chatFirst, depth, enPassantPawnPosition) => {
+const minimax = (board, capturedPieces, chatFirst, depth, enPassantPawnPosition) => {
   const alpha = -Infinity;
   const beta = Infinity;
+  const odd = depth % 2;
   // if board.turn === white
   if (!chatFirst) {
-    return maximize(board, capturedPieces, chatFirst, depth, enPassantPawnPosition);
+    return maximize(alpha, beta, board, capturedPieces, chatFirst, depth, enPassantPawnPosition, odd);
   } else {
-    return minimize(board, capturedPieces, chatFirst, depth, enPassantPawnPosition);
+    return minimize(alpha, beta, board, capturedPieces, chatFirst, depth, enPassantPawnPosition, odd);
   }
 }
 

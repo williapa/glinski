@@ -14,7 +14,7 @@ const LogLabel = ({ gameOver, useMuted, startGame, turnCount }) => {
     <div className="moveLog-header">
       <span className="log">log {turnCount ? <span className="count">({turnCount})</span>: ''}</span>
       {
-        <button className="volume" onClick={toggleMuted}>
+        <button style={{ display: 'none' }} className="volume" onClick={toggleMuted}>
           {muted ? '🔇': '🔊' }
         </button>
       }

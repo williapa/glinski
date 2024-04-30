@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ColorButtonPanel.css';
 
 const options = ['random', 'stay', 'switch']
 
-const ColorButtonPanel = ({ gameOver }) => {
+const ColorButtonPanel = ({ gameOver, initial }) => {
 
-  const [selected, setSelected] = useState(options[0]);
+  const [selected, setSelected] = useState(initial);
+
+  useEffect(() => {
+    setSelected(initial);
+  }, [initial]);
 
   const onClick = (e) => {
     e.preventDefault();
@@ -13,6 +17,8 @@ const ColorButtonPanel = ({ gameOver }) => {
   }
   
   if (!gameOver) return '';
+
+
 
   return (
     <div className="btn-group">

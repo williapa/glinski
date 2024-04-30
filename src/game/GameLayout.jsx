@@ -1,13 +1,13 @@
-import './GameBoard.css';
-import './GameLayout.css';
-import pieceColor from '../util/pieceColor';
+ 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import pieceColor from '../util/pieceColor';
 import Moves from '../moves';
-import isFirstOrLast from '../util/isFirstOrLast';
 import Popup from '../popup/Popup';
 import calculateRemainingTime from '../util/calculateRemainingTime';
+import check from '../util/check';
 import checkMate from '../util/checkMate';
 import filterMoves from '../util/filterMoves';
+import isValidPromotion from '../util/isValidPromotion';
 import newBoard from '../util/newBoard';
 import CapturedPieces from './CapturedPieces';
 import BoardCell from './BoardCell';
@@ -19,7 +19,8 @@ import { useDisableClicks } from '../hooks/useDisableClicks';
 import Ftr from "../footer/Ftr";
 import Clocks from "./clock/Clocks";
 import AudioPlayer from "../audio/AudioPlayer";
-import Worker from "../worker/worker.js";
+import './GameBoard.css';
+import './GameLayout.css';
 
 const cellColors = ['beige', 'peach', 'brown']; // these correspond to class names they are not the real colors im sorry
 const POLLING_INTERVAL = 10 * 1000;
@@ -27,13 +28,15 @@ const SECRET = '9904064c-048d-44a5-971a-1b8f7f83c540';
 
 function GameLayout({ playerId, id }) {
   const formRef = useRef(null);
-  const { clickDisabled, setClicksDisabled } = useDisableClicks();
+  const { setClicksDisabled } = useDisableClicks();
   const [flash, setFlash] = useState({
     startPosition: { row: -1, col: -1, },
     endPosition: { row: -1, col: -1, },
     keyCount: 0
   });
   const [chatFirst, setChatFirst] = useState(true);
+  const [colorChoice, setColorChoice] = useState('random');
+  const [inCheck, setCheck] = useState(false);
   const [promotion, setPromotion] = useState(false);
   const [turn, setTurn] = useState('w');
   const [board, setBoard] = useState(newBoard());
@@ -45,26 +48,54 @@ function GameLayout({ playerId, id }) {
   const [capturedPieces, setCapturedPieces] = useState({ b: [], w: [] });
   const [gameOver, setGameOver] = useState(true);
   const [turnMins, setTurnMins] = useState(5);
-  const useMuted = useState(true);
+  const useMuted = useState(false);
   const [sound, playSound] = useState(null);
   const [startTime, setStartTime] = useState(null);
   const [switchNextGame, setSwitchNextGame] = useState(false);
   const [poll, setPoll] = useState(null);
   const [opponent, setOpponent] = useState('');
+  const [block, setBlock] = useState(false);
 
   const aiMove = async () => {
-    const worker = new Worker();
-    // trigger async worker to come up with the best next move
-    const bestMove = await new Promise((resolve) => {
-      wrkr.addEventListener("message", (message) => {
-        // gives 2 best move
+    // todo: make a toggle that returns here, toggling ai
+    setBlock(true);
+    console.log(`start ai move`);
+    const startTime = new Date().getTime();
+    const aiWorker = new Worker(new URL('../worker/worker.js', import.meta.url), {
+      type: 'module'
+    });
+    const moduleLoadTime = new Date().getTime();
+    const [moveValue, coords] = await new Promise((resolve) => {
+      aiWorker.addEventListener("message", (message) => {
         resolve(message.data);
       });
-      wrkr.postMessage({ board, capturedPieces, chatFirst, enPassantPawnPosition });
+      aiWorker.onerror = (e) => {
+        console.error('Worker error:', e.message);
+      }; 
+      aiWorker.postMessage({ board, capturedPieces, chatFirst, enPassantPawnPosition });
     });
-    console.log(bestMove);
-    // now post that bestmove you were promised, IF the clock aint run out yet 
-    // postMove(bestMove);
+    const endTime = new Date().getTime();
+
+    console.log(`ai took ${moduleLoadTime - startTime} ms to load.`)
+    console.log(`ai took ${endTime - moduleLoadTime} ms to find this move:`)
+    console.log(`coords: ${coords.startPosition} to ${coords.endPosition}. valued at: ${moveValue}`);
+
+    if (!coords) {
+      console.warn("coords are missing - not dropping piece. its just gonna sit.");
+    } else {
+      // re-use build on drop. since there's no more need for that functionality (for streamer)
+      // you can just mangle it
+      // but keep in mind there's going to be need to split up to share with viewer who could drag drop to vote 
+      
+      const startPos = {
+        row: coords.startPosition.row,
+        col: coords.startPosition.column
+      }
+      buildOnDrop(coords.endPosition.row, coords.endPosition.col, true, coords.promotion)(startPos);
+    }
+    console.log('terminating...');
+    aiWorker.terminate();
+    setBlock(false);
   };
   
   const gameChanger = useCallback((newVal) => {
@@ -94,8 +125,6 @@ function GameLayout({ playerId, id }) {
     setTurn((previousTurn) => {
       if (previousTurn !== newVal && !gameOver && newVal === (chatFirst ? 'b' : 'w')) {
         playSound('yourMove');
-        // trigger the async function which will post the move 
-        aiMove();
       }
       return newVal;
     });
@@ -109,7 +138,6 @@ function GameLayout({ playerId, id }) {
     setEnPassantPawnPosition(result.enPassantPawnPosition);
     setMoves(result.moves);
     setVotes(result.votes);
-    turnChanger(currentTurn);
     if (result.gameConfig) {
       setTurnMins(result.gameConfig.turnMins);
       setStartTime(result.gameConfig.startTime);
@@ -121,7 +149,9 @@ function GameLayout({ playerId, id }) {
       setSwitchNextGame(!!result.gameConfig.switchNextGame);
       
     }
+    setCheck(result.check);
     gameChanger(result.gameOver);
+    turnChanger(currentTurn);
     // re - enable clicking 
     const urColor = (result.chatFirst) ? 'b' : 'w'; 
     setClicksDisabled(result.gameOver ? true : currentTurn !== urColor);
@@ -156,7 +186,8 @@ function GameLayout({ playerId, id }) {
       gameConfig.chatFirst = userChoice;
       gameConfig.opponent = move.username;
       setResults({ 
-        board: newBoard(), 
+        board: newBoard(),
+        check: false,
         capturedPieces: { 'b': [], 'w': [] },
         chatFirst: userChoice === 'random' ? move.newChatFirst : userChoice === 'switch' ? !chatFirst : chatFirst,
         gameOver: false,
@@ -235,10 +266,11 @@ function GameLayout({ playerId, id }) {
   }
   // the onDrop function needs to setBoard based on the piece for which the move is being received.
   // todo: clean this up, it's too long. worst case move it 
-  const buildOnDrop = (row, col) => {
+  const buildOnDrop = (row, col, streamer, promo) => {
     return (e) => {
-      e.preventDefault();
-      const startPosition = JSON.parse(e.dataTransfer.getData('application/json'));
+      if (!streamer) e.preventDefault();
+      // if streamer, e is just the start position right off the bat
+      const startPosition = streamer ? e : JSON.parse(e.dataTransfer.getData('application/json'));
       let removedPiece = board[row][col];
       let gameOver = false;
       if (enPassantPawnPosition) {
@@ -266,8 +298,8 @@ function GameLayout({ playerId, id }) {
         // the next move clears whatever position was being tracked.
         setEnPassantPawnPosition(false);
       }
-      // pawn upgrade logic 
-      if (isFirstOrLast(board, row, col) && board[startPosition.row][startPosition.col].substring(1) === 'Pawn') {
+      // pawn upgrade logic - DISABLED via "Streamer" option which is the ai flag 
+      if (!streamer && isValidPromotion(board, row, col) && board[startPosition.row][startPosition.col].substring(1) === 'Pawn') {
         setPromotion({ source: startPosition, dest: { row, col }});
         board[row][col] = board[startPosition.row][startPosition.col];
         board[startPosition.row][startPosition.col] = 0;
@@ -283,12 +315,13 @@ function GameLayout({ playerId, id }) {
           promoted: true
         });
       } else {
-        board[row][col] = board[startPosition.row][startPosition.col];
+        // for promotion (not using manual ui anymore that's all the stuff above)
+        const finalPiece = promo || board[startPosition.row][startPosition.col];
+        board[row][col] = finalPiece;
         board[startPosition.row][startPosition.col] = 0;
         setHilightedCells({});
         setBoard([...board]);
         const nextTurn = (turn === 'w' ? 'b' : 'w');
-        turnChanger(nextTurn);
         // check mate 
         const checkmate = checkMate(board, nextTurn, enPassantPawnPosition);
         if (checkmate && checkmate !== 'tie') {
@@ -299,7 +332,8 @@ function GameLayout({ playerId, id }) {
         // add move to move log
         const thisIsTheMove = {
           time: Date.now(),
-          piece: board[row][col],
+          piece: finalPiece,
+          promoted: !!promo,
           gameOver,
           removedPiece,
           endPosition: {
@@ -313,7 +347,11 @@ function GameLayout({ playerId, id }) {
           ...moves
         ]);
         setNewMove({});
+        turnChanger(nextTurn);
         postMove(thisIsTheMove);
+        if (check(board, nextTurn)) {
+          setCheck(true);
+        }
       }
     }
   }
@@ -323,7 +361,6 @@ function GameLayout({ playerId, id }) {
     setPromotion(false);
     board[row][column] = piece;
     setBoard([...board]);
-    turnChanger(newTurn);
     let gameOver = false;
     const checkmate = checkMate(board, newTurn, enPassantPawnPosition);
     // check mate
@@ -346,6 +383,7 @@ function GameLayout({ playerId, id }) {
       ...moves,
     ]);
     setNewMove({});
+    turnChanger(newTurn);
     playSound('putDownPromote');
     postMove(thisIsTheMove);
   };
@@ -362,6 +400,13 @@ function GameLayout({ playerId, id }) {
   }
 
   const { data, loading, error, fetchData } = useFetch(`http://localhost:3000/${id}`);
+
+  useEffect(() => {
+    if (!gameOver && !block && turn === (chatFirst ? 'b' : 'w')) {
+      console.log('effect for ai move is being triggered.');
+      setTimeout(aiMove, 1000);
+    }
+  }, [block, chatFirst, gameOver, turn])
 
   useEffect(() => {
     // re-fetch every 15 seonds if it's not your turn and game is not over (this is called once per page so it means you got disconnected
@@ -437,6 +482,7 @@ function GameLayout({ playerId, id }) {
       }) }
       </div>
       <PlayerLabels chatFirst={chatFirst}
+        check={inCheck}
         gameOver={gameOver}
         id={id}
         opponent={opponent}
@@ -452,10 +498,12 @@ function GameLayout({ playerId, id }) {
       />
       <CapturedPieces capturedPieces={capturedPieces} />
       <ConfigForm clickDisabled={chatFirst === (turn === 'w')}
+        colorChoice={colorChoice}
         gameOver={gameOver}
         ref={formRef}
       />
-      <MoveLog board={board}
+      <MoveLog ai={aiMove} 
+        board={board}
         channel={id}
         chatFirst={chatFirst}
         enPassantPawnPosition={enPassantPawnPosition}
@@ -463,6 +511,7 @@ function GameLayout({ playerId, id }) {
         initialVotes={votes}
         moves={moves}
         polling={poll}
+        setColorChoice={setColorChoice}
         setFlash={setFlasher}
         startGame={startGame}
         startTime={startTime}

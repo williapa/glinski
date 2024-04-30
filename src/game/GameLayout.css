@@ -1,4 +1,21 @@
 /* all game layout css related to responsive classes here */
+/* notes on rotated view:
+
+global:
+  Board:
+    add rotate(270deg) to scaled board
+    scale board down additional 10% 
+  Cell Label:
+    writing-mode: tb (or experiment to see what lets rotation apply)
+  Piece:
+    for the piece, apply transform: rotate(90deg) + writing-mode: tb 
+
+per breakpoint:
+  Board:
+    adjust top position
+    adjust position of clock & form Y(top) positions as well
+*/
+
 .capture {
   position: absolute;
 }
@@ -100,6 +117,10 @@
   box-shadow: 0px 1px 0px #8E44AD;
   display: inline-block;
   padding-bottom: 4px;
+}
+
+.label.check {
+  background-color: yellow;
 }
 
 /* screen size specifics */

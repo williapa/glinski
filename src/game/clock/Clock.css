@@ -15,10 +15,12 @@
 
 @keyframes blink {
   from {
-    background: rgb(252, 235, 1);
+    background: rgb(246, 0, 205, .81);
+    color: white;
   }
   to {
-    background: rgba(252,235,0,.5);
+    background: rgba(255, 0, 208, 0.27);
+    color: white;
 
   }
 }

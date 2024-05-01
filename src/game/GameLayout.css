@@ -37,7 +37,7 @@ per breakpoint:
 
 .timeLabel {
   position: relative;
-  background: black;
+  background: #6d6d6d;
   color: white;
   border: 1px solid black;
   border-radius: 9px;

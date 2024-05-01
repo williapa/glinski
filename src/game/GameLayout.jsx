@@ -47,7 +47,7 @@ function GameLayout({ playerId, id }) {
   const [enPassantPawnPosition, setEnPassantPawnPosition] = useState(false);
   const [capturedPieces, setCapturedPieces] = useState({ b: [], w: [] });
   const [gameOver, setGameOver] = useState(true);
-  const [turnMins, setTurnMins] = useState(5);
+  const [turnMins, setTurnMins] = useState(15);
   const useMuted = useState(false);
   const [sound, playSound] = useState(null);
   const [startTime, setStartTime] = useState(null);

@@ -3118,6 +3118,11 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001517, caniuse-lite@^1.0.30001520:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001538.tgz#9dbc6b9af1ff06b5eb12350c2012b3af56744f3f"
   integrity sha512-HWJnhnID+0YMtGlzcp3T9drmBJUVDchPJ08tpUGFLs9CYlwWPH2uLgpHn8fND5pCgXVtnGS3H4QR9XLMHVNkHw==
 
+canvas-confetti@^1.9.3:
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/canvas-confetti/-/canvas-confetti-1.9.3.tgz#ef4c857420ad8045ab4abe8547261c8cdf229845"
+  integrity sha512-rFfTURMvmVEX1gyXFgn5QMn81bYk70qa0HLzcIOSVEyl57n6o9ItHeBtUSWdvKAPY0xlvBHno4/v3QPrT83q9g==
+
 case-sensitive-paths-webpack-plugin@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-2.4.0.tgz#db64066c6422eed2e08cc14b986ca43796dbc6d4"
@@ -9607,13 +9612,6 @@ workbox-window@6.6.1:
   dependencies:
     "@types/trusted-types" "^2.0.2"
     workbox-core "6.6.1"
-
-workerize-loader@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/workerize-loader/-/workerize-loader-2.0.2.tgz#2f39c3e6eb6c41fac8d28d5b9fa20b4035e3db7a"
-  integrity sha512-HoZ6XY4sHWxA2w0WpzgBwUiR3dv1oo7bS+oCwIpb6n54MclQ/7KXdXsVIChTCygyuHtVuGBO1+i3HzTt699UJQ==
-  dependencies:
-    loader-utils "^2.0.0"
 
 wrap-ansi@^7.0.0:
   version "7.0.0"

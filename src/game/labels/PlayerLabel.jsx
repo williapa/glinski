@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import freddyKonfeddy from '../freddyKonfeddy';
 
 const em = "20px";
 const yourTurn = ' ⏳';
@@ -29,6 +30,10 @@ const PlayerLabel = ({ check, turn, gameOver, ids, side }) => {
       }
     }
   }
+
+  useEffect(() => {
+    freddyKonfeddy(gameOver);
+  }, [gameOver]);
   return (
     <div
       className={className}

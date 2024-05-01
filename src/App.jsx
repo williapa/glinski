@@ -10,8 +10,11 @@ const setYScroll = (bool) => {
 }
 
 const HomePage = () => {
-  return <>todo</>;
-  // todo: splash page + oauth flow (+ lambda?)
+  return <h1>glins.ki</h1>;
+  // todo: splash page - "enter streamer"
+  // video of how the game works
+  // or enter email
+  // something...it has to be PERFECT though
 };
 
 const IdPage = () => {

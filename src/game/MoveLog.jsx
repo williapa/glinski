@@ -116,20 +116,17 @@ const MoveLog = ({
       <ul ref={topRef} className="moveLog-list">
       { (gameOver === 'b' || gameOver === 'w') ? 
           (<>
-            <li key="bdf" className="moveLog-item">
-              Commands:
-            </li>
             <li key="bdg" className="moveLog-item">
-              <b>"!play"</b> - start a new game.
+              <b>!play</b> - start a new game.
             </li>
             <li key="bdh" className="moveLog-item">
-              <b>"!minutes 10"</b> - set the game length.
+              <b>!minutes 10</b> - set game length.
             </li>
             <li key="bdi" className="moveLog-item">
-              <b>"!votes 2"</b> - set the number of chatters who must agree on a move.
+              <b>!votes 2</b> - set number of chat votes required to apply next move.
             </li>
             <li key="bdj" className="moveLog-item">
-              <b>"!random"</b>, <b>"!stay"</b>, or <b>"!switch"</b> - change color.
+              <b>!random</b>, <b>!stay</b>, or <b>!switch</b> - choose a side.
             </li>
           </>
           ) : ''
@@ -179,10 +176,10 @@ const MoveLog = ({
               <span> Game started. </span>
             </li>
             <li className="moveLog-item">
-                <span> Type coordinates to vote - <b>"B4 B5"</b>. </span>
+                <span> Type coordinates to vote - <b>B4 B5</b>. </span>
             </li>
             <li className="moveLog-item">
-              Promoted pawns default to queens if no piece is specified - <b>"B1 B0 K"</b>.
+              Promoted pawns become queens, or choose piece by letter - <b>B1 B0 K</b>.
             </li>
           </>): ''
         }

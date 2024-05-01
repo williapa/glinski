@@ -6,6 +6,11 @@
   align-items: center;
   height: 80px;
   font-family: 'Courier New', Courier, monospace;
+  border: 4px solid black;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-radius: 8px;
+  background-color: #B398D6;
 }
 
 .digit-container.blinking {
@@ -30,26 +35,28 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 80px;  /* Adjust as needed */
-  height: 104px; /* Adjust as needed */
+  width: 68px;  /* Adjust as needed */
+  height: 84px; /* Adjust as needed */
   margin: 4px;  /* Adjust for spacing between digits */
   overflow: hidden;
+  border-radius: 8px;
 }
 
 .digit {
   position: absolute;
   top: 0;
   left: 0;
-  width: 72px;
-  height: 96px;
+  width: 51px;
+  height: 72px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2px;
+  padding: 4px;
   border: 2px solid black;
   border-radius: 5px;
   text-align: center;
   transition: transform 1s, opacity 1s;
+  background-color: white;
 }
 
 .colon {

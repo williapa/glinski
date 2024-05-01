@@ -72,7 +72,7 @@ div {
 
 /* piece size - the actual board and pieces scale on screen sizes so this is fixed */
 .hex .middle span {
-  font-size: 66px;
+  font-size: 69px;
   position: relative;
   top: -9px;
 }

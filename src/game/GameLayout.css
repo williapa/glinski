@@ -144,14 +144,14 @@ per breakpoint:
 
   .clock {
     position: absolute;
-    top: 155px;
+    top: 144px;
     transform: scale(.6);
   }
   .left.clock {
-    left: -30px;
+    left: 0px;
   }
   .right.clock {
-    left: 1035px;
+    left: 1044px;
   }
 
   .capture {
@@ -256,16 +256,16 @@ per breakpoint:
 
   .clock {
     position: absolute;
-    top: 142px;
+    top: 130px;
     transform: scale(.4);
   }
 
   .left.clock {
-    left: -82px;
+    left: -58px;
   }
 
   .right.clock {
-    left: 670px;
+    left: 684px;
   }
 
   .capture {
@@ -369,16 +369,16 @@ per breakpoint:
 
   .clock {
     position: absolute;
-    top: 132px;
+    top: 120px;
     transform: scale(.34);
   }
 
   .left.clock {
-    left: -106px;
+    left: -80px;
   }
   
   .right.clock {
-    left: 594px;
+    left: 608px;
   }
 
   .capture {
@@ -486,16 +486,16 @@ per breakpoint:
 
   .clock {
     position: absolute;
-    top: 90px;
+    top: 78px;
     transform: scale(.23);
   }
 
   .left.clock {
-    left: -126px;
+    left: -98px;
   }
   
   .right.clock {
-    left: 386px;
+    left: 408px;
   }
 
   .capture {
@@ -612,16 +612,16 @@ per breakpoint:
 
   .clock {
     position: absolute;
-    top: 83px;
+    top: 72px;
     transform: scale(.26);
   }
 
   .left.clock {
-    left: -128px;
+    left: -90px;
   }
   
   .right.clock {
-    left: 388px;
+    left: 408px;
   }
 
   .capture {
@@ -726,16 +726,16 @@ per breakpoint:
 
   .clock {
     position: absolute;
-    top: 81px;
+    top: 32px;
     transform: scale(.22);
   }
 
   .left.clock {
-    left: -135px;
+    left: -96px;
   }
   
   .right.clock {
-    left: 297px;
+    left: 292px;
   }
 
   .capture {

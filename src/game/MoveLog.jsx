@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import LogLabel from './labels/LogLabel';
 import letChatStartGame from '../util/letChatStartGame';
 import logChat from '../util/logChat';
-import pieceMap from '../util/pieceMap';
+import logPieceMap from '../util/logPieceMap';
 import rowColToLetterCol from '../util/rowColToLetterCol';
 
 const MoveLog = ({
@@ -12,6 +12,7 @@ const MoveLog = ({
   chatFirst,
   enPassantPawnPosition,
   gameOver,
+  hilighter,
   initialVotes,
   moves,
   polling,
@@ -66,7 +67,7 @@ const MoveLog = ({
     // open socket if chat turn & no socket 
     if (chatTurn && !socket && !polling) {
       console.log('start log chat');
-      const webSocket = logChat(addVote, board, () => setSocket(null), channel, enPassantPawnPosition);
+      const webSocket = logChat(addVote, board, () => setSocket(null), channel, enPassantPawnPosition, hilighter);
       setSocket(webSocket);
     } else if (socket && (!chatTurn || polling || gameOver)) {
       console.log('stop log chat');
@@ -162,10 +163,10 @@ const MoveLog = ({
               ) : <span className="timeLabel">{new Date(move.time).toLocaleTimeString()} </span>
             }
             {move.promoted ? <span>Promotion to </span> : ''}
-            <span>{pieceMap[move.piece]} </span>
+            <span>{logPieceMap[move.piece]} </span>
             <span>{rowColToLetterCol(move.startPosition.row, move.startPosition.col)} </span>
             <span>{rowColToLetterCol(move.endPosition.row, move.endPosition.col)}</span>
-            {move.removedPiece ? <span> taking {pieceMap[move.removedPiece]}</span> : ''}.
+            {move.removedPiece ? <span> taking {logPieceMap[move.removedPiece]}</span> : ''}.
             { move.check ? <span> {move.piece.charAt(0) === 'b' ? 'white' : 'black' } king is in check. </span> : '' }
           </li>
         ))}
@@ -176,10 +177,14 @@ const MoveLog = ({
               <span> Game started. </span>
             </li>
             <li className="moveLog-item">
-                <span> Type coordinates to vote - <b>B4 B5</b>. </span>
+                <span> <b>B4 B5</b> - Vote for move. </span>
+            </li>
+            
+            <li className="moveLog-item">
+                <span> <b>B4</b> - See moves for piece. </span>
             </li>
             <li className="moveLog-item">
-              Promoted pawns become queens, or choose piece by letter - <b>B1 B0 K</b>.
+               <b>B1 B0 K</b> - Pawns promote to queens, or choose a piece by letter.
             </li>
           </>): ''
         }

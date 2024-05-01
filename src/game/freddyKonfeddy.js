@@ -11,7 +11,7 @@ const freddyKonfeddy = (winner) => {
     const x = (winner === 'b') ? .1 : .5;
     confetti({
       particleCount: 150,
-      ticks: 300,
+      ticks: 500,
       origin: {
         x,
         y: .15

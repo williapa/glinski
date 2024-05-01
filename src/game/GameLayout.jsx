@@ -10,6 +10,7 @@ import filterMoves from '../util/filterMoves';
 import isValidPromotion from '../util/isValidPromotion';
 import newBoard from '../util/newBoard';
 import CapturedPieces from './CapturedPieces';
+import Animation from './Animation.jsx';
 import BoardCell from './BoardCell';
 import ConfigForm from './ConfigForm';
 import MoveLog from './MoveLog';
@@ -17,10 +18,12 @@ import PlayerLabels from './labels/PlayerLabels';
 import useFetch from "../hooks/useFetch";
 import { useDisableClicks } from '../hooks/useDisableClicks';
 import Ftr from "../footer/Ftr";
+import Borderline from "./Borderline.jsx";
 import Clocks from "./clock/Clocks";
 import AudioPlayer from "../audio/AudioPlayer";
 import './GameBoard.css';
 import './GameLayout.css';
+import rowColToLetterCol from '../util/rowColToLetterCol.js';
 
 const cellColors = ['beige', 'peach', 'brown']; // these correspond to class names they are not the real colors im sorry
 const POLLING_INTERVAL = 10 * 1000;
@@ -55,6 +58,7 @@ function GameLayout({ playerId, id }) {
   const [poll, setPoll] = useState(null);
   const [opponent, setOpponent] = useState('');
   const [block, setBlock] = useState(false);
+  const [aiMoveText, setAiMoveText] = useState(false);
 
   const aiMove = async () => {
     // todo: make a toggle that returns here, toggling ai
@@ -91,11 +95,31 @@ function GameLayout({ playerId, id }) {
         row: coords.startPosition.row,
         col: coords.startPosition.column
       }
-      buildOnDrop(coords.endPosition.row, coords.endPosition.col, true, coords.promotion)(startPos);
+      const peace = board[startPos.row][startPos.col];
+      const plainTextMove = `${rowColToLetterCol(startPos.row, startPos.col)} ${rowColToLetterCol(coords.endPosition.row, coords.endPosition.col)}${coords.promotion ? ' ' + coords.promotion.charAt(1) : ''}`
+      // typing animation taken care of within Animation component
+      setAiMoveText(plainTextMove);
+      // hilight cells after 300ms - enough time to see the first coordinate...somethin fucked up tho
+      setTimeout(() => {
+        hilightCells(coords.startPosition.row, coords.startPosition.column, peace);
+      }, 1000);
+      // trying to clean up before we go to bed
+      setTimeout(() => {
+        setHilightedCells({});
+      }, 3000);
+      setTimeout(() => {
+        setFlasher({
+          startPosition: startPos,
+          endPosition: coords.endPosition,
+        });
+        buildOnDrop(coords.endPosition.row, coords.endPosition.col, true, coords.promotion)(startPos);
+        setAiMoveText(false);
+        console.log('terminating...');
+        aiWorker.terminate();
+        setBlock(false);
+      }, 3600);
     }
-    console.log('terminating...');
-    aiWorker.terminate();
-    setBlock(false);
+
   };
   
   const gameChanger = useCallback((newVal) => {
@@ -244,6 +268,17 @@ function GameLayout({ playerId, id }) {
     setHilightedCells(nonCheckCausingMoves);
   }
 
+  const hilighter = (x,y) => {
+    if (!x) {
+      setHilightedCells({});
+    } else {
+      const piece = board[x][y];
+      if (piece) {
+        hilightCells(x,y,piece);
+      }
+    }
+  }
+
   // built so that you dont have to pass the board or the position or the setters into the piece
   const buildHilightCells = (x,y) => {
     return (piece) => {
@@ -272,6 +307,7 @@ function GameLayout({ playerId, id }) {
       // if streamer, e is just the start position right off the bat
       const startPosition = streamer ? e : JSON.parse(e.dataTransfer.getData('application/json'));
       let removedPiece = board[row][col];
+      if (gameOver) return; // avoiding race with clock and ai. i have seen it.
       let gameOver = false;
       if (enPassantPawnPosition) {
         // white direction is negative 1, so add negative 1 to the column and if this is the dest, remove the en passant pawn
@@ -497,6 +533,7 @@ function GameLayout({ playerId, id }) {
         turnMins={turnMins}
       />
       <CapturedPieces capturedPieces={capturedPieces} />
+      <Borderline />
       <ConfigForm clickDisabled={chatFirst === (turn === 'w')}
         colorChoice={colorChoice}
         gameOver={gameOver}
@@ -508,6 +545,7 @@ function GameLayout({ playerId, id }) {
         chatFirst={chatFirst}
         enPassantPawnPosition={enPassantPawnPosition}
         gameOver={gameOver}
+        hilighter={hilighter}
         initialVotes={votes}
         moves={moves}
         polling={poll}
@@ -517,6 +555,7 @@ function GameLayout({ playerId, id }) {
         startTime={startTime}
         useMuted={useMuted}
       />
+      <Animation move={aiMoveText} />
       <Popup 
         isVisible={promotion}
         color={turn}

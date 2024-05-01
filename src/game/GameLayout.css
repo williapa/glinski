@@ -72,6 +72,7 @@ per breakpoint:
   border-radius: 3px;
   text-align: left;
   background-color: #fffeed;
+  box-shadow: 0px 0px 2px 2px lightgrey, 0px 0px 0px 3px black;
 }
 
 .moveLog-list {
@@ -99,7 +100,8 @@ per breakpoint:
 }
 
 .moveLog-header {
-  background-color: yellow;
+  background-color: rgb(234,255,24, .81);
+  box-shadow: 0px 2px 0px 0px white, 0px 3px 0px 0px black;
   border-bottom: 1px solid black;
   position: fixed; 
   padding: 12px;
@@ -121,6 +123,10 @@ per breakpoint:
 
 .label.check {
   background-color: yellow;
+}
+
+svg.svg {
+  display: none;
 }
 
 /* screen size specifics */
@@ -265,7 +271,7 @@ per breakpoint:
   }
 
   .right.clock {
-    left: 684px;
+    left: 686px;
   }
 
   .capture {
@@ -341,6 +347,14 @@ per breakpoint:
   .popup.position {
     top: 180px;
     left: 476px;
+  }
+
+  svg.svg {
+    display: block;
+    position: absolute;
+    top: 653px;
+    left: 0;
+    z-index: 0;
   }
 
   .scale {

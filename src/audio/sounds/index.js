@@ -1,5 +1,6 @@
 
 import draw from "./draw.mp3";
+import mouseClick from "./mouse click.mp3";
 import pickUp from "./pick up.mp3";
 import putDownCancel from "./put down cancel.mp3";
 import putDownMove from "./put down move.mp3";
@@ -12,6 +13,7 @@ import yourMove from "./your move.mp3";
 
 const audio = {
   draw,
+  mouseClick,
   pickUp,
   putDownCancel,
   putDownMove,

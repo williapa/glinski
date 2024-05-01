@@ -7,7 +7,7 @@ const ConfigForm = forwardRef(({
   gameOver
 }, ref) => (
   <form style={{ /* display: 'none' */ }} className="configForm" ref={ref}>
-    <label htmlFor="turnMin"> minutes: </label>
+    <label htmlFor="turnMin"> !minutes </label>
     <input disabled={!gameOver} 
       id="turnMin"
       name="turnMin"
@@ -17,7 +17,7 @@ const ConfigForm = forwardRef(({
       defaultValue={15}
       step={1} 
     />
-    <label htmlFor="votes"> votes: </label>
+    <label htmlFor="votes"> !votes </label>
     <input disabled={clickDisabled && !gameOver}
       id="votes"
       name="votes"

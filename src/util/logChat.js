@@ -12,7 +12,7 @@ let ws = null;
 // use web socket to connect to the twitch channel IRC chat
 // add moves from chat to the log 
 // disconnect when there's no time left
-const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition) => {
+const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hilighter) => {
 
   if (!channel) return;
 
@@ -104,6 +104,14 @@ const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition) => {
         moveData.username = username;
         // add the move to be displayed in the log with the function
         addMessage(moveData);
+      } else if (/^[A-K](?:[0-9]|1[01])$/.test(text)) {
+        const moveToFlash = letterToNumber(text);
+        // flash move
+        hilighter(moveToFlash.row, moveToFlash.col);
+        setTimeout(() => hilighter(false, false), 3900);
+        // unflash it after a certain amount of time of course 
+      } else if (text.startsWith('!REFRESH')) {
+        window.location.reload();
       }
     }
   };

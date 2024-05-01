@@ -1,13 +1,13 @@
 import React from "react";
-import pieceMap from "../util/pieceMap";
+import logPieceMap from "../util/logPieceMap";
 
 const CapturedPieces = ({ capturedPieces }) => (
   <div className="captureContainer">
     <div className="left capture">
-      { capturedPieces.w.map((piece, i) => (<span key={i}> { pieceMap[piece] } </span>)) }
+      { capturedPieces.w.map((piece, i) => (<span key={i}> { logPieceMap[piece] } </span>)) }
     </div>
     <div className="right capture">
-      { capturedPieces.b.map((piece, i) => (<span key={i}> { pieceMap[piece] } </span>)) }
+      { capturedPieces.b.map((piece, i) => (<span key={i}> { logPieceMap[piece] } </span>)) }
     </div>
   </div>
 );

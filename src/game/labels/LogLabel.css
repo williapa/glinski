@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 button.newGame {
   position: relative;
   margin: 0 auto;
@@ -20,4 +22,9 @@ button.volume {
   color: black; /* White text */
   padding: 1.5px 13.4px; /* Some padding */
   cursor: pointer; /* Pointer/hand icon */
+}
+
+#findme {
+  font-size: 18px;
+  font-family: 'Press Start 2P', monospace;
 }

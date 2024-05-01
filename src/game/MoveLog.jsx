@@ -115,18 +115,33 @@ const MoveLog = ({
       <LogLabel useMuted={useMuted} startGame={wrapStartGame} gameOver={gameOver} turnCount={moves.length} />
       <ul ref={topRef} className="moveLog-list">
       { (gameOver === 'b' || gameOver === 'w') ? 
-          (
+          (<>
             <li key="bdf" className="moveLog-item">
-              Type "play" to play a new game.
+              Commands:
             </li>
+            <li key="bdg" className="moveLog-item">
+              <b>"!play"</b> - start a new game.
+            </li>
+            <li key="bdh" className="moveLog-item">
+              <b>"!minutes 10"</b> - set the game length.
+            </li>
+            <li key="bdi" className="moveLog-item">
+              <b>"!votes 2"</b> - set the number of chatters who must agree on a move.
+            </li>
+            <li key="bdj" className="moveLog-item">
+              <b>"!random"</b>, <b>"!stay"</b>, or <b>"!switch"</b> - change color.
+            </li>
+          </>
           ) : ''
         }
         { (gameOver === 'b' || gameOver === 'w') ? 
           (
             <li key="f" className="moveLog-item">
+              <i>
               {
                 {'w': 'White', 'b': 'Black' }[gameOver] + ' wins!'
-              } 
+              }
+              </i>
             </li>
           ) : ''
         }
@@ -158,12 +173,18 @@ const MoveLog = ({
           </li>
         ))}
         { startTime ? (
-          <li className="moveLog-item">
-            <span className="timeLabel">{new Date(startTime).toLocaleTimeString()} </span>
-            <span> Game started. When it's your turn, type coordinates - "B4 B5". </span>
-            <span> Promoted pawns default to queens. Or, type the first letter of the piece after the coordinates. </span>
-            <span> Good luck! </span>
-          </li>): ''
+          <>
+            <li className="moveLog-item">
+              <span className="timeLabel">{new Date(startTime).toLocaleTimeString()} </span>
+              <span> Game started. </span>
+            </li>
+            <li className="moveLog-item">
+                <span> Type coordinates to vote - <b>"B4 B5"</b>. </span>
+            </li>
+            <li className="moveLog-item">
+              Promoted pawns default to queens if no piece is specified - <b>"B1 B0 K"</b>.
+            </li>
+          </>): ''
         }
       </ul>
     </div>

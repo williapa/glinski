@@ -12,7 +12,7 @@ const LogLabel = ({ gameOver, useMuted, startGame, turnCount }) => {
   
   return (
     <div className="moveLog-header">
-      <span className="log">log {turnCount ? <span className="count">({turnCount})</span>: ''}</span>
+      <span className="log"><span id="findme">Glinsk.io</span>  {turnCount ? <span className="count">({turnCount})</span>: ''}</span>
       {
         <button style={{ display: 'none' }} className="volume" onClick={toggleMuted}>
           {muted ? '🔇': '🔊' }

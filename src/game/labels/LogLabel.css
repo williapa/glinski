@@ -27,7 +27,18 @@ button.volume {
 #findme {
   font-size: 18px;
   font-family: 'Press Start 2P', monospace;
-  color: rebeccapurple;
+  /* color: rebeccapurple; */
   position: absolute;
   top: 20px;
+  /* Set the gradient background */
+  background: linear-gradient(to bottom, mediumpurple, #8E44AD);
+
+  /* Clip the background to the text */
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  /* Make the text color transparent */
+  -webkit-text-fill-color: transparent;
+  color: transparent; /* Fallback: Some browsers do not support this feature */
+
 }

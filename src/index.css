@@ -2,7 +2,7 @@ body {
   font-family: 'Neue Montreal', sans-serif;
   font-size: 40px;
   text-align: center;
-  background: #efefef;
+  background: linear-gradient(to right, #9d9d9d 0%, #fffeed 1%, #efefef 46%, white 99%);
   margin: 0px;
 }
 

@@ -7,13 +7,13 @@ const Ftr = () => {
   return (
     <div className="footer">
       <span>
-        <span> Created by keyvalue & </span>
-        <span className="footer-link" style={{ marginLeft: em, marginRight: em }}>🔑  💸</span>
+        <span> Designed by keyvalue </span>
+        <span className="footer-link" style={{ marginLeft: em, marginRight: em }}>🔑</span>
         <a className="footer-link" href="https://twitter.com/keyvalue">
           <img style={{ width: '16px', position: 'relative', top: '4px' }} src={QueenBee} alt="Honeycomb chess mascot, Beatrice" />
         </a>
-        <span className="footer-link" style={{ marginLeft: em, marginRight: em }}>🔀  🥱</span>
-        <span> the shufflebored company </span>
+        <span className="footer-link" style={{ marginLeft: em, marginRight: em }}>💸</span>
+        <span> in Henderson, Nevada </span>
       </span>
     </div>
   )

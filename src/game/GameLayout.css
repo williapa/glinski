@@ -116,12 +116,23 @@ per breakpoint:
 }
 
 .label {
-  box-shadow: 0px 1px 0px #8E44AD;
+  box-shadow: 0px 0px 0px 1px rebeccapurple, 0px 0px 0px 3px lightgrey, 0px 0px 0px 4px rebeccapurple;
+  border-radius: 2px;
   display: inline-block;
-  padding-bottom: 4px;
+  padding: 6px 30px;
 }
 
-.label.check {
+.label.left {
+  background: rgb(5,5,5,.85);
+  color: white;
+}
+
+.label.right {
+  background: white;
+  color: black;
+}
+
+.label.left.check, .label.right.check {
   background-color: yellow;
 }
 
@@ -141,7 +152,7 @@ svg.svg {
   }
   
   .label.left {
-    left: 0px;
+    /*left: 0px;*/
   }
 
   .label.right {
@@ -248,12 +259,15 @@ svg.svg {
 
 @media (max-width: 1700px) and (min-width: 1400px) {
   .label {
-    font-size: 68%;
-    max-width: 13%;
+    font-size: 48%;
+    min-width: 120px;
+    max-width: 120px;
+    min-height: 100px;
+    max-height: 100px;
   }
 
   .label.right {
-    left: 730px;
+    left: 758px;
   }
 
   .label.left {
@@ -262,16 +276,16 @@ svg.svg {
 
   .clock {
     position: absolute;
-    top: 130px;
+    top: 50px;
     transform: scale(.4);
   }
 
   .left.clock {
-    left: -58px;
+    left: -54px;
   }
 
   .right.clock {
-    left: 686px;
+    left: 682px;
   }
 
   .capture {
@@ -327,8 +341,13 @@ svg.svg {
 
   form.configForm {
     position: absolute;
-    top: 665px;
-    left: 20px;
+    top: 681px;
+    left: 42px;
+  }
+
+  form.configForm label, form.configForm input {
+    top: -17px;
+    position: relative;
   }
 
   form.configForm label {
@@ -340,8 +359,8 @@ svg.svg {
   }
 
   .btn-group {
-    left: 688px;
-    top: -30px;
+    left: 666px;
+    top: -47px;
   }
 
   .popup.position {

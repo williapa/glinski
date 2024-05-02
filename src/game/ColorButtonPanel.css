@@ -4,7 +4,7 @@
 
 .btn-group button {
   border: 1px solid black; /* Green border */
-  padding: 6.7px 13.4px; /* Some padding */
+  padding: 7px 13.3px; /* Some padding */
   cursor: pointer; /* Pointer/hand icon */
   float: left; /* Float the buttons side by side */
   background-color: white;
@@ -26,6 +26,6 @@
 /* Add a background color on hover */
 .btn-group button:hover, .btn-group button.selected {
   background-position: -100% 0;
-  background-color: black;
+  background-color: rgb(5, 5, 5, .85);
   color: white; /* Change font color on hover for better visibility */
 }

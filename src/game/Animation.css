@@ -1,7 +1,7 @@
 .animation input {
   position: absolute;
   bottom: 0px;
-  left: 1176px;
+  right: 116px;
   height: 0;
   width: 320px;
   padding: 3px;
@@ -13,7 +13,7 @@
   color: white;
   position: fixed;
   bottom: 0px;
-  left: 1510px;
+  right: 10px;
   height: 0;
   width: 102px;
   border: none;

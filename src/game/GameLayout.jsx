@@ -99,6 +99,7 @@ function GameLayout({ playerId, id }) {
       const plainTextMove = `${rowColToLetterCol(startPos.row, startPos.col)} ${rowColToLetterCol(coords.endPosition.row, coords.endPosition.col)}${coords.promotion ? ' ' + coords.promotion.charAt(1) : ''}`
       // typing animation taken care of within Animation component
       setAiMoveText(plainTextMove);
+      playSound('mouseClick');
       // hilight cells after 300ms - enough time to see the first coordinate...somethin fucked up tho
       setTimeout(() => {
         hilightCells(coords.startPosition.row, coords.startPosition.column, peace);
@@ -307,8 +308,8 @@ function GameLayout({ playerId, id }) {
       // if streamer, e is just the start position right off the bat
       const startPosition = streamer ? e : JSON.parse(e.dataTransfer.getData('application/json'));
       let removedPiece = board[row][col];
-      if (gameOver) return; // avoiding race with clock and ai. i have seen it.
-      let gameOver = false;
+      if (gameOver) return; // avoiding race with clock and ai. i have seen it. it breaks stuff.
+      let isGameOver = false;
       if (enPassantPawnPosition) {
         // white direction is negative 1, so add negative 1 to the column and if this is the dest, remove the en passant pawn
         // black direction is positive 1, so add 1 to the column and if it is the dest, remove the en passant pawn. 
@@ -361,16 +362,16 @@ function GameLayout({ playerId, id }) {
         // check mate 
         const checkmate = checkMate(board, nextTurn, enPassantPawnPosition);
         if (checkmate && checkmate !== 'tie') {
-          gameOver = turn;
+          isGameOver = turn;
         } else if (checkmate === 'tie') {
-          gameOver = checkmate;
+          isGameOver = checkmate;
         }
         // add move to move log
         const thisIsTheMove = {
           time: Date.now(),
           piece: finalPiece,
           promoted: !!promo,
-          gameOver,
+          gameOver: isGameOver,
           removedPiece,
           endPosition: {
             row,
@@ -440,7 +441,8 @@ function GameLayout({ playerId, id }) {
   useEffect(() => {
     if (!gameOver && !block && turn === (chatFirst ? 'b' : 'w')) {
       console.log('effect for ai move is being triggered.');
-      setTimeout(aiMove, 1000);
+      //setTimeout(aiMove, 1000);
+      aiMove();
     }
   }, [block, chatFirst, gameOver, turn])
 

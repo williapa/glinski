@@ -11,7 +11,7 @@ const PlayerLabel = ({ check, turn, gameOver, ids, side }) => {
   // todo: these might need to be part of the class 
   const style = {
     position: "absolute",
-    top: 21,
+    top: 20,
     wordBreak: "break-word",
   };
   let className = '';

@@ -108,6 +108,21 @@ const MoveLog = ({
   }, [initialVotes]);
 
   useEffect(() => scrollToTop(), [moves]);
+
+  const howToPlay = (
+    <>
+      <li className="moveLog-item">
+          <span> <b>B4</b> - See piece moves.</span>
+      </li>
+      <li className="moveLog-item">
+          <span> <b>B4 B5</b> - Vote for move. </span>
+      </li>
+    
+      <li className="moveLog-item">
+         <b>B1 B0 K</b> - Pawn promotes to queen by default, or choose a piece by letter.
+      </li>
+    </>
+  );
   
   const movesAndVotes = moves.concat(votes).sort((a, b) => b.time - a.time);
   
@@ -130,7 +145,7 @@ const MoveLog = ({
               <b>!random</b>, <b>!stay</b>, or <b>!switch</b> - choose a side.
             </li>
           </>
-          ) : ''
+          ) : howToPlay 
         }
         { (gameOver === 'b' || gameOver === 'w') ? 
           (
@@ -170,24 +185,13 @@ const MoveLog = ({
             { move.check ? <span> {move.piece.charAt(0) === 'b' ? 'white' : 'black' } king is in check. </span> : '' }
           </li>
         ))}
-        { startTime ? (
-          <>
-            <li className="moveLog-item">
-              <span className="timeLabel">{new Date(startTime).toLocaleTimeString()} </span>
-              <span> Game started. </span>
-            </li>
-            <li className="moveLog-item">
-                <span> <b>B4 B5</b> - Vote for move. </span>
-            </li>
-            
-            <li className="moveLog-item">
-                <span> <b>B4</b> - See moves for piece. </span>
-            </li>
-            <li className="moveLog-item">
-               <b>B1 B0 K</b> - Pawns promote to queens, or choose a piece by letter.
-            </li>
-          </>): ''
-        }
+        { startTime  ? (
+          <li className="moveLog-item">
+            <span className="timeLabel">{new Date(startTime).toLocaleTimeString()} </span>
+            <span> Game started. </span>
+          </li>
+        ) : '' }
+      
       </ul>
     </div>
   );

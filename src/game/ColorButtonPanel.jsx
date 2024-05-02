@@ -13,12 +13,10 @@ const ColorButtonPanel = ({ gameOver, initial }) => {
 
   const onClick = (e) => {
     e.preventDefault();
-    setSelected(e.target.innerHTML);
+    setSelected(e.target.innerHTML.substring(1));
   }
   
-  if (!gameOver) return '';
-
-
+  // if (!gameOver) return '';
 
   return (
     <div className="btn-group">

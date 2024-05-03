@@ -16,6 +16,8 @@ const Animation = ({ move }) => {
       setIntervalId(null);
       setSub(false);
     }
+    // what is the point of life
+    return () => clearInterval(intervalId);
   }, [move]);
 
   return (

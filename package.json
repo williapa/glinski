@@ -16,7 +16,7 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "export PORT=3003 && react-scripts start",
+    "start": "export PORT=3003 REACT_APP_API_STAGE=local && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

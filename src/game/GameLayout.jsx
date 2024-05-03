@@ -21,15 +21,17 @@ import Ftr from "../footer/Ftr";
 import Borderline from "./Borderline.jsx";
 import Clocks from "./clock/Clocks";
 import AudioPlayer from "../audio/AudioPlayer";
+import api from '../api.js';
 import './GameBoard.css';
 import './GameLayout.css';
 import rowColToLetterCol from '../util/rowColToLetterCol.js';
 
 const cellColors = ['beige', 'peach', 'brown']; // these correspond to class names they are not the real colors im sorry
 const POLLING_INTERVAL = 10 * 1000;
-const SECRET = '9904064c-048d-44a5-971a-1b8f7f83c540';
+const version = process.env.REACT_APP_VERSION || '18';
 
 function GameLayout({ playerId, id }) {
+  const API = api();
   const formRef = useRef(null);
   const { setClicksDisabled } = useDisableClicks();
   const [flash, setFlash] = useState({
@@ -63,12 +65,11 @@ function GameLayout({ playerId, id }) {
   const aiMove = async () => {
     // todo: make a toggle that returns here, toggling ai
     setBlock(true);
-    console.log(`start ai move`);
+    console.log('start ai move worker...');
     const startTime = new Date().getTime();
     const aiWorker = new Worker(new URL('../worker/worker.js', import.meta.url), {
       type: 'module'
     });
-    const moduleLoadTime = new Date().getTime();
     const [moveValue, coords] = await new Promise((resolve) => {
       aiWorker.addEventListener("message", (message) => {
         resolve(message.data);
@@ -79,10 +80,8 @@ function GameLayout({ playerId, id }) {
       aiWorker.postMessage({ board, capturedPieces, chatFirst, enPassantPawnPosition });
     });
     const endTime = new Date().getTime();
-
-    console.log(`ai took ${moduleLoadTime - startTime} ms to load.`)
-    console.log(`ai took ${endTime - moduleLoadTime} ms to find this move:`)
-    console.log(`coords: ${coords.startPosition} to ${coords.endPosition}. valued at: ${moveValue}`);
+    console.log(`ai took ${endTime - startTime} ms to find this move:`); // includes module load
+    console.log(`coords: ${JSON.stringify(coords.startPosition)} to ${JSON.stringify(coords.endPosition)}. valued at: ${moveValue}`);
 
     if (!coords) {
       console.warn("coords are missing - not dropping piece. its just gonna sit.");
@@ -183,9 +182,9 @@ function GameLayout({ playerId, id }) {
   };
 
   const resolveGameByClock = async (color) => {
-    const postMoveResult = await fetch(`http://localhost:3000/${id}`, {
+    const postMoveResult = await fetch(`${API}${id}`, {
       method: 'POST',
-      body: JSON.stringify({ SECRET, checkTimeForWinner: color, playerId })
+      body: JSON.stringify({ checkTimeForWinner: color, playerId, version })
     });
     if (postMoveResult.status !== 200) {
       // now you can click again if you'd like 
@@ -230,18 +229,18 @@ function GameLayout({ playerId, id }) {
     } else if (gameOver) {
       // if you're receving a move with a piece/position and the game is over, 
       // something is wrong on the ui end, but the move shouldn't be posted so return
-      console.error('something is wrong on the front end');
+      console.error('something is wrong on the front end - you are trying to move, but the game is over.');
       return;
     }
     try {
-      const postMoveResult = await fetch(`http://localhost:3000/${id}`, {
+      const postMoveResult = await fetch(`${API}${id}`, {
         method: 'POST',
-        body: JSON.stringify({ SECRET, move, gameConfig, playerId })
+        body: JSON.stringify({ move, gameConfig, playerId, version })
       });
 
       if (postMoveResult.status !== 200) {
         // now you can click again if you'd like 
-        window.alert('something went wrong posting your move. please reload.');
+        window.location.reload();
       } else {
         const result = await postMoveResult.json();
         // todo: this will take a long time, but contain chat's move as the response 
@@ -436,12 +435,10 @@ function GameLayout({ playerId, id }) {
     setBoard([...board]);
   }
 
-  const { data, loading, error, fetchData } = useFetch(`http://localhost:3000/${id}`);
+  const { data, loading, error, fetchData } = useFetch(`${API}${id}`);
 
   useEffect(() => {
     if (!gameOver && !block && turn === (chatFirst ? 'b' : 'w')) {
-      console.log('effect for ai move is being triggered.');
-      //setTimeout(aiMove, 1000);
       aiMove();
     }
   }, [block, chatFirst, gameOver, turn])
@@ -487,7 +484,7 @@ function GameLayout({ playerId, id }) {
         return (
           <div key={`row${index}`} className='hex-row' style={{ marginLeft: Math.abs(index - 5) * 53 }}>
             { row.map((cell, i) => {
-              // todo: marking this as important for when implementing client version 
+              // todo: marking this as important for when implementing chatter client
               const movable = cell && cell.charAt(0) === turn;
               const rowColorOffset = index % 3;
               let cellColor = cellColors[(i + rowColorOffset) % 3];

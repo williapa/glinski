@@ -10,8 +10,6 @@ export default function filterMoves(moves, realBoard, pieceData) {
     columns.forEach((col) => {
       if (!checkMove({ row, col }, board, pieceData)) {
         nonCheckCausingMoves[row].push(col);
-      } else {
-        // console.log("found a move that would cause my team to be in check");
       }
     });
   });

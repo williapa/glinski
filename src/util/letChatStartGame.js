@@ -21,7 +21,7 @@ const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice) =>
 
   ws.onerror = () => {
     console.info("you failed to connect to the web socket.");
-    cancel();
+    cancel(true);
   }
 
   ws.onopen = () => {

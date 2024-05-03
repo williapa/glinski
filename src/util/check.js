@@ -14,13 +14,10 @@ export default function check(realBoard, color) {
         const pieceType = piece.substr(1);
         let moves = Movements[pieceType](r,c,board);
         const moveKeys = Object.keys(moves);
-        // console.log(moves);
         for (let i = 0; i < moveKeys.length; i++) {
-          //console.log("i: ", moveKeys[i]);
           for (let j = 0; j < moves[i].length; j++) {
             let o = moveKeys[i];
             let k = moves[o][j];
-            //console.log("k: ", k);
             if (board[o][k] && board[o][k] === `${color}King`) return true;
           }
         }

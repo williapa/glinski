@@ -1,6 +1,14 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 
-const useFetch = (url, options = {}) => {
+const useFetch = (
+  url,
+  options = { 
+    method: "GET",
+    headers: { 
+      "Content-Type": "application/json"
+    }
+  }
+) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

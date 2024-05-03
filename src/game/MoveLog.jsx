@@ -39,6 +39,23 @@ const MoveLog = ({
     ]));
   };
 
+  const cancel = (reset) => {
+    setSocket(null);
+    if (reset) {
+      console.log('the socket was cancelled due to an error. retrying (with delay)');
+      setTimeout(() => {
+        kickOff();
+      }, 10000);
+      
+    }
+  }
+
+  const kickOff = () => {
+    const [i,s] = letChatStartGame(wrapSocketStartGame, cancel, channel, setColorChoice);
+    setStartGameSocket(s);
+    setStartGameInterval(i);
+  }
+
   const hoverMove = (s, e) => {
     setFlash({ startPosition: s, endPosition: e });
   }
@@ -112,10 +129,10 @@ const MoveLog = ({
   const howToPlay = (
     <>
       <li className="moveLog-item">
-          <span> <b>B4</b> - See piece moves.</span>
+          <span> <b>F10</b> - See piece moves.</span>
       </li>
       <li className="moveLog-item">
-          <span> <b>B4 B5</b> - Vote for move. </span>
+          <span> <b>G0 K4</b> - Vote for move. </span>
       </li>
     
       <li className="moveLog-item">

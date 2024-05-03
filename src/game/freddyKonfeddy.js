@@ -4,10 +4,9 @@ import confetti from 'canvas-confetti';
 // take it off when the game restarts
 // this is so cool
 // winner: b, w, or anything else if we don't know / game isn't over
-// todo: command to set emoji LOL 
+// todo: command to set emoji KEKW 
 const freddyKonfeddy = (winner) => {
   if (winner === 'b' || winner === 'w') {
-    console.log('confetti!');
     const x = (winner === 'b') ? .1 : .5;
     confetti({
       particleCount: 150,
@@ -18,7 +17,6 @@ const freddyKonfeddy = (winner) => {
       }
     }); 
   } else {
-    console.log('reset');
     confetti.reset();
   } 
 }

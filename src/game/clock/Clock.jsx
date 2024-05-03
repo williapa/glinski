@@ -4,7 +4,6 @@ import './Clock.css'; // Ensure this imports your CSS file
 function Clock({ side, time }) {
 
   const formatTimeUnit = (unit) => {
-    // console.log(unit);
     return unit < 10 ? `0${unit}` : unit.toString();
   };
 

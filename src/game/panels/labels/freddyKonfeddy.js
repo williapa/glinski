@@ -7,7 +7,10 @@ import confetti from 'canvas-confetti';
 // todo: command to set emoji KEKW 
 const freddyKonfeddy = (winner) => {
   if (winner === 'b' || winner === 'w') {
-    const x = (winner === 'b') ? .1 : .5;
+    const black = (winner === 'b');
+    const x = document.querySelector(
+      `.label.${black ? 'left': 'right'}`
+    ).getBoundingClientRect()[black ? 'right' : 'left']/ window.innerWidth;
     confetti({
       particleCount: 150,
       ticks: 500,

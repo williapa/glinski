@@ -1,5 +1,5 @@
 import React from "react";
-import logPieceMap from "../util/logPieceMap";
+import logPieceMap from "../../util/logPieceMap";
 
 const CapturedPieces = ({ capturedPieces }) => (
   <div className="captureContainer">

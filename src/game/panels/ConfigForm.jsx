@@ -3,7 +3,6 @@ import ColorButtonPanel from './ColorButtonPanel';
 const style = { 
   border: '1px solid rgb(5,5,5,.85)',
   backgroundColor: 'rgb(234,255,24, .81)',
-  height: '30px',
 };
 
 const ConfigForm = forwardRef(({ 
@@ -18,8 +17,8 @@ const ConfigForm = forwardRef(({
       name="turnMin"
       type="number"
       min={1}
-      max={15}
-      defaultValue={15}
+      max={14}
+      defaultValue={10}
       step={1} 
     />
     <label htmlFor="votes"> !votes </label>

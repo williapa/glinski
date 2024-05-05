@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import Splash from './splash/Splash';
 import GameLayout from './game/GameLayout';
 import { DisableClicksProvider } from './hooks/useDisableClicks';
 
@@ -9,17 +10,8 @@ const setYScroll = (bool) => {
   document.body.style.overflowY = bool ? 'auto': 'hidden';
 }
 
-const HomePage = () => {
-  return <h1>glins.ki</h1>;
-  // todo: splash page - "enter streamer"
-  // video of how the game works
-  // or enter email
-  // something...it has to be PERFECT though
-};
-
 const IdPage = () => {
   const params = useParams();
-  // TODO: temp
   const [playerId, setPlayerId] = useState('');
 
   const handleResize = () => {
@@ -27,8 +19,10 @@ const IdPage = () => {
       [1700, 1260],
       [1400, 780],
       [1100, 736],
-      [868, 556],
-      [640, 720]
+      [880, 555],
+      [768, 555],
+      [600, 862],
+      [10, 666]
     ];
     let sizeIndex = 0;
     const { innerHeight, innerWidth } = window;
@@ -41,7 +35,7 @@ const IdPage = () => {
   useEffect(() => {
     handleResize();
     window.addEventListener('resize', handleResize);
-    // TODO: this is temporary
+    // just in case
     let existingId = localStorage.getItem('playerId');
     if (!existingId) {
       existingId = uuidv4();
@@ -61,7 +55,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<Splash />} />
         <Route path="/:id" element={<IdPage />} />
       </Routes>
     </Router>

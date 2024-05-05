@@ -2,24 +2,24 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import pieceColor from '../util/pieceColor';
 import Moves from '../moves';
-import Popup from '../popup/Popup';
+import Popup from './popup/Popup';
 import calculateRemainingTime from '../util/calculateRemainingTime';
 import check from '../util/check';
 import checkMate from '../util/checkMate';
 import filterMoves from '../util/filterMoves';
 import isValidPromotion from '../util/isValidPromotion';
 import newBoard from '../util/newBoard';
-import CapturedPieces from './CapturedPieces';
-import Animation from './Animation.jsx';
+import CapturedPieces from './panels/CapturedPieces.jsx';
+import Animation from './animation/Animation.jsx';
 import BoardCell from './BoardCell';
-import ConfigForm from './ConfigForm';
-import MoveLog from './MoveLog';
-import PlayerLabels from './labels/PlayerLabels';
+import ConfigForm from './panels/ConfigForm.jsx';
+import MoveLog from './panels/MoveLog.jsx';
+import PlayerLabels from './panels/labels/PlayerLabels';
 import useFetch from "../hooks/useFetch";
 import { useDisableClicks } from '../hooks/useDisableClicks';
 import Ftr from "../footer/Ftr";
 import Borderline from "./Borderline.jsx";
-import Clocks from "./clock/Clocks";
+import Clocks from "./panels/labels/clock/Clocks";
 import AudioPlayer from "../audio/AudioPlayer";
 import api from '../api.js';
 import './GameBoard.css';
@@ -52,7 +52,7 @@ function GameLayout({ playerId, id }) {
   const [enPassantPawnPosition, setEnPassantPawnPosition] = useState(false);
   const [capturedPieces, setCapturedPieces] = useState({ b: [], w: [] });
   const [gameOver, setGameOver] = useState(true);
-  const [turnMins, setTurnMins] = useState(15);
+  const [turnMins, setTurnMins] = useState(10);
   const useMuted = useState(false);
   const [sound, playSound] = useState(null);
   const [startTime, setStartTime] = useState(null);
@@ -307,6 +307,9 @@ function GameLayout({ playerId, id }) {
       // if streamer, e is just the start position right off the bat
       const startPosition = streamer ? e : JSON.parse(e.dataTransfer.getData('application/json'));
       let removedPiece = board[row][col];
+      // todo: remove
+      console.log("just checking to see if the game is over hehe: ");
+      console.log(gameOver);
       if (gameOver) return; // avoiding race with clock and ai. i have seen it. it breaks stuff.
       let isGameOver = false;
       if (enPassantPawnPosition) {
@@ -460,9 +463,9 @@ function GameLayout({ playerId, id }) {
 
     if (!loading && data && data.gameConfig) {
       setResults(data);
-      const blackRemainingTime = calculateRemainingTime(data.moves, data.gameConfig, 'b');
-      const whiteRemainingTime = calculateRemainingTime(data.moves, data.gameConfig, 'w');
-      if (turn === (data.chatFirst ? 'w': 'b') && (chatFirst ? whiteRemainingTime : blackRemainingTime) < 0) {
+
+      const remainingTime = calculateRemainingTime(data.moves, data.gameConfig, ['w', 'b'][data.moves.length % 2]);
+      if (remainingTime < 0) {
         if (!data.gameOver) resolveGameByClock(turn === 'b' ? 'w' : 'b');
         if (poll) {
           clearTimeout(poll);

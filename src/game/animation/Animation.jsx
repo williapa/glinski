@@ -24,6 +24,9 @@ const Animation = ({ move }) => {
     <div className={`animation ${move ? 'expand' : ''}`}>
       <input readOnly id="chatMove" value={typedMove}/>
       <button className={`hmm ${sub ? 'send' : ''}`}>MOVE</button>
+      <div className="bg">
+        <span> 🅇 </span>
+      </div>
     </div>
   );
 }

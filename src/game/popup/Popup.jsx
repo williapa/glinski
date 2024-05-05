@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import pieceMap from '../util/pieceMap';
+import pieceMap from '../../util/pieceMap';
 import './Popup.css';
 
 function Popup({ isVisible, color, onCancel, onConfirm }) {

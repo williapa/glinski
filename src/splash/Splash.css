@@ -1,0 +1,107 @@
+body.freeze {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.splash h1 {
+  margin-left: 10px;
+  font-size: 12vw;
+  font-family: 'Press Start 2P', monospace;
+  /* Set the gradient background */
+  background: linear-gradient(to bottom, mediumpurple 30%, #8E44AD 60%);
+  /* Clip the background to the text */
+  -webkit-background-clip: text;
+  background-clip: text;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: calc(36vh - 46px);
+  padding-bottom: calc(64vh - 46px);
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  /*background: linear-gradient(to bottom, #f3f3f2 0%, rgb(234,255,24, .81) 2.3%, yellow 50%, rgb(234,255,24, .81) 97.7%, #f3f3f2 100%);*/
+}
+
+.splash img {
+  animation: hover 1.7s infinite ease-in-out;
+  position: absolute; 
+  width: 10vw;
+  left: calc(49.5vw + 7px);
+}
+
+.splash div.container {
+  position: absolute;
+  bottom: calc(20vh - 40px);
+  left: calc(54vw - 85px);
+  width: 200px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.splash div.container div.ellipse {
+  background-color: rgb(234,255,24);
+  border-radius: 50%; /* Ensures it's a perfect circle */
+  animation: shadow 1.7s infinite ease-in-out; /* Animating the ellipse */
+}
+
+.splash a {
+  color: white;
+  position: absolute;
+  bottom: calc(20vh + 3px);
+  font-size: 14px;
+  left: calc(54vw - 45px);
+}
+
+@keyframes hover {
+  0%, 100% {
+    top: 7vh;
+  }
+  50% {
+    top: 9vh;
+  }
+}
+
+@keyframes shadow {
+  0%, 100% {
+    height: 32px;
+    width: 160px;
+    opacity: .28;
+    
+  }
+  50% {
+    height: 27px;
+    width: 132px;
+    opacity: .42;
+  }
+}
+
+.splash svg {
+  height: 450px;
+  width: 450px;
+  z-index: -1;
+  position: absolute;
+  bottom: calc(20vh - 210px);
+  left: calc(54vw - 232px);
+  scale: .88;
+  transform: perspective(800px) rotateX(78deg);
+}
+
+.splash svg polygon {
+  fill: mediumpurple;
+  stroke: rebeccapurple;
+  stroke-width: 5;
+  transform-origin: center;
+}
+
+@media (max-width:500px) {
+  .splash h1 {
+    margin-left: 4px;
+  }
+  .splash svg {
+    scale: .6;
+  }
+  .splash img {
+    left: 50vw;
+  }
+}

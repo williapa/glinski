@@ -1,4 +1,5 @@
 .clock {
+  position: fixed;
   text-align: center;
   font-size: 28px;
   display: flex;

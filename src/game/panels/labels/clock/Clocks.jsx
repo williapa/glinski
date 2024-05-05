@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Clock from "./Clock";
-import calculateRemainingTime from "../../util/calculateRemainingTime";
+import calculateRemainingTime from "../../../../util/calculateRemainingTime";
 
 const Clocks = ({
   chatFirst,
@@ -25,7 +25,7 @@ const Clocks = ({
           const whiteRemainingTime = calculateRemainingTime(moves, gameConfig, 'w');
           // if "player" (white or black?) remaining time is 0 now, post end game + loss. 
           // -3 is hack to avoid collision 
-          if (turn === (chatFirst ? 'b' : 'w') && (chatFirst ? blackRemainingTime : whiteRemainingTime) < -3) {
+          if ((turn === 'b' ? blackRemainingTime : whiteRemainingTime) < -3) {
             endGame(turn === 'b' ? 'w' : 'b');
             stopTimer();
           } 

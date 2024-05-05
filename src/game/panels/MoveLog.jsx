@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import LogLabel from './labels/LogLabel';
-import letChatStartGame from '../util/letChatStartGame';
-import logChat from '../util/logChat';
-import logPieceMap from '../util/logPieceMap';
-import rowColToLetterCol from '../util/rowColToLetterCol';
+import letChatStartGame from '../../util/letChatStartGame';
+import logChat from '../../util/logChat';
+import logPieceMap from '../../util/logPieceMap';
+import rowColToLetterCol from '../../util/rowColToLetterCol';
+import ConfigInstructions from './instructions/ConfigInstructions';
+import GameInstructions from './instructions/GameInstructions';
+
 
 const MoveLog = ({
   ai,
@@ -46,7 +49,6 @@ const MoveLog = ({
       setTimeout(() => {
         kickOff();
       }, 10000);
-      
     }
   }
 
@@ -84,7 +86,7 @@ const MoveLog = ({
     // open socket if chat turn & no socket 
     if (chatTurn && !socket && !polling) {
       console.log('start log chat');
-      const webSocket = logChat(addVote, board, () => setSocket(null), channel, enPassantPawnPosition, hilighter);
+      const webSocket = logChat(addVote, board, () => setSocket(null), channel, enPassantPawnPosition, hilighter, chatFirst);
       setSocket(webSocket);
     } else if (socket && (!chatTurn || polling || gameOver)) {
       console.log('stop log chat');
@@ -126,21 +128,6 @@ const MoveLog = ({
 
   useEffect(() => scrollToTop(), [moves]);
 
-  const howToPlay = (
-    <>
-      <li className="moveLog-item">
-          <span> <b>F10</b> - See piece moves.</span>
-      </li>
-      <li className="moveLog-item">
-          <span> <b>G0 K4</b> - Vote for move. </span>
-      </li>
-    
-      <li className="moveLog-item">
-         <b>B1 B0 K</b> - Pawn promotes to queen by default, or choose a piece by letter.
-      </li>
-    </>
-  );
-  
   const movesAndVotes = moves.concat(votes).sort((a, b) => b.time - a.time);
   
   return (
@@ -148,21 +135,8 @@ const MoveLog = ({
       <LogLabel useMuted={useMuted} startGame={wrapStartGame} gameOver={gameOver} turnCount={moves.length} />
       <ul ref={topRef} className="moveLog-list">
       { (gameOver === 'b' || gameOver === 'w') ? 
-          (<>
-            <li key="bdg" className="moveLog-item">
-              <b>!play</b> - start a new game.
-            </li>
-            <li key="bdh" className="moveLog-item">
-              <b>!minutes 10</b> - set game length.
-            </li>
-            <li key="bdi" className="moveLog-item">
-              <b>!votes 2</b> - set number of chat votes required to apply next move.
-            </li>
-            <li key="bdj" className="moveLog-item">
-              <b>!random</b>, <b>!stay</b>, or <b>!switch</b> - choose a side.
-            </li>
-          </>
-          ) : howToPlay 
+          <ConfigInstructions /> : 
+          <GameInstructions /> 
         }
         { (gameOver === 'b' || gameOver === 'w') ? 
           (
@@ -183,7 +157,7 @@ const MoveLog = ({
           ) : ''
         }
         <button style={{ display: 'none' }} onClick={ai}> refresh </button>
-        { polling? <li key="r" className="moveLog-item">Reconnecting to chat...</li> : ''}
+        { polling? <li key="r" className="moveLog-item">There may be a delay when adding votes.</li> : ''}
         {movesAndVotes.map((move, index) => (
           <li key={index} className="moveLog-item" onMouseEnter={() => hoverMove(move.startPosition, move.endPosition)}>
             { move.username ? 

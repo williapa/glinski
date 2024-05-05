@@ -113,6 +113,7 @@ per breakpoint:
 
 .logo {
   position: fixed;
+  top: 24px;
 }
 
 .label {
@@ -120,6 +121,10 @@ per breakpoint:
   border-radius: 2px;
   display: inline-block;
   padding: 6px 30px;
+  left: 20px;
+  top: 11px;
+  position: absolute;
+  word-break: break-word;
 }
 
 .label.left {
@@ -134,10 +139,15 @@ per breakpoint:
 
 .label.left.check, .label.right.check {
   background-color: yellow;
+  color: black;
 }
 
-svg.svg {
+svg.svg g {
   display: none;
+}
+
+form.configForm {
+  height: 30px;
 }
 
 /* screen size specifics */
@@ -147,28 +157,31 @@ svg.svg {
 /* above 840px the screen scales the viewport to fit the grid on the left and the move log to the right */
 @media (min-width: 1700px) {
   .label {
-    font-size: 80%;
-    max-width: 16%;
-  }
-  
-  .label.left {
-    /*left: 0px;*/
+    font-size: 64%;
+    min-width: 182px;
+    max-width: 182px;
+    min-height: 196px;
+    max-height: 196px;
   }
 
   .label.right {
-    left: 1060px;
+    left: 1110px;
+  }
+
+  .label.left {
+    left: 18px;
   }
 
   .clock {
     position: absolute;
-    top: 144px;
+    top: 113px;
     transform: scale(.6);
   }
   .left.clock {
-    left: 0px;
+    left: -24px;
   }
   .right.clock {
-    left: 1044px;
+    left: 1066px;
   }
 
   .capture {
@@ -223,28 +236,43 @@ svg.svg {
   }
 
   form.configForm {
-    display: none; /* hide form */ 
     position: absolute;
-    top: 1074px;
-    left: 36px;
+    top: 1090px;
+    left: 105px;
+  }
+
+  form.configForm label, form.configForm input {
+    top: -17px;
+    position: relative;
   }
 
   form.configForm label {
-    font-size: 22px;
+    font-size: 15.5px;
   }
 
   form.configForm input {
-    font-size: 18px;
+    font-size: 13.5px;
   }
 
   .btn-group {
-    left: 1018px;
-    top: -30px;
+    left: 960px;
+    top: -46px;
   }
 
   .popup.position {
     top: 194px;
     left: 686px;
+  }
+
+  svg.svg {
+    top: 1036px;
+    left: 0;
+    position: absolute;
+  }
+
+  svg.svg .seventeen {
+    display: block;
+    z-index: -1;
   }
 
   .scale {
@@ -262,8 +290,8 @@ svg.svg {
     font-size: 48%;
     min-width: 120px;
     max-width: 120px;
-    min-height: 100px;
-    max-height: 100px;
+    min-height: 110px;
+    max-height: 110px;
   }
 
   .label.right {
@@ -271,7 +299,7 @@ svg.svg {
   }
 
   .label.left {
-    left: 0px;
+    left: 18px;
   }
 
   .clock {
@@ -332,11 +360,11 @@ svg.svg {
 
   .moveLog-list {
     position: fixed;
-    top: 74px;
-    right: 10px;
+    top: 75px;
+    right: 11px;
     bottom: 52px;
     width: 432px;
-    max-height: 666px;
+    max-height: 667px;
   }
 
   form.configForm {
@@ -369,10 +397,13 @@ svg.svg {
   }
 
   svg.svg {
-    display: block;
-    position: absolute;
     top: 653px;
     left: 0;
+    position: absolute;
+  }
+
+  svg.svg .fourteen {
+    display: block;
     z-index: 0;
   }
 
@@ -386,10 +417,13 @@ svg.svg {
   }
 }
 
-@media (max-width: 1400px) and (min-width: 1100px) {
+@media (max-width: 1400px) and (min-width: 1118px) {
   .label {
-    font-size: 68%;
-    max-width: 13%;
+    font-size: 48%;
+    min-width: 90px;
+    max-width: 90px;
+    min-height: 104px;
+    max-height: 104px;
   }
 
   .label.right {
@@ -397,21 +431,20 @@ svg.svg {
   }
 
   .label.left {
-    left: 0px;
+    left: 18px;
   }
-
   .clock {
     position: absolute;
-    top: 120px;
+    top: 50px;
     transform: scale(.34);
   }
 
   .left.clock {
-    left: -80px;
+    left: -70px;
   }
   
   .right.clock {
-    left: 608px;
+    left: 600px;
   }
 
   .capture {
@@ -431,7 +464,7 @@ svg.svg {
   
   .logo {
     width: 28px;
-    right: 28px;
+    right: 24px;
   }
 
   .moveLog {
@@ -445,7 +478,7 @@ svg.svg {
 
   .moveLog-header {
     width: 224px;
-    height: 30px;
+    height: 32px;
   }
 
   .moveLog-header .log {
@@ -458,24 +491,29 @@ svg.svg {
 
   .moveLog-list {
     position: fixed;
-    top: 70px;
+    top: 72px;
     right: 10px;
     bottom: 52px;
     width: 248px;
-    max-height: 630px;
+    max-height: 628px;
   }
 
   .moveLog-item {
     font-size: 18px;
   }
 
-  form.configForm {
-    position: absolute;
-    top: 626px;
-    left: 10px;
+  form.configForm label, form.configForm input {
+    top: -17px;
+    position: relative;
   }
 
-  form.configForm input .btn-group button{
+  form.configForm {
+    position: absolute;
+    top: 642px;
+    left: 8px;
+  }
+
+  form.configForm input .btn-group button {
     font-size: 10px;
   }
 
@@ -484,13 +522,24 @@ svg.svg {
   }
 
   .btn-group {
-    left: 638px;
-    top: -30px;
+    left: 635px;
+    top: -46px;
   }
 
   .popup.position {
     top: 166px;
     left: 428px;
+  }
+
+  svg.svg {
+    top: 616px;
+    left: 0;
+    position: absolute;
+  }
+
+  svg.svg .eleven {
+    display: block;
+    z-index: 0;
   }
   
   .scale {
@@ -503,28 +552,31 @@ svg.svg {
   }
 }
 
-@media (max-width: 1100px) and (min-width: 868px) {
+@media (max-width: 1118px) and (min-width: 888px) {
   .label {
-    font-size: 24px;
-    max-width: 14%;
+    font-size: 14px;
+    min-width: 58px;
+    max-width: 58px;
+    min-height: 72px;
+    max-height: 72px;
   }
 
   .label.right {
-    left: 505px;
+    left: 515px;
   }
 
   .label.left {
-    left: 0px;
+    left: 10px;
   }
 
   .clock {
     position: absolute;
-    top: 78px;
+    top: 20px;
     transform: scale(.23);
   }
 
   .left.clock {
-    left: -98px;
+    left: -96px;
   }
   
   .right.clock {
@@ -533,7 +585,7 @@ svg.svg {
 
   .capture {
     font-size: 18px;
-    top: 340px;
+    top: 333px;
     min-width: 5%;
     max-width: 5%;
   }
@@ -543,7 +595,7 @@ svg.svg {
   }
 
   .right.capture {
-    left: 555px;
+    left: 563px;
   }
 
   .logo {
@@ -563,7 +615,7 @@ svg.svg {
   .moveLog-header {
     min-width: 193.8px;
     max-width: 193.8px;
-    height: 24px;
+    height: 32px;
   }
 
   .moveLog-header .log {
@@ -576,11 +628,11 @@ svg.svg {
 
   .moveLog-list {
     position: fixed;
-    top: 62px;
+    top: 70px;
     right: 10px;
     bottom: 52px;
     width: 218px;
-    max-height: 440px;
+    max-height: 432px;
   }
 
   .moveLog-item {
@@ -589,27 +641,49 @@ svg.svg {
 
   form.configForm {
     position: absolute;
-    top: 448px;
-    left: 8px;
+    top: 472px;
+    left: 6px;
+    max-height: 21px;
+    max-width: 150px;
   }
 
   form.configForm label {
     font-size: 8.4px;
   }
-  
+
+  form.configForm input {
+    padding: 0px;
+  }
+
+  form.configForm label, form.configForm input {
+    position: relative;
+    top: -24px;
+  }
+
   form.configForm input, .btn-group button {
     font-size: 7px;
   }
 
   .btn-group {
-    left: 464px;
-    top: -30px;
-    padding: 6.7px 10px;
+    left: calc(468px + 5%);
+    top: -54px;
+    padding: 6px 1px;
   }
 
   .popup.position {
     top: 120px;
     left: 312px;
+  }
+
+  svg.svg {
+    top: 453px;
+    left: 0;
+    position: absolute;
+  }
+
+  svg.svg .nine {
+    display: block;
+    z-index: 0;
   }
 
   .scale {
@@ -623,76 +697,80 @@ svg.svg {
 }
 
 /* below 840px the log is displayed below the board */
-@media (max-width: 868px) and (min-width:640px) {
+@media (max-width: 888px) and (min-width:640px) {
   .bodyScroll {
     overflow-y: auto;
   }
 
   .label {
-    font-size: 50%;
-    max-width: 15%;
+    font-size: 30%;
+    min-width: 64px;
+    max-width: 64px;
+    min-height: 68px;
+    max-height: 68px;
+    padding: 4px 12px;
   }
 
   .right.label {
     position: absolute !important;
-    left: 505px;
+    left: 450px;
   }
 
   .left.label {
     position: absolute !important;
-    left: 36px;
+    left: 12px;
   }
 
   .clock {
     position: absolute;
-    top: 72px;
+    top: 20.5px;
     transform: scale(.26);
   }
 
   .left.clock {
-    left: -90px;
+    left: -108.5px;
   }
   
   .right.clock {
-    left: 408px;
+    left: 329.5px;
   }
 
   .capture {
     position: absolute;
     font-size: 16px;
-    top: 320px;
-    min-width: 5%;
-    max-width: 5%;
+    top: 350px;
+    min-width: 76px;
+    max-width: 76px;
   }
 
   .left.capture {
-    left: 36px;
+    left: 4px;
   }
 
   .right.capture {
-    left: 560px;
+    left: 470px;
   }
 
   .logo {
     width: 24px;
-    right: 12px;
-    top: 12px;
+    right: 16px;
+    top: 16px;
     position: absolute;
   }
 
   .moveLog {
     position: absolute;
     left: 10px;
-    top: 525px;
+    top: 514px;
     font-size: 20px;
-    height: 160px;
+    height: 172px;
     width: 96.5%;
   }
 
   .moveLog-header {
     position: absolute;
-    width: 96.75%;
-    height: 24px;
+    width: 97.25%;
+    height: 32px;
   }
 
   .moveLog-header .log {
@@ -704,19 +782,33 @@ svg.svg {
   }
 
   .moveLog-list {
-    margin-top: 54px;
-    height: 102px;
+    margin-top: 60px;
+    height: 112px;
   }
 
   form.configForm {
     position: absolute;
-    top: 474px;
-    left: 215px;
+    top: 480px;
+    left: 11px;
+    max-height: 25px;
+  }
+
+  form.configForm label {
+    font-size: 11px;
+  }  
+  
+  form.configForm label, form.configForm input {
+    position: relative;
+    top: -21px;
+  }
+
+  form.configForm input, .btn-group button {
+    font-size: 10px;
   }
 
   .btn-group {
-    left: -214px;
-    top: -38px;
+    left: 342px;
+    top: -54px;
     padding: 6.7px 10px;
   }
 
@@ -730,8 +822,8 @@ svg.svg {
   }
   
   .scale.position {
-    margin-left: -27%;
-    margin-top: -285px;
+    margin-left: -36%;
+    margin-top: -290px;
   }
 }
 
@@ -742,71 +834,76 @@ svg.svg {
   }
 
   .label {
-    font-size: 40%;
-    max-width: 16%;
+    font-size: 24%;
+    min-height: 70px;
+    max-height: 70px;
+    min-width: 54px;
+    max-width: 54px;
+    padding: 4px 10px;
   }
 
   .right.label {
     position: absolute !important;
-    left: 420px;
+    left: 408px;
   }
 
   .left.label {
     position: absolute !important;
-    left: 36px;
+    left: 8px;
   }
 
 
   .clock {
     position: absolute;
-    top: 32px;
+    top: 25px;
     transform: scale(.22);
   }
 
   .left.clock {
-    left: -96px;
+    left: -119.5px;
   }
   
   .right.clock {
-    left: 292px;
+    left: 280.5px;
   }
 
   .capture {
     position: absolute;
     font-size: 16px;
-    top: 290px;
-    min-width: 5%;
-    max-width: 5%;
+    top: 330px;
+    min-width: 72px;
+    max-width: 72px;
+
   }
 
   .left.capture {
-    left: 36px;
+    left: 4px;
   }
 
   .right.capture {
-    left: 470px;
+    left: 420px;
   }
 
   .logo {
     width: 24px;
-    right: 12px;
-    top: 12px;
+    right: 18px;
+    top: 16px;
     position: absolute;
   }
 
   .moveLog {
     position: absolute;
-    left: 10px;
+    left: 8px;
     top: 480px;
     font-size: 20px;
-    height: 180px;
-    width: 96.5%;
+    height: 206spx;
+    width: 484px;
   }
 
   .moveLog-header {
     position: absolute;
     width: 96%;
-    height: 24px;
+    height: 32px;
   }
 
   .moveLog-header .log {
@@ -818,18 +915,24 @@ svg.svg {
   }
 
   .moveLog-list {
-    margin-top: 54px;
-    height: 122px;
+    margin-top: 60px;
+    height: 146px;
   }
 
   form.configForm {
     position: absolute;
-    top: 426px;
-    left: 172px;
+    top: 444px;
+    left: 9px;
+    max-height: 25px;
   }
 
   form.configForm label {
-    font-size: 14px;
+    font-size: 11px;
+  }  
+  
+  form.configForm label, form.configForm input {
+    position: relative;
+    top: -21px;
   }
 
   form.configForm input, .btn-group button {
@@ -837,8 +940,8 @@ svg.svg {
   }
 
   .btn-group {
-    left: -172px;
-    top: -34px;
+    left: 300px;
+    top: -54px;
     padding: 6.7px 10px;
   }
 
@@ -852,7 +955,7 @@ svg.svg {
   }
   
   .scale.position {
-    margin-left: -35%;
+    margin-left: -40%;
     margin-top: -300px;
   }
 }

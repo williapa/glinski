@@ -46,7 +46,6 @@ const MoveLog = ({
       setTimeout(() => {
         kickOff();
       }, 10000);
-      
     }
   }
 
@@ -84,7 +83,7 @@ const MoveLog = ({
     // open socket if chat turn & no socket 
     if (chatTurn && !socket && !polling) {
       console.log('start log chat');
-      const webSocket = logChat(addVote, board, () => setSocket(null), channel, enPassantPawnPosition, hilighter);
+      const webSocket = logChat(addVote, board, () => setSocket(null), channel, enPassantPawnPosition, hilighter, chatFirst);
       setSocket(webSocket);
     } else if (socket && (!chatTurn || polling || gameOver)) {
       console.log('stop log chat');

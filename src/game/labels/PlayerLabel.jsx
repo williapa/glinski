@@ -9,14 +9,9 @@ const winner = ' 🏆';
 // chatFirst === are you second?
 const PlayerLabel = ({ check, turn, gameOver, ids, side }) => {
   // todo: these might need to be part of the class 
-  const style = {
-    position: "absolute",
-    top: 20,
-    wordBreak: "break-word",
-  };
+  const style = {};
   let className = '';
   if (side === 'b') {
-    style['left'] = em;
     className = 'left label';
   } else {
     className = 'right label';
@@ -37,7 +32,6 @@ const PlayerLabel = ({ check, turn, gameOver, ids, side }) => {
   return (
     <div
       className={className}
-      style={style}
     >
       {ids[side]}
       <span style={{ fontSize: "76%" }}>

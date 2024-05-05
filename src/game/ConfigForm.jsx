@@ -3,7 +3,6 @@ import ColorButtonPanel from './ColorButtonPanel';
 const style = { 
   border: '1px solid rgb(5,5,5,.85)',
   backgroundColor: 'rgb(234,255,24, .81)',
-  height: '30px',
 };
 
 const ConfigForm = forwardRef(({ 

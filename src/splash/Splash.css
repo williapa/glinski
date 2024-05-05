@@ -1,0 +1,87 @@
+body.freeze {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.splash h1 {
+  font-size: 12vw;
+  font-family: 'Press Start 2P', monospace;
+  /* Set the gradient background */
+  background: linear-gradient(to bottom, mediumpurple 30%, #8E44AD 60%);
+  /* Clip the background to the text */
+  -webkit-background-clip: text;
+  background-clip: text;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: calc(40vh - 46px);
+  padding-bottom: calc(60vh - 46px);
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  /*background: linear-gradient(to bottom, #f3f3f2 0%, rgb(234,255,24, .81) 2.3%, yellow 50%, rgb(234,255,24, .81) 97.7%, #f3f3f2 100%);*/
+}
+
+.splash img {
+  animation: hover 1.7s infinite ease-in-out;
+  position: absolute; 
+  width: 10vw;
+  top: 7vh;
+  left: calc(49.65vw);
+}
+.splash div.container {
+  position: absolute;
+  bottom: 10vh;
+  left: calc(55vw - 100px);
+  width: 200px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.splash div.container div.ellipse {
+  background-color: rgb(234,255,24);
+  border-radius: 50%; /* Ensures it's a perfect circle */
+  animation: shadow 1.7s infinite ease-in-out; /* Animating the ellipse */
+}
+
+
+@keyframes hover {
+  0%, 100% {
+    top: 15vh;
+  }
+  50% {
+    top: 17vh;
+  }
+}
+
+@keyframes shadow {
+  0%, 100% {
+    height: 30px;
+    width: 120px;
+    opacity: .42;
+    
+  }
+  50% {
+    height: 27px;
+    width: 90px;
+    opacity: .28;
+  }
+}
+
+.splash svg {
+  height: 500px;
+  width: 500px;
+  z-index: -1;
+  position: absolute;
+  bottom: calc(10vh - 190px);
+  left: calc(54vw - 232px);
+
+  transform: perspective(500px) rotateX(78deg);
+}
+
+.splash svg polygon {
+  fill: mediumpurple;
+  stroke: rebeccapurple;
+  stroke-width: 5;
+  transform-origin: center;
+}

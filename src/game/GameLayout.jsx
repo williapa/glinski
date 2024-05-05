@@ -307,6 +307,9 @@ function GameLayout({ playerId, id }) {
       // if streamer, e is just the start position right off the bat
       const startPosition = streamer ? e : JSON.parse(e.dataTransfer.getData('application/json'));
       let removedPiece = board[row][col];
+      // todo: remove
+      console.log("just checking to see if the game is over hehe: ");
+      console.log(gameOver);
       if (gameOver) return; // avoiding race with clock and ai. i have seen it. it breaks stuff.
       let isGameOver = false;
       if (enPassantPawnPosition) {
@@ -460,9 +463,9 @@ function GameLayout({ playerId, id }) {
 
     if (!loading && data && data.gameConfig) {
       setResults(data);
-      const blackRemainingTime = calculateRemainingTime(data.moves, data.gameConfig, 'b');
-      const whiteRemainingTime = calculateRemainingTime(data.moves, data.gameConfig, 'w');
-      if (turn === (data.chatFirst ? 'w': 'b') && (chatFirst ? whiteRemainingTime : blackRemainingTime) < 0) {
+
+      const remainingTime = calculateRemainingTime(data.moves, data.gameConfig, ['w', 'b'][data.moves.length % 2]);
+      if (remainingTime < 0) {
         if (!data.gameOver) resolveGameByClock(turn === 'b' ? 'w' : 'b');
         if (poll) {
           clearTimeout(poll);

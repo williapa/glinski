@@ -12,7 +12,7 @@ const LogLabel = ({ gameOver, useMuted, startGame, turnCount }) => {
   // glinsk.ai glinsk.io glins.ki glins.ke
   return (
     <div className="moveLog-header">
-      <span className="log"><span id="findme">Glins.ki</span> {/*turnCount ? <span className="count">({turnCount})</span>: '' */}</span>
+      <span className="log"><span id="findme">Glin.ski</span> {/*turnCount ? <span className="count">({turnCount})</span>: '' */}</span>
       {
         <button style={{ display: 'none' }} className="volume" onClick={toggleMuted}>
           {muted ? '🔇': '🔊' }

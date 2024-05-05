@@ -65,6 +65,7 @@ const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice) =>
     if (parsedMessage.command === 'PRIVMSG') {
       // get the message
       const text = parsedMessage.trailing.toLowerCase().trim();
+      const username = parsedMessage.prefix.split('!')[0];
       console.log(text);
       // test to
       if (/!play/.test(text)) {
@@ -92,7 +93,7 @@ const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice) =>
           // hack, no i do not care, react can't tell me how to use forms in the dom, go to hell.
           document.querySelector(`form input[name='turnMin']`).value = mins;
         }
-      } else if (text.startsWith('!refresh')) {
+      } else if (text.startsWith('!refresh') && username === channel) {
         window.location.reload();
       } else {
         console.log("no command executed.");

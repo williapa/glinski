@@ -12,7 +12,7 @@ let ws = null;
 // use web socket to connect to the twitch channel IRC chat
 // add moves from chat to the log 
 // disconnect when there's no time left
-const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hilighter) => {
+const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hilighter, chatFirst) => {
 
   if (!channel) return;
 
@@ -98,7 +98,10 @@ const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hili
         if (!validateMove(board, piece, startPosition, endPosition, enPassantPawnPosition, moveData.promoted)) {
           console.log("invalid move.");
           return;
-        } 
+        } else if (chatFirst === (piece.charAt(0) === 'b')) {
+          console.log('wrong piece L bozo');
+          return;
+        }
         const username = parsedMessage.prefix.split('!')[0];
         console.log("valid move from ", username);
         moveData.username = username;
@@ -108,7 +111,7 @@ const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hili
         const moveToFlash = letterToNumber(text);
         // flash move
         hilighter(moveToFlash.row, moveToFlash.col);
-        setTimeout(() => hilighter(false, false), 3900);
+        setTimeout(() => hilighter(false, false), 5900);
         // unflash it after a certain amount of time of course 
       } else if (text.startsWith('!REFRESH')) {
         window.location.reload();

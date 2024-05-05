@@ -8,11 +8,15 @@ const PlayerLabels = ({ chatFirst, check, id, opponent, gameOver, turn }) => {
   });
 
   useEffect(() => {
+    const votes = document.getElementById('votes').value;
+    console.log('labels....');
+    console.log(votes);
+    const opp = `${opponent}${(votes > 1) ? ' & chat': ''}`;
     setIds({
-      'b': chatFirst ? id + ' (ai)' : opponent,
-      'w': chatFirst ? opponent: id + ' (ai)'
+      'b': chatFirst ? id : opp,
+      'w': chatFirst ? opp: id
     });
-  }, [chatFirst, id, opponent ]);
+  }, [chatFirst, id, opponent, gameOver]);
   
   return (
     <>

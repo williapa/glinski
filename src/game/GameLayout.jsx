@@ -80,16 +80,24 @@ function GameLayout({ playerId, id }) {
       aiWorker.postMessage({ board, capturedPieces, chatFirst, enPassantPawnPosition });
     });
     const endTime = new Date().getTime();
-    console.log(`ai took ${endTime - startTime} ms to find this move:`); // includes module load
+    const totalTimeTaken = endTime - startTime;
+    console.log(`ai took ${totalTimeTaken} ms to find this move:`); // includes module load
     console.log(`coords: ${JSON.stringify(coords.startPosition)} to ${JSON.stringify(coords.endPosition)}. valued at: ${moveValue}`);
-
+    const remainingTime = calculateRemainingTime(moves, { startTime, turnMins }, chatFirst ? 'b' : 'w');
+    console.log("YOU HAVE THIS MUCH TIME LEFT!");
+    console.log(remainingTime);
     if (!coords) {
       console.warn("coords are missing - not dropping piece. its just gonna sit.");
+    } else if ((remainingTime - 4) < 0) {
+      // the animation basically takes 4 seconds to post
+      // so if less than 4 seconds remain, it's over for the AI
+      console.log("THERE IS NO TIME TO MAKE A MOVE");
+      console.log("Sorry youre not a winner...");
+      return;
     } else {
       // re-use build on drop. since there's no more need for that functionality (for streamer)
       // you can just mangle it
       // but keep in mind there's going to be need to split up to share with viewer who could drag drop to vote 
-      
       const startPos = {
         row: coords.startPosition.row,
         col: coords.startPosition.column
@@ -239,8 +247,10 @@ function GameLayout({ playerId, id }) {
       });
 
       if (postMoveResult.status !== 200) {
+        console.warn('you would be reloading and causing ruckus in this scenario.');
+        console.log(postMoveResult);
         // now you can click again if you'd like 
-        window.location.reload();
+        // window.location.reload();
       } else {
         const result = await postMoveResult.json();
         // todo: this will take a long time, but contain chat's move as the response 

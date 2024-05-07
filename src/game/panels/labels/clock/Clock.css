@@ -23,7 +23,7 @@
 
 @keyframes blink {
   from {
-    background: rgb(246, 0, 205, 1);
+    background: rgb(246, 0, 205, .54);
   }
   to {
     background: rgba(255, 0, 208, 0.27);

@@ -40,7 +40,7 @@ function GameLayout({ playerId, id }) {
     keyCount: 0
   });
   const [chatFirst, setChatFirst] = useState(true);
-  const [colorChoice, setColorChoice] = useState('random');
+  const [colorChoice, setColorChoice] = useState('white');
   const [inCheck, setCheck] = useState(false);
   const [promotion, setPromotion] = useState(false);
   const [turn, setTurn] = useState('w');
@@ -221,7 +221,7 @@ function GameLayout({ playerId, id }) {
         board: newBoard(),
         check: false,
         capturedPieces: { 'b': [], 'w': [] },
-        chatFirst: userChoice === 'random' ? move.newChatFirst : userChoice === 'switch' ? !chatFirst : chatFirst,
+        chatFirst: userChoice === 'white',
         gameOver: false,
         enPassantPawnPosition: false,
         moves: [],

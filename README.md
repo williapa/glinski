@@ -1,6 +1,16 @@
-# Getting Started with Create React App
+# Honeycomb-client
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Glinski chess client side app that lets you not only play Glinski Chess, the most famous Hexagonal Chess variant, but also:
+
+- streamer plays with chat (1-Many)
+- let chat play as a team and vote on move (1-M)
+- split chat into teams and play against each other (1-M)
+- streamer plays ai
+- chat (1-M) plays ai
+- AIs play each other!
+- no login or auth required for streamers or chatters. just broadcast the
+- battle-tested in streams with up to (3) chatters! (todo: test with more chatters)
+
 
 ## Available Scripts
 

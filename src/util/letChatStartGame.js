@@ -72,12 +72,10 @@ const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice) =>
         const username = parsedMessage.prefix.split('!')[0];
         // start game for user 
         startGame(username);
-      } else if (text.startsWith('!random')) {
-        setColorChoice('random');
-      } else if (text.startsWith('!switch')) {
-        setColorChoice('switch');
-      } else if (text.startsWith('!stay')) {
-        setColorChoice('stay');
+      } else if (text.startsWith('!black')) {
+        setColorChoice('black');
+      } else if (text.startsWith('!white')) {
+        setColorChoice('white');
       } else if (text.startsWith('!votes')) {
         // split, if number isn't second part reject
         // if number isn't less than 10 or greater than 0 reject

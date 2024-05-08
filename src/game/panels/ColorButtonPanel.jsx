@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ColorButtonPanel.css';
 
-const options = ['random', 'stay', 'switch']
+const options = ['white', 'black']
 
 const ColorButtonPanel = ({ gameOver, initial }) => {
 

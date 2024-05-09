@@ -20,6 +20,9 @@ const ColorButtonPanel = ({ gameOver, initial }) => {
 
   return (
     <div className="btn-group">
+      <button disabled key={1}>
+        chat plays:
+      </button>
       {options.map((option) => (
         <button key={option} className={selected === option ? 'selected' : ''} onClick={onClick} >
           !{option}

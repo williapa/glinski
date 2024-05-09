@@ -66,7 +66,15 @@ const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hili
     // Filter for PRIVMSG which indicates a chat message
     if (parsedMessage.command === 'PRIVMSG') {
       // get the message
-      const text = parsedMessage.trailing.toUpperCase().trim();
+      const messageText = parsedMessage.trailing.toUpperCase().trim();
+      const words = messageText.split(' ');
+      if (!messageText.startsWith("!move") || !messageText.startsWith("!see") || words.length <1) {
+        // not a command, return;
+        return;
+      }
+      // assuming it was a command "move" or "see" let's proceed 
+      words.shift();
+      const text = words.join(' ');
       // test to see if it's a move - for promotion, Q is not included, it's the default for promo 
       if (/^[A-K](?:[0-9]|1[01])\s[A-K](?:[0-9]|1[01])\s?(?:K|B|R)?$/.test(text)) {
         // check to see if it's a valid move - if it's not valid then we bail 

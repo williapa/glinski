@@ -24,7 +24,7 @@
 }
 
 /* Add a background color on hover */
-.btn-group button:hover, .btn-group button.selected {
+.btn-group .option:hover, .btn-group .option.selected {
   background-position: -100% 0;
   background-color: rgb(5, 5, 5, .85);
   color: white; /* Change font color on hover for better visibility */

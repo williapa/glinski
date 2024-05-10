@@ -7,8 +7,6 @@ const CHANNEL_SUCCESS = (channel) => (`:justinfan12345!justinfan12345@justinfan1
 let ws = null;
 
 // use web socket to connect to the twitch channel IRC chat
-// add moves from chat to the log 
-// disconnect when there's no time left
 const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice) => {
 
   if (!channel) return;
@@ -87,7 +85,7 @@ const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice) =>
         }
       } else if (text.startsWith('!minutes')) {
         const mins = parseInt(text.split(' ')[1].trim());
-        if(!isNaN(mins) && mins < 16 && mins > 4) {
+        if(!isNaN(mins) && mins < 61 && mins > 0) {
           // hack, no i do not care, react can't tell me how to use forms in the dom, go to hell.
           document.querySelector(`form input[name='turnMin']`).value = mins;
         }

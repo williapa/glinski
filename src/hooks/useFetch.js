@@ -1,49 +1,34 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
-const useFetch = (
-  url,
-  options = { 
-    method: "GET",
-    headers: { 
-      "Content-Type": "application/json"
-    }
+const CURRENT_GAME_KEY = 'current-game';
+
+function loadGame() {
+  const gameData = localStorage.getItem(CURRENT_GAME_KEY);
+  if (gameData) {
+    return JSON.parse(gameData);
+  } else {
+    console.error('something broke 112');
   }
-) => {
-  const [data, setData] = useState(null);
+}
+
+function useFetch() {
+  const [data, setData] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Use useRef to store the latest values of url and options
-  const urlRef = useRef(url);
-  const optionsRef = useRef(options);
-
   useEffect(() => {
-    urlRef.current = url;
-    optionsRef.current = options;
-  }, [url, options]);
-
-  const fetchData = useCallback(async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      const response = await fetch(urlRef.current, optionsRef.current);
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      const jsonData = await response.json();
-      setData(jsonData);
-    } catch (error) {
-      console.log("it's me and i'm just letting you know we're catching a bit of an error here.");
-      setError(error);
+      const gameData = loadGame();
+      setData(gameData);
+    } catch (err) {
+      setError(new Error('Failed to load game data'));
     } finally {
       setLoading(false);
     }
-  }, []); // Empty dependency array
+  }, []);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  return { data, loading, error, fetchData };
-};
+  return { data, loading, error };
+}
 
 export default useFetch;

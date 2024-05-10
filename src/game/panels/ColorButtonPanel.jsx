@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ColorButtonPanel.css';
 
-const options = ['white', 'black']
+const options = ['black', 'white']
 
 const ColorButtonPanel = ({ gameOver, initial }) => {
 
@@ -24,7 +24,7 @@ const ColorButtonPanel = ({ gameOver, initial }) => {
         chat plays:
       </button>
       {options.map((option) => (
-        <button key={option} className={selected === option ? 'selected' : ''} onClick={onClick} >
+        <button key={option} className={selected === option ? 'option selected' : 'option'} onClick={onClick} >
           !{option}
         </button>
       ))}

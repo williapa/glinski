@@ -32,7 +32,10 @@ const BoardCell = ({
     <div className={`top ${cellColor}`}/>
     <div 
       className={`middle ${cellColor}`} 
-      style={{ color: pieceColor }}
+      style={{ 
+        color: pieceColor,
+        textShadow: `1.5px 1.5px 3px ${pieceColor === 'white' ? 'black': 'lightgrey' }, 1.5px -1.5px 3px ${pieceColor === 'white' ? 'black': 'lightgrey' }, -1.5px 1.5px 3px ${pieceColor === 'white' ? 'black': 'lightgrey' }, -1.5px -1.5px 3px ${pieceColor === 'white' ? 'black': 'lightgrey' }`
+      }}
       onDragOver={onDragOver}
       onDrop={onDrop}
     >

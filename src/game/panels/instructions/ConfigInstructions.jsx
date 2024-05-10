@@ -1,16 +1,19 @@
 const ConfigInstructions = () => (
   <>
-    <li key="bdg" className="moveLog-item">
-      <b>!play</b> - start a new game.
+    <li key="bdg" className="moveLog-item instruction">
+      ▶️
+      <i><b>!play</b> - <br/> start a new game.</i>
     </li>
-    <li key="bdh" className="moveLog-item">
-      <b>!minutes 5</b> - set game length <i>(max 14)</i>.
+    <li key="bdh" className="moveLog-item instruction">
+      ⏱️
+      <i><b>!minutes #</b> - <br/> set clocks to # minutes</i>.
     </li>
-    <li key="bdi" className="moveLog-item">
-      <b>!votes 1</b> - set number of chat votes required to apply next move <i>(max 5)</i>.
+    <li key="bdi" className="moveLog-item instruction">
+      🗳️
+      <i> <b>!votes #</b> - <br/> 1st move to get # votes is selected. </i>
     </li>
-    <li key="bdj" className="moveLog-item">
-      <b>!random</b>, <b>!stay</b> or <b>!switch</b> - choose a side.
+    <li key="bdj" className="moveLog-item instruction">
+      ⬛<i><b>!black</b></i> or ⚪<i><b>!white</b> - <br/> choose chat piece color.</i>
     </li>
   </>
 );

@@ -21,17 +21,13 @@ import Ftr from "../footer/Ftr";
 import Borderline from "./Borderline.jsx";
 import Clocks from "./panels/labels/clock/Clocks";
 import AudioPlayer from "../audio/AudioPlayer";
-import api from '../api.js';
 import './GameBoard.css';
 import './GameLayout.css';
 import rowColToLetterCol from '../util/rowColToLetterCol.js';
 
 const cellColors = ['beige', 'peach', 'brown']; // these correspond to class names they are not the real colors im sorry
-const POLLING_INTERVAL = 10 * 1000;
-const version = process.env.REACT_APP_VERSION || '18';
 
-function GameLayout({ playerId, id }) {
-  const API = api();
+function GameLayout({ id }) {
   const formRef = useRef(null);
   const { setClicksDisabled } = useDisableClicks();
   const [flash, setFlash] = useState({
@@ -56,8 +52,6 @@ function GameLayout({ playerId, id }) {
   const useMuted = useState(false);
   const [sound, playSound] = useState(null);
   const [startTime, setStartTime] = useState(null);
-  const [switchNextGame, setSwitchNextGame] = useState(false);
-  const [poll, setPoll] = useState(null);
   const [opponent, setOpponent] = useState('');
   const [block, setBlock] = useState(false);
   const [aiMoveText, setAiMoveText] = useState(false);
@@ -132,7 +126,7 @@ function GameLayout({ playerId, id }) {
   
   const gameChanger = useCallback((newVal) => {
     setGameOver((prev) => {
-      if (prev !== newVal && !!newVal && !poll) {
+      if (prev !== newVal && !!newVal) {
         if (chatFirst === (newVal === 'b')) {
           playSound('youWin');
         } else if (chatFirst === (newVal === 'w')) {
@@ -178,8 +172,6 @@ function GameLayout({ playerId, id }) {
         formRef.current.turnMin.value = result.gameConfig.turnMins;
         formRef.current.votes.value = result.gameConfig.votes;
       }
-      setSwitchNextGame(!!result.gameConfig.switchNextGame);
-      
     }
     setCheck(result.check);
     gameChanger(result.gameOver);
@@ -190,30 +182,20 @@ function GameLayout({ playerId, id }) {
   };
 
   const resolveGameByClock = async (color) => {
-    const postMoveResult = await fetch(`${API}${id}`, {
-      method: 'POST',
-      body: JSON.stringify({ checkTimeForWinner: color, playerId, version })
-    });
-    if (postMoveResult.status !== 200) {
-      // now you can click again if you'd like 
-      window.alert('something went wrong ending game. please reload.');
-    } else {
-      const result = await postMoveResult.json();
-      setResults(result);
-    }
+    setGameOver(color);
   }
 
-  // todo: catch error and re-get the board
-  const postMove = async (move) => {
-    setClicksDisabled(true);
+  const postMove = (move) => {
     const gameConfig = {
       startTime: new Date().getTime(),
       turnMins: formRef.current.turnMin.value,
       votes: formRef.current.votes.value,
     };
-    // empty move = start game
-    if (!move.piece && !move.startPosition && !move.endPosition) {
-      // todo: better loading state
+    if (move.winner) {
+      // winner = end game
+      setGameOver(move.winner);
+    } else if (!move.piece && !move.startPosition && !move.endPosition) {
+      // empty move start game 
       const userChoice = formRef.current.chatFirst.value;
       gameConfig.chatFirst = userChoice;
       gameConfig.opponent = move.username;
@@ -234,39 +216,22 @@ function GameLayout({ playerId, id }) {
         }
       });
       delete move.username;
-    } else if (gameOver) {
-      // if you're receving a move with a piece/position and the game is over, 
-      // something is wrong on the ui end, but the move shouldn't be posted so return
-      console.error('something is wrong on the front end - you are trying to move, but the game is over.');
-      return;
+    } else {
+      // execute the move
+      const endPos = move.endPosition;
+      console.log(move);
+      const startPos = move.startPosition; 
+      buildOnDrop(endPos.row, endPos.col, true, move.promoted)(startPos);
     }
-    try {
-      const postMoveResult = await fetch(`${API}${id}`, {
-        method: 'POST',
-        body: JSON.stringify({ move, gameConfig, playerId, version })
-      });
-
-      if (postMoveResult.status !== 200) {
-        console.warn('you would be reloading and causing ruckus in this scenario.');
-        console.log(postMoveResult);
-        // now you can click again if you'd like 
-        // window.location.reload();
-      } else {
-        const result = await postMoveResult.json();
-        // todo: this will take a long time, but contain chat's move as the response 
-        // set those values here 
-        setResults(result);
-      }
-    } catch (e) {
-      console.error('you are exiting a game mid chat move. you will not get an immediate update for their next move.');
-    }
+    // todo: write to the local storage 
+    // todo: emit event to socket to notify turn change and also probably the game state
+    // so that it can validate moves
   };
 
   const startGame = async (e, username = '') => {
     e.preventDefault();
-    const newChatFirst = !switchNextGame ? chatFirst: !chatFirst;
     playSound('startGame');
-    await postMove({ newChatFirst, username });
+    await postMove({ username });
   };
 
   const hilightCells = (row, column, piece) => {
@@ -310,17 +275,13 @@ function GameLayout({ playerId, id }) {
     };
   }
   // the onDrop function needs to setBoard based on the piece for which the move is being received.
-  // todo: clean this up, it's too long. worst case move it 
   const buildOnDrop = (row, col, streamer, promo) => {
     return (e) => {
       if (!streamer) e.preventDefault();
       // if streamer, e is just the start position right off the bat
       const startPosition = streamer ? e : JSON.parse(e.dataTransfer.getData('application/json'));
       let removedPiece = board[row][col];
-      // todo: remove
-      console.log("just checking to see if the game is over hehe: ");
-      console.log(gameOver);
-      if (gameOver) return; // avoiding race with clock and ai. i have seen it. it breaks stuff.
+      if (gameOver) return; // avoiding race with clock and ai. 
       let isGameOver = false;
       if (enPassantPawnPosition) {
         // white direction is negative 1, so add negative 1 to the column and if this is the dest, remove the en passant pawn
@@ -339,6 +300,7 @@ function GameLayout({ playerId, id }) {
       } else {
         playSound('putDownMove');
       }
+      console.log(board);
       // check for en passant pawn move. This means the piece is a pawn and the column is changing by more than 1
       if (board[startPosition.row][startPosition.col].substring(1) === "Pawn" && Math.abs(col - startPosition.col) > 1) {
         setEnPassantPawnPosition({ row, col });
@@ -397,12 +359,12 @@ function GameLayout({ playerId, id }) {
         ]);
         setNewMove({});
         turnChanger(nextTurn);
-        postMove(thisIsTheMove);
         if (check(board, nextTurn)) {
           setCheck(true);
         }
       }
     }
+    // last thing save game 
   }
 
   const promote = (piece, row, column) => {
@@ -448,42 +410,19 @@ function GameLayout({ playerId, id }) {
     setBoard([...board]);
   }
 
-  const { data, loading, error, fetchData } = useFetch(`${API}${id}`);
+  const { data, loading, error } = useFetch();
+
+  useEffect(() => {
+    if(!loading && data) {
+      setResults(data);
+    }
+  }, [loading, data]);
 
   useEffect(() => {
     if (!gameOver && !block && turn === (chatFirst ? 'b' : 'w')) {
       aiMove();
     }
   }, [block, chatFirst, gameOver, turn])
-
-  useEffect(() => {
-    // re-fetch every 15 seonds if it's not your turn and game is not over (this is called once per page so it means you got disconnected
-    if (!loading && data && !data.gameOver && !poll && (data.chatFirst === !(data.moves.length % 2))) {
-      console.log("setting poll");
-      const newPoll = setTimeout(async () => {
-        await fetchData();
-        setPoll(null);
-      }, POLLING_INTERVAL);
-      setPoll(newPoll);
-    } else if (!loading && data && poll && (data.gameOver || (data.chatFirst === (data.moves.length % 2)))) {
-      console.log("clearing poll because the data says its ok");
-      clearTimeout(poll);
-      setPoll(null);
-    }
-
-    if (!loading && data && data.gameConfig) {
-      setResults(data);
-
-      const remainingTime = calculateRemainingTime(data.moves, data.gameConfig, ['w', 'b'][data.moves.length % 2]);
-      if (remainingTime < 0) {
-        if (!data.gameOver) resolveGameByClock(turn === 'b' ? 'w' : 'b');
-        if (poll) {
-          clearTimeout(poll);
-          setPoll(null);
-        }
-      } 
-    }
-  }, [loading]);
   
   if (loading && !data) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -560,7 +499,7 @@ function GameLayout({ playerId, id }) {
         hilighter={hilighter}
         initialVotes={votes}
         moves={moves}
-        polling={poll}
+        postMove={postMove}
         setColorChoice={setColorChoice}
         setFlash={setFlasher}
         startGame={startGame}

@@ -2,8 +2,8 @@ const Borderline = () => {
   return (
     <svg className="svg" width="100%" height="100px">
       <g className="seventeen">
-        <line x1="18" y1="0" x2="268" y2="0" stroke="#217" strokeWidth="2"/>
-        <line x1="1100" y1="0" x2="1367" y2="0" stroke="#217" strokeWidth="2"/>
+        <line x1="18" y1="0" x2="458" y2="0" stroke="#217" strokeWidth="2"/>
+        <line x1="920" y1="0" x2="1367" y2="0" stroke="#217" strokeWidth="2"/>
       </g>
       <g className="fourteen">
         <line x1="8" y1="0" x2="208" y2="0" stroke="#217" strokeWidth="2"/>

@@ -12,7 +12,11 @@ let ws = null;
 // use web socket to connect to the twitch channel IRC chat
 // add moves from chat to the log 
 // disconnect when there's no time left
-const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hilighter, chatFirst) => {
+const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hilighter, chatFirst, threshold, postMove) => {
+  const moves = {};
+  const voters = {};
+  const votes = [];
+  const movesData = {};
 
   if (!channel) return;
 
@@ -68,8 +72,10 @@ const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hili
       // get the message
       const messageText = parsedMessage.trailing.toUpperCase().trim();
       const words = messageText.split(' ');
-      if (!messageText.startsWith("!move") || !messageText.startsWith("!see") || words.length <1) {
+      console.log(messageText);
+      if (!messageText.startsWith("!") || words.length < 1) {
         // not a command, return;
+        console.log('hello');
         return;
       }
       // assuming it was a command "move" or "see" let's proceed 
@@ -110,11 +116,32 @@ const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hili
           console.log('wrong piece L bozo');
           return;
         }
+        movesData[text] = moveData;
         const username = parsedMessage.prefix.split('!')[0];
         console.log("valid move from ", username);
         moveData.username = username;
         // add the move to be displayed in the log with the function
         addMessage(moveData);
+        votes.push({ ...moveData, username });
+        // delete old move if user already voted
+        if (voters[username]) {
+          moves[voters[username]] = moves[voters[username]].filter((value) => value !== username);
+        }
+        // set new vote 
+        voters[username] = text;
+        if (!moves[text]) {
+          moves[text] = [username];
+        } else if (!moves[text].includes(username)) {
+          moves[text].push(username);
+        }
+        if (moves[text].length >= threshold) {
+          console.log("THRESHOLD ACHIEVED!");
+          // post move now 
+          // todo - need to make sure votes are saved incase the client disconnects 
+          // but that's not super important but ideally we want all votes saved in a game history
+          // so yeah anyways
+          postMove(moveData);
+        }
       } else if (/^[A-K](?:[0-9]|1[01])$/.test(text)) {
         const moveToFlash = letterToNumber(text);
         // flash move
@@ -123,6 +150,9 @@ const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hili
         // unflash it after a certain amount of time of course 
       } else if (text.startsWith('!REFRESH')) {
         window.location.reload();
+      } else if (text.startsWith('!RESIGN')) {
+        // post move for other team to win 
+        postMove({ winner: chatFirst ? 'w': 'b' });
       }
     }
   };

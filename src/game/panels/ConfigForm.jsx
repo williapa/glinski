@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 import ColorButtonPanel from './ColorButtonPanel';
 const style = { 
   border: '1px solid rgb(5,5,5,.85)',
-  backgroundColor: 'rgb(234,255,24, .81)',
+  backgroundColor: 'rgba(5,5,5,.14)',
 };
 
 const ConfigForm = forwardRef(({ 
@@ -16,8 +16,8 @@ const ConfigForm = forwardRef(({
       id="turnMin"
       name="turnMin"
       type="number"
-      min={5}
-      max={14}
+      min={1}
+      max={60}
       defaultValue={10}
       step={1} 
     />

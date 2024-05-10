@@ -20,11 +20,6 @@ per breakpoint:
   position: absolute;
 }
 
-.captureContainer {
-  left: 16px;
-  bottom: 50%;
-}
-
 .bodyScroll {
   overflow-x: hidden;
 }
@@ -50,7 +45,7 @@ per breakpoint:
 }
 
 .timeLabel.user {
-  background: #8E44AD;
+  background:#8E44AD;
 }
 
 @keyframes floatAnimation {
@@ -71,7 +66,6 @@ per breakpoint:
   border: 1px solid black;
   border-radius: 3px;
   text-align: left;
-  background-color: #fffeed;
   box-shadow: 0px 0px 2px 2px lightgrey, 0px 0px 0px 3px black;
 }
 
@@ -101,9 +95,15 @@ per breakpoint:
   background-color: white;
   color: black;
 }
+.moveLog-item.instruction,  .moveLog-item.instruction:hover {
+  background-color: rgba(5, 5, 5, 0.1);
+  margin-top: 0px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+}
 
 .moveLog-header {
-  background-color: rgb(234,255,24, .81);
+  background-color: rgb(179, 152, 214,.3);
   box-shadow: 0px 2px 0px 0px white, 0px 3px 0px 0px black;
   border-bottom: 1px solid black;
   position: fixed; 
@@ -141,7 +141,7 @@ per breakpoint:
 }
 
 .label.left.check, .label.right.check {
-  background-color: yellow;
+  background-color: maroon;
   color: black;
 }
 
@@ -164,7 +164,7 @@ form.configForm {
 /* above 840px the screen scales the viewport to fit the grid on the left and the move log to the right */
 @media (min-width: 1700px) {
   .footer > span {
-    margin-left: 530px;
+    margin-left: 532px;
   }
   
   .label {
@@ -196,9 +196,9 @@ form.configForm {
 
   .capture {
     font-size: 30px;
-    top: 670px;
-    min-width: 52px;
-    max-width: 52px;
+    top: 270px;
+    min-width: 122px;
+    max-width: 122px;
   }
 
   .left.capture {
@@ -206,13 +206,13 @@ form.configForm {
   }
 
   .right.capture {
-    left: 1286px;
+    left: 1226px;
   }
 
   .logo {
     width: 36px;
-    top: 30px;
-    left: 1525px;
+    top: 25px;
+    left: 1481px;
   }
 
   .moveLog {
@@ -239,8 +239,8 @@ form.configForm {
   }
   
   .moveLog-header .log #findme {
-    padding-top: 18px;
-    font-size: 36.4px;
+    padding-top: 13px;
+    font-size: 26.4px;
   }
 
   .moveLog-header .count {
@@ -249,8 +249,8 @@ form.configForm {
 
   form.configForm {
     position: absolute;
-    top: 1090px;
-    left: 105px;
+    top: 630px;
+    left: 245px;
   }
 
   form.configForm label, form.configForm input {
@@ -267,7 +267,7 @@ form.configForm {
   }
 
   .btn-group {
-    left: 960px;
+    left: 660px;
     top: -46px;
   }
 
@@ -277,7 +277,7 @@ form.configForm {
   }
 
   svg.svg {
-    top: 1036px;
+    top: 590px;
     left: 0;
     position: absolute;
   }
@@ -288,12 +288,12 @@ form.configForm {
   }
 
   .scale {
-    transform: scale(1.1);
+    transform: scale(.6);
   }
   
   .scale.position {
-    margin-top: 80px;
-    margin-left: 8%;
+    margin-top: -180px;
+    margin-left: 100px;
   }
 }
 

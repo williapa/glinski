@@ -18,7 +18,7 @@ const MoveLog = ({
   hilighter,
   initialVotes,
   moves,
-  polling,
+  postMove,
   useMuted,
   setColorChoice,
   setFlash,
@@ -76,6 +76,9 @@ const MoveLog = ({
 
   const wrapSocketStartGame = (username) => {
     setVotes([]);
+    setSocket(null);
+    clearInterval(startGameInterval);
+    setStartGameInterval(null);
     startGame({ preventDefault: () => {} }, username);
   }
 
@@ -84,11 +87,12 @@ const MoveLog = ({
     // use moves length to determine if chat turn
     const chatTurn = !(moves.length % 2) === chatFirst && !gameOver;
     // open socket if chat turn & no socket 
-    if (chatTurn && !socket && !polling) {
+    if (chatTurn && !socket) {
       console.log('start log chat');
-      const webSocket = logChat(addVote, board, () => setSocket(null), channel, enPassantPawnPosition, hilighter, chatFirst);
+      const thresh = document.getElementById("votes").value;
+      const webSocket = logChat(addVote, board, () => setSocket(null), channel, enPassantPawnPosition, hilighter, chatFirst, thresh, postMove);
       setSocket(webSocket);
-    } else if (socket && (!chatTurn || polling || gameOver)) {
+    } else if (socket && (!chatTurn || gameOver)) {
       console.log('stop log chat');
       // close socket if not chat turn && still socket 
       socket.close();
@@ -120,7 +124,7 @@ const MoveLog = ({
         setStartGameInterval(null);
       }
     };
-  }, [board, channel, chatFirst, enPassantPawnPosition, gameOver, moves, polling, socket]);
+  }, [board, channel, chatFirst, enPassantPawnPosition, gameOver, moves, socket]);
 
   useEffect(() => {
     setVotes([...initialVotes]);
@@ -157,7 +161,6 @@ const MoveLog = ({
           ) : ''
         }
         <button style={{ display: 'none' }} onClick={ai}> refresh </button>
-        { polling? <li key="r" className="moveLog-item">There may be a delay when adding votes.</li> : ''}
         {movesAndVotes.map((move, index) => (
           <li key={index} className="moveLog-item" onMouseEnter={() => hoverMove(move.startPosition, move.endPosition)}>
             { move.username ? 

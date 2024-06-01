@@ -15,7 +15,6 @@ import ConfigForm from './panels/ConfigForm.jsx';
 import MoveLog from './panels/MoveLog.jsx';
 import PlayerLabels from './panels/labels/PlayerLabels';
 import useFetch from '../hooks/useFetch';
-import archiveGame from '../storage/archiveGame.js';
 import endGame from '../storage/endGame.js';
 import saveGame from '../storage/saveGame.js';
 import { useDisableClicks } from '../hooks/useDisableClicks';
@@ -243,7 +242,7 @@ function GameLayout({ id }) {
       setResults(rxsxlts);
       delete move.username;
       // the value passed to archiveGame is the NEW current-game value. it auto backs up the old currentGame
-      archiveGame(rxsxlts);
+      // archiveGame(rxsxlts);
       if (userChoice !== 'white') {
         console.log('chat is not first');
         setClicksDisabled(false);

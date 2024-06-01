@@ -99,7 +99,7 @@ body.freeze {
 
 .inputSpot {
   position: absolute;
-  top: calc(66vh - 42px);
+  top: calc(66vh - 82px);
   left: calc(54vw - 174px);
 }
 

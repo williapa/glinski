@@ -1,0 +1,1863 @@
+.capture {
+  position: absolute;
+  color: #445;
+  z-index: 1;
+}
+
+.bodyScroll {
+  overflow-x: hidden;
+}
+
+.enter {
+  animation: entrance 1.7s;
+}
+
+@keyframes entrance {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.timeLabel {
+  position: relative;
+  background: #6d6d6d;
+  color: white;
+  border: 1px solid #445;/*&*/;
+  border-radius: 9px;
+  padding: 3px;
+  padding-left: 6px;
+  font-size: 11px;
+  top: -4px;
+  margin-right: 4px;
+  transition: background-color .3s ease-in-out;
+}
+
+.moveLog-item.b .timeLabel {
+  color: white;
+  background: #445;/*&*/
+}
+.moveLog-item.w .timeLabel {
+  color: #445;/*&*/
+  background: white;
+}
+
+.moveLog-item.b .timeLabel.user, .moveLog-item.w .timeLabel.user {
+  background:#8E44AD;
+  color: white;
+}
+
+.moveLog {
+  position: fixed;
+  overflow-x: hidden;
+  border: 1px solid rebeccapurple;
+  border-radius: 1px;
+  text-align: left;
+  box-shadow: 0px 0px 2px 2px white, 0px 0px 0px 3px rebeccapurple;
+  background-color: white;
+}
+
+.moveLog-list {
+  overflow-y: scroll;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.moveLog-item {
+  color: #445; /*&*/
+  margin-top: 12px;
+  margin-left: 3px;
+  padding-left: 5px;
+  padding-right: 8px;
+  margin-right: 1px;
+  text-align: left;
+  transition: background-color .3s ease-in-out;
+}
+
+.moveLog-item:hover {
+  cursor: pointer;
+  /*background-color: #fffedc; */
+}
+
+.moveLog-item.instruction,  .moveLog-item.instruction:hover {
+  margin-top: 0px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+}
+
+.moveLog-header {
+  background-color: rgb(179 152 214 / 19%); /* rgb(68 68 85 / 11%); */ /* rgb(162 68 173 / 28%); */ /* rgb(77 130 176 / 30%); /* rgb(142 68 173 / 28%);*/ /*#F9F871; */ /* rgb(179, 152, 214,.3); */
+  box-shadow: 0px 2px 0px 0px white, 0px 3px 0px 0px rebeccapurple;
+  border-bottom: 1px solid rebeccapurple;
+  position: fixed; 
+  padding: 12px;
+}
+
+.moveLog-header .count {
+  color: #a4a4a4;
+}
+
+.logo {
+  position: fixed;
+  top: 24px;
+}
+
+.label {
+  font-weight: 600;
+  box-shadow: 0px 0px 0px 1px rebeccapurple, 0px 0px 0px 3px white, 0px 0px 0px 4px rebeccapurple;
+  border-radius: 1px;
+  display: inline-block;
+  padding: 8px 6px;
+  position: absolute;
+  word-break: break-word;
+  opacity: .75;
+  z-index: 1;
+  text-align: left;
+}
+
+.label.left {
+  background: #445;
+  color: white;
+}
+
+.label.right {
+  background: white;
+  color: #445;/*&*/;
+}
+
+form.configForm {
+  height: 30px;
+  border-radius: 1px;
+}
+
+.capture {
+  z-index: -1;
+}
+
+/* screen size specifics */
+
+/* todo - might put this in a responsive.css */
+
+/* above 840px the screen scales the viewport to fit the grid on the left and the move log to the right */
+@media (min-width: 1824px) {
+  .footer > span {
+    margin-left: calc(50vw - 380px);
+  }
+  
+  .animation .bg {
+    bottom: 300px;
+    width: 319px;
+    left: 1228px;
+  }
+
+  .animation input {
+    left: 1236px;
+  }
+
+  .animation .hmm { 
+    left: 1448px;
+  }
+
+  .label {
+    padding-left: 12px;
+    text-align: left;
+    left: calc(50vw - 808px);
+    font-size: 19px;
+    min-width: 260px;
+    max-width: 260px;
+    min-height: 32px;
+    max-height: 32px;
+    z-index: 1;
+  }
+
+  .label.left {
+    top: 20px;
+  }
+
+  .label.right {
+    top: 1043px;
+  }
+
+  .clock {
+    left: calc(50vw - 600px);
+    transform: scale(.44);
+  }
+
+  .left.clock {
+    top: -18px;
+  }
+
+  .right.clock {
+    top: 1004px;
+  }
+
+  .capture {
+    font-size: 33px;
+    left: calc(50vw - 80px);
+    min-width: 330px;
+    max-width: 330px;
+    z-index: 1;
+  }
+
+  .left.capture {
+    top: 12px;
+  }
+
+  .right.capture {
+    top: 1016px;
+  }
+
+  .logo {
+    width: 42px;
+    top: 36px;
+    left: calc(50vw + 617px);
+  }
+
+  .moveLog {
+    left: calc(50vw + 358px); /*1231px;*/
+    top: 18px;
+    bottom: 60px;
+    font-size: 24px;
+    height: calc(100vh - 81px);
+    max-height: 1142px;
+    width: 314px;
+  }
+
+  .moveLog-list {
+    position: fixed;
+    top: 97px;
+    left: calc(50vw + 358px); /*1231px;*/
+    bottom: 60px;
+    width: 314px;
+    height: calc(100vh - 159px);
+    max-height: 1065px;
+  }
+
+  .moveLog-header {
+    width: 290px;
+    height: 50px;
+  }
+  
+  .moveLog-header .log #findme {
+    padding-top: 8px;
+    font-size: 26.4px;
+  }
+
+  .moveLog-header .count {
+    font-size: 26px;
+  }
+
+  form.configForm {
+    position: absolute;
+    top: 1128px;
+    left: calc(50vw - 812px);
+    padding: 0px 3px;
+    z-index: 0;
+    min-height: 35px;
+    max-height: 35px;
+    padding-left: 5px;
+    padding-right: 10px;
+  }
+
+  form.configForm label {
+    top: -15px;
+    position: relative;
+    font-size: 15px;
+    padding-left: 6px;
+  }
+
+  form.configForm input {
+    font-size: 13.5px;
+    width: 18.5px;
+    top: -15px;
+    position: relative;
+  }
+
+  .btn-group {
+    left: 238px;
+    top: -47px;
+  }
+
+  .btn-group button {
+    padding-top: 9px;
+    font-size: 16px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .btn-group button:nth-child(1) {
+    border-top-left-radius: 1px;
+    border-bottom-left-radius: 1px;
+  }
+  .btn-group button:nth-child(2) {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+  }
+
+  .popup.position {
+    top: 288px;
+    left: calc(50vw - 220px);
+  }
+
+  .commands {
+    min-height: 23px;
+    max-height: 23px;
+  }
+
+  .ticker {
+    padding: 2.5px;
+    top: 1128px;
+    left: calc(50vw - 136px);
+    min-width: 465px;
+    max-width: 465px;
+    min-height: 30px;
+    max-height: 30px;
+    font-size: 22px;
+    z-index: 1;
+  }
+
+  .commands {
+    top: 1128px;
+    left: calc(50vw - 255px);
+    font-size: 19px;
+    min-height: 22px;
+    max-height: 22px;
+  }
+
+  #switch {
+    top: -1px;
+    left: 471px;
+    width: 64px;
+    height: 37px;
+  }
+
+  #switch .slider {
+    height: 37px;
+  }
+
+  #switch .slider:before {
+    padding-top: 8px;
+    font-size: 15px;
+    height: 25px;
+    width: 32px;
+    bottom: 2px;
+    left: 2px;
+  }
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(34px);
+    -ms-transform: translateX(34px);
+    transform: translateX(34px);
+  }
+  
+  .scale {
+    transform: scale(0.92) rotate(90deg);
+  }
+  
+  .scale.position {
+    margin-top: 49px;
+    margin-left: calc(50vw - 798px);
+  }
+}
+
+@media (max-width: 1823px) and (min-width: 1441px) {
+  .perspective {
+    height: max(calc(100vh - 804px), 48px); /* Height is the full viewport height minus 1500px */
+  }
+
+  .footer > span {
+    margin-left: 410px;
+  }
+
+  .animation .bg {
+    left: 996px;
+    min-width: 338px;
+    max-width: 338px;
+  }
+  .animation input {
+    left: 1004px;
+    min-width: 212px;
+    max-width: 212px;
+  }
+
+  .animation .hmm { 
+    left: 1232px;
+  }
+
+  .label {
+    text-align: left;
+    left: 91px;
+    font-size: 18px;
+    min-width: 211px;
+    max-width: 211px;
+    min-height: 32px;
+    max-height: 32px;
+    z-index: 1;
+  }
+
+  .label.right {
+    top: 700px;
+  }
+
+  .label.left {
+    top: 16px;
+  }
+
+  .clock {
+    left: 240px;
+    transform: scale(.44);
+  }
+
+  .left.clock {
+    top: -23px;
+  }
+
+  .right.clock {
+    top: 661px;
+  }
+
+  .capture {
+    font-size: 27px;
+    left: 666px;
+    min-width: 245px;
+    max-width: 245px;
+    z-index: 1;
+  }
+
+  .left.capture {
+    top: 14px;
+  }
+
+  .right.capture {
+    top: 696px;
+  }
+
+  .logo {
+    width: 40px;
+    left: 1302px;
+    top: 26px;
+  }
+
+  .moveLog {
+    left: 1060px;
+    top: 14px;
+    font-size: 24px;
+    height: calc(100vh - 86px);
+    max-height: 790px;
+    width: 292px;
+  }
+
+  .moveLog-header {
+    width: 268px;
+    height: 36px;
+  }
+
+  .moveLog-header .log #findme {
+    font-size: 25px;
+  }
+
+  .moveLog-header .count {
+    font-size: 22px;
+  }
+
+  .moveLog-list {
+    position: fixed;
+    top: 79px;
+    left: 1060px;
+    width: 292px;
+    height: calc(100vh - 150px);
+    max-height: 726px;
+  }
+
+  form.configForm {
+    position: absolute;
+    top: 776px;
+    left: calc(5vw + 16px);
+    min-height: 30px;
+    max-height: 30px;
+    padding-right: 7px;
+    padding-left: 7px;
+  }
+
+  form.configForm input {
+    top: -18px;
+    position: relative;
+    font-size: 12.5px;
+    min-width: 20px;
+    max-width: 20px;
+  }
+
+  form.configForm label {
+    position: relative;
+    top: -18px;
+    font-size: 13.5px;
+  }
+
+  .btn-group {
+    left: 185px;
+    top: -47px;
+  }
+
+  .btn-group button {
+    padding: 8px 11.5px;
+    font-size: 12.5px;
+  }
+
+  .btn-group button:nth-child(1) {
+    border-top-left-radius: 1px;
+    border-bottom-left-radius: 1px;
+  }
+  
+  .btn-group button:nth-child(2) {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+  }
+
+  .popup.position {
+    top: 222px;
+    left: 503px;
+  }
+
+  .commands {
+    top: 776px;
+    left: calc(5vw + 458px);
+    font-size: 15px;
+  }
+
+  .ticker {
+    padding: 0px;
+    top: 776px; /*904px; */
+    min-width: calc(488px - 5vw);
+    max-width: calc(488px - 5vw);
+    left: calc(5vw + 555px);
+    min-height: 30px;
+    max-height: 30px;
+    font-size: 18px;
+    z-index: 1;
+  }
+
+  .scale {
+    transform: scale(.63) rotate(90deg);
+  }
+
+  .scale.position {
+    margin-top: -146px;
+    margin-left: -10px; /* 27px; -188px  */
+  }
+
+  #switch {
+    left: 369px;
+    top: -1px;
+    width: 60px;
+  }
+
+  #switch .slider {
+    height: 32px;
+  }
+
+  #switch .slider:before {
+    padding-top: 7px;
+    font-size: 12.5px;
+    height: 21px;
+    width: 28px;
+    bottom: 2px;
+    left: 2px;
+  }
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(28px);
+    -ms-transform: translateX(28px);
+    transform: translateX(28px);
+  }
+}
+
+@media (max-width: 1440px) and (min-width: 1142px) {
+  .perspective {
+    height: max(calc(100vh - 707px), 48px); /* Height is the full viewport height minus 1500px */
+  }
+
+  .footer {
+    z-index: 11;
+  }
+
+  .footer > span {
+    margin-left: 274px;
+  }
+
+  .animation input {
+    left: 884px;
+    width: 122px;
+  }
+
+  .animation .bg {
+    left: 874px;
+    min-width: 255px;
+    max-width: 255px;
+  }
+
+  .animation .hmm {
+    left: 1026px;
+  }
+
+  .label {
+    text-align: left;
+    left: 14px;
+    font-size: 14px;
+    min-width: 160px;
+    max-width: 160px;
+    min-height: 28px;
+    max-height: 28px;
+  }
+
+  .label.right {
+    top: 608px;
+  }
+
+  .label.left {
+    top: 14px;
+  }
+
+  .clock {
+    left: 107px;
+    transform: scale(.41);
+  }
+
+  .left.clock {
+    top: -27px;
+  }
+  
+  .right.clock {
+    top: 567px;
+  }
+
+  .capture {
+    font-size: 20px;
+    left: 528px;
+    min-width: 208px;
+    max-width: 208px;
+    z-index: 1;
+  }
+
+  .left.capture {
+    top: 12px;
+  }
+
+  .right.capture {
+    top: 608px;
+  }
+  
+  .logo {
+    width: 32px;
+    left: 1084px;
+    top: 26px;
+  }
+
+  .moveLog {
+    left: 876px;
+    top: 13px;
+    bottom: 60px;
+    font-size: 20px;
+    height: calc(100vh - 70px);
+    max-height: 692px;
+    width: 250px;
+  }
+
+  .moveLog-header {
+    width: 226px;
+    height: 32px;
+  }
+
+  .moveLog-header .log {
+    font-size: 22px;
+  }
+
+  .moveLog-header .count {
+    font-size: 18px;
+  }
+
+  .moveLog-list {
+    position: fixed;
+    top: 74px;
+    left: 878px;
+    bottom: 60px;
+    width: 250px;
+    height: calc(100vh - 130px);
+    max-height: 632px;
+  }
+
+  .moveLog-item {
+    font-size: 18px;
+  }
+
+  .moveLog-item .timeLabel {
+    font-size: 8px;
+  }
+
+  form.configForm label, form.configForm input {
+    top: -18px;
+    position: relative;
+  }
+
+  form.configForm {
+    position: absolute;
+    top: 677px;
+    left: calc(5vw + 16px);
+    min-height: 30px;
+    max-height: 30px;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  form.configForm input .btn-group button {
+    font-size: 13px;
+  }
+
+  form.configForm label {
+    font-size: 13px;
+    padding-left: 5.5px;
+    padding-right: 5.5px;
+  }
+
+  form.configForm input {
+    font-size: 13px;
+    width: 20px;
+  }
+
+
+  /* input hack - hide stupid browser buttons so i can make the number fields less wide */
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+  }
+
+
+  .btn-group {
+    left: 193px;
+    top: -47px;
+  }
+
+  .btn-group button {
+    padding: 8px 11.5px;
+    font-size: 12.5px;
+  }
+
+  .btn-group button:disabled {
+    display: none;
+  }
+
+  .popup.position {
+    top: 204px;
+    left: 438px;
+  }
+
+  .commands {
+    top: 677px;
+    left: calc(5vw + 422px);
+    font-size: 15px;
+    min-height: 17px;
+    max-height: 17px;
+  }
+
+  .ticker {
+    top: 677px;
+    min-width: calc(342px - 5vw);
+    max-width: calc(342px - 5vw);
+    left: calc(5vw + 519px);
+    font-size: 20.5px;
+    z-index: 1;
+    padding: 2px 0px;
+    min-height: 26px;
+    max-height: 26px;
+  }
+
+  #switch {
+    z-index: 5;
+    top: -1px;
+    left: 326px;
+    width: 58px;
+    height: 32px;
+  }
+
+  #switch .slider {
+    height: 32px;
+  }
+
+  #switch .slider:before {
+    padding-top: 7px;
+    font-size: 13px;
+    height: 21px;
+    width: 30px;
+    bottom: 2px;
+    left: 2px;
+  }
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(35px);
+    -ms-transform: translateX(35px);
+    transform: translateX(35px);
+  }
+  
+  .scale {
+    transform: scale(0.55) rotate(90deg); /* future use for table look: perspective(2800px) rotateY(-10deg) */
+  }
+
+  .scale.position {
+    margin-left: -147px;
+    margin-top: -193px;
+  }
+}
+
+@media (max-width: 1142px) and (min-width: 912px) {
+  .perspective {
+    height: max(calc(100vh - 647px), 48px); /* Height is the full viewport height minus 1500px */
+  }
+
+  .footer > span {
+    margin-left: calc(100px + 7vw);
+  }
+
+  .animation input {
+    right: 96px;
+    width: 125px;
+  }
+
+  .animation .bg {
+    right: 10px;
+    min-width: 228px;
+    max-width: 228px;
+  }
+
+  .animation .hmm {
+    right: 38px;
+    max-width: 50px;
+  }
+
+
+  .label {
+    text-align: left;
+    padding: 1px;
+    padding-left: 6px;
+    left: 12px;
+    font-size: 16px;
+    min-width: 188px;
+    max-width: 188px;
+    min-height: 34px;
+    max-height: 34px;
+  }
+
+  .label.right {
+    top: 557px;
+  }
+
+  .label.left {
+    top: 12px;
+  }
+
+  .clock {
+    left: -97px;
+    transform: scale(.34);
+  }
+
+  .left.clock {
+    top: 19px;
+  }
+  
+  .right.clock {
+    top: 460px;
+  }
+
+  .capture {
+    font-size: 18px;
+    left: 480px;
+    min-width: 172px;
+    max-width: 172px;
+    z-index: 1;
+  }
+
+  .left.capture {
+    top: 12px;
+  }
+
+  .right.capture {
+    top: 556px;
+  }
+
+  .logo {
+    width: 27px;
+    left: 860px;
+    top: 23px;
+  }
+
+  .moveLog {
+    left: 676px;
+    top: 13px;
+    bottom: 57px;
+    font-size: 20px;
+    height: calc(100vh - 72px);
+    max-height: 627px;
+    width: 221px;
+  }
+
+  .moveLog-header {
+    min-width: 197px;
+    max-width: 197px;
+    height: 20px;
+  }
+
+  .moveLog-header #findme {
+    top: 14px;
+  }
+
+  .moveLog-header .log {
+    font-size: 22px;
+  }
+
+  .moveLog-header .count {
+    font-size: 18px;
+  }
+
+  .moveLog-list {
+    position: fixed;
+    top: 62px;
+    left: 676px;
+    bottom: 57px;
+    width: 224px;
+    height: calc(100vh - 120px);
+    max-height: 579px;
+  }
+
+  .moveLog-item {
+    margin-top: 12px;
+    font-size: 16px;
+  }
+  .moveLog-item .timeLabel {
+    font-size: 8px;
+  }
+
+  form.configForm {
+    position: absolute;
+    top: 617px;
+    left: calc(5vw + 16px);
+    min-height: 24px;
+    max-height: 24px;
+    width: 123px;
+    padding: 0px 6px;
+  }
+
+  form.configForm label {
+    font-size: 11px;
+  }
+
+  form.configForm input {
+    padding: 0px;
+    width: 17px;
+  }
+
+  form.configForm label, form.configForm input {
+    position: relative;
+    top: -21px;
+  }
+
+  form.configForm input, .btn-group button {
+    font-size: 10.5px;
+  }
+
+  .btn-group {
+    left: 137px;
+    top: -50px;
+    padding: 3px 1px;
+  }
+
+  .btn-group button:disabled {
+    display: none;
+  }
+
+  .btn-group button {
+    padding: 6px 9px;
+  }
+
+  .popup.position {
+    top: 192px;
+    left: calc(262px + 7vw);
+  }
+
+  .commands {
+    top: 617px;
+    left: calc(5vw + 330px);
+    padding-top: 7px;
+    padding-bottom: 7px;
+    min-height: 10.5px;
+    max-height: 10.5px;
+    font-size: 10px;
+  }
+
+  .ticker {
+    top: 617px;
+    min-width: calc(262px - 5vw);
+    max-width: calc(262px - 5vw);
+    min-height: 16.5px;
+    max-height: 16.5px;
+    left: calc(5vw + 395px);
+    font-size: 10.5px;
+    z-index: 0;
+  }
+
+  .scale {
+    transform: scale(0.5) rotate(90deg);
+  }
+  /*
+  940 = 225
+  913 = 232
+  */
+  .scale.position {
+    margin-left: calc(-320px + 7vw); /* -247px; /* -321px */
+    margin-top: calc(-225px - (max(0px, (941px - 100vw)) / 8));
+  }
+
+  #switch {
+    top: -1px;
+    left: 245px;
+    width: 60px;
+    height: 26px;
+    z-index: 1;
+  }
+
+  #switch .slider {
+    height: 26px;
+  }
+
+  #switch .slider:before {
+    padding-top: 6px;
+    font-size: 11px;
+    height: 18px;
+    width: 28px;
+    bottom: 1px;
+    left: 1px;
+
+  }
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(30px);
+    -ms-transform: translateX(30px);
+    transform: translateX(30px);
+  }
+
+  /* input hack - hide stupid browser buttons so i can make the number fields less wide */
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+  }
+}
+
+/* below 840px the log is displayed below the board */
+@media (max-width: 911px) and (min-width: 768px) {
+  .perspective {
+    height: max(calc(100vh - 526px), 48px); /* Height is the full viewport height minus 1500px */
+  }
+
+  .footer > span {
+    margin-left: 76px;
+  }
+
+  .animation input {
+    width: 93px;
+    left: 571px;
+  }
+
+  .animation .bg {
+    left: 560px;
+    min-width: 199px;
+    max-width: 199px;
+  }
+
+  .animation .hmm {
+    left: 682px;
+    max-width: 50px;
+  }
+
+  .label {
+    left: 12px;
+    font-size: 12px;
+    min-width: 156px;
+    max-width: 156px;
+    min-height: 25px;
+    max-height: 25px;
+    padding: 1px;
+    padding-left: 2px;
+  }
+
+  .right.label {
+    top: 447px;
+  }
+
+  .left.label {
+    top: 12px;
+  }
+
+  .clock {
+    left: -109px;
+    transform: scale(.27);
+  }
+
+  .left.clock {
+    top: 4px;
+  }
+  
+  .right.clock {
+    top: 355px;
+  }
+
+  .capture {
+    position: absolute;
+    font-size: 16px;
+    left: 300px;
+    min-width: 140px;
+    max-width: 140px;
+    z-index: 1;
+  }
+
+  .left.capture {
+    top: 8px;
+  }
+
+  .right.capture {
+    top: 438px;
+  }
+
+  .logo {
+    width: 22px;
+    left: 154px;
+    top: 16px;
+    position: absolute;
+  }
+
+  .moveLog {
+    left: 564px;
+    top: 10px;
+    bottom: 52px;
+    font-size: 16px;
+    height: calc(100vh - 68px);
+    max-height: 506px;
+    width: 192px;
+  }
+
+  .moveLog-header {
+    position: absolute;
+    width: calc(100vw - 576px);
+    height: 32px;
+  }
+
+  .moveLog-header #findme {
+    font-size: 16px;
+  }
+
+  .moveLog-item {
+    margin-top: 11px;
+    font-size: 12px;
+  }
+
+  .moveLog-list {
+    height: calc(100vh - 128px);
+    max-height: 446px;
+    margin-top: 60px;
+    bottom: 60px;
+  }
+
+
+  .moveLog-item .timeLabel {
+    top: -3px;
+    font-size: 6px;
+  }
+
+
+  form.configForm {
+    position: absolute;
+    top: 494px;
+    left: calc(5vw + 8px);
+    max-height: 25px;
+    width: 140px;
+    padding: 0px;
+  }
+
+  form.configForm label {
+    font-size: 11px;
+  }  
+  
+  form.configForm label, form.configForm input {
+    position: relative;
+    top: -21px;
+  }
+
+  form.configForm input {
+    font-size: 10px;
+  }
+
+  .btn-group {
+    left: 139px;
+    top: -47px;
+    max-width: 91px;
+    padding: 0px 10px;
+  }
+
+  .btn-group button:disabled {
+    display: none;
+  }
+
+  .btn-group button {
+    min-height: 27px;
+    max-height: 27px;
+    font-size: 9px;
+  }
+
+  .popup.position {
+    top: 192px;
+    left: 237px;
+  }
+  
+  .scale {
+    transform: scale(0.4) rotate(90deg);
+  }
+  
+  .scale.position {
+    margin-right: calc(100vw - 484px);
+    margin-top: -422px;
+  }
+
+  .commands {
+    display: none;
+  }
+
+  .ticker {
+    min-width: calc(222px - 5vw);
+    max-width: calc(222px - 5vw);
+    left: calc(5vw + 328px);
+    padding: 1.5px 0px;
+    top: 494px;
+    font-size: 15px;
+    min-height: 22px;
+    max-height: 22px;
+    z-index: 1;
+  }
+
+  #switch {
+    top: -1px;
+    left: 247px;
+    width: 64px;
+    height: 29px;
+  }
+
+  #switch .slider {
+    height: 27px;
+  }
+
+  #switch .slider:before {
+    padding-top: 7px;
+    font-size: 11px;
+    height: 18px;
+    width: 30px;
+    bottom: 1px;
+    left: 1px;
+  }
+  /* input hack - hide stupid browser buttons so i can make the number fields less wide */
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+  }
+}
+
+@media (max-width: 768px) and (min-width: 600px) {
+  .bodyScroll {
+    /*overflow-y: auto; */
+  }
+
+  .perspective {
+    display: none;
+  }
+
+  .footer > span {
+    margin-left: 77px;
+  }
+
+  .animation input {
+    left: 237px;
+    max-width: 189px;
+  }
+
+  .animation .bg {
+    left: 228px;
+    min-width: 320px;
+    max-width: 320px;
+  }
+  
+  .animation .hmm {
+    left: 444px;
+  }
+  
+  .label {
+    left: 12px;
+    font-size: 30%;
+    min-width: 155px;
+    max-width: 155px;
+    min-height: 25px;
+    max-height: 25px;
+    padding: 1px;
+    padding-left: 2px;
+  }
+
+  .right.label {
+    top: 447px;
+  }
+
+  .left.label {
+    top: 12px;
+  }
+
+  .clock {
+    left: -109px;
+    transform: scale(.27);
+  }
+
+  .left.clock {
+    top: 4px;
+  }
+  
+  .right.clock {
+    top: 355px;
+  }
+
+  .capture {
+    position: absolute;
+    font-size: 14px;
+    left: 303px;
+    min-width: 132px;
+    max-width: 132px;
+  }
+
+  .left.capture {
+    top: 10px;
+  }
+
+  .right.capture {
+    top: 444px;
+  }
+
+  .logo {
+    width: 24px;
+    left: 211px;
+    top: 16px;
+    position: absolute;
+  }
+
+  .moveLog {
+    position: absolute;
+    left: 12px;
+    top: 524px;
+    font-size: 20px;
+    min-height: 222px;
+    height: calc(100vh - 630px);
+    width: 533px;
+  }
+
+  .moveLog-header {
+    position: absolute;
+    width: 97.25%;
+    height: 32px;
+  }
+
+  .moveLog-item {
+    margin-top: 10px;
+    font-size: 12px;
+  }
+
+  .moveLog-header .log {
+    font-size: 20px;
+  }
+
+  .moveLog-header .count {
+    font-size: 16px;
+  }
+
+  .moveLog-list {
+    margin-top: 60px;
+    min-height: 162px;
+    height: calc(100vh - 691px);
+  }
+
+
+  .moveLog-item .timeLabel {
+    top: -3px;
+    font-size: 6px;
+  }
+
+
+  form.configForm {
+    position: absolute;
+    top: 486px;
+    left: 9px;
+    max-height: 25px;
+    width: 139px;
+    padding: 0px;
+  }
+
+  form.configForm label {
+    font-size: 11px;
+  }  
+  
+  form.configForm label, form.configForm input {
+    position: relative;
+    top: -21px;
+  }
+
+  form.configForm input {
+    font-size: 10px;
+  }
+
+  .btn-group {
+    left: 373px;
+    top: -47px;
+    max-width: 91px;
+    padding: 0px 10px;
+  }
+
+  .btn-group button:disabled {
+    display: none;
+  }
+
+  .btn-group button {
+    font-size: 8px;
+  }
+
+  .popup.position {
+    top: 192px;
+    left: 236px;
+  }
+  
+  .scale {
+    transform: scale(0.4) rotate(90deg);
+  }
+  
+  .scale.position {
+    margin-right: calc(100vw - 484px);
+    margin-top: -422px;
+  }
+
+  .commands {
+    display: none;
+  }
+
+  .ticker {
+    padding: 3px;
+    top: 486px;
+    left: 158px;
+    width: 217px;
+    min-height: 19px;
+    max-height: 19px;
+    font-size: 13px;
+  }
+
+  #switch {
+    top: -1px;
+    left: 476px;
+    width: 64px;
+    height: 29px;
+    z-index: 1;
+  }
+
+  #switch .slider {
+    height: 27px;
+  }
+
+  #switch .slider:before {
+    padding-top: 7px;
+    font-size: 9px;
+    height: 18px;
+    width: 30px;
+    bottom: 1px;
+    left: 1px;
+  }
+  /* input hack - hide stupid browser buttons so i can make the number fields less wide */
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+ 
+  input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+  }
+}
+
+@media (max-width: 600px) {
+  .bodyScroll {
+    /* overflow-x: auto;
+    overflow-y: auto; */
+  }
+
+  .perspective {
+    display: none;
+  }
+
+  .footer > span {
+    margin-left: 58px;
+  }
+  
+  .animation input {
+    z-index: 4;
+    left: 144px;
+    min-width: 100px;
+    max-width: 100px;
+  }
+
+  .animation .hmm {
+    z-index: 4;
+    left: 264px;
+    min-width: 60px;
+    max-width: 60px;
+  }
+
+  .animation .bg {
+    z-index: 3;
+    left: 134px;
+    min-width: 218px;
+    max-width: 218px;
+  }
+
+  .label {
+    font-size: 11px;
+    min-height: 21px;
+    max-height: 21px;
+    min-width: 144px;
+    max-width: 144px;
+    padding: .5px;
+    padding-left: 1.5px;
+    left: 12px;
+  }
+
+  .right.label {
+    top: 406px;
+  }
+
+  .left.label {
+    top: 12px;
+  }
+
+
+  .clock {
+    left: -111px;
+    transform: scale(.25);
+  }
+
+  .left.clock {
+    top: -1px;
+  }
+  
+  .right.clock {
+    top: 315px;
+  }
+
+  .capture {
+    position: absolute;
+    font-size: 16px;
+    left: 276px;
+    min-width: 132px;
+    max-width: 132px;
+
+  }
+
+  .left.capture {
+    top: 4px;
+  }
+
+  .right.capture {
+    top: 396px;
+  }
+
+  .logo {
+    width: 24px;
+    left: 192px;
+    top: 16px;
+    position: absolute;
+  }
+
+  .moveLog {
+    position: absolute;
+    left: 11px;
+    top: 478px;
+    font-size: 13px;
+    min-height: 157px;
+    height: calc(100vh - 580px);
+    width: calc(100vw - 22px);
+    max-width: 476px;
+  }
+
+  .moveLog-header {
+    position: absolute;
+    width: calc(100vw - 22px);
+    max-width: 476px;
+    height: 32px;
+  }
+
+  .moveLog-header .log {
+    font-size: 20px;
+  }
+
+  .moveLog-header .count {
+    font-size: 16px;
+  }
+
+  .moveLog-item {
+    margin-top: 10px;
+    font-size: 12px;
+  }
+
+  .moveLog-list {
+    margin-top: 60px;
+    min-height: 97px;
+    height: calc(100vh - 640px);
+  }
+
+  .moveLog-item .timeLabel {
+    top: -2px;
+    font-size: 6px;
+  }
+
+  form.configForm {
+    position: absolute;
+    top: 440px;
+    left: 8px;
+    max-height: 25px;
+    width: 132px;
+    padding: 0px;
+  }
+
+  form.configForm label {
+    font-size: 11px;
+  }  
+  
+  form.configForm label, form.configForm input {
+    position: relative;
+    top: -21px;
+  }
+
+  form.configForm input {
+    font-size: 10px;
+  }
+
+  .btn-group {
+    left: 309px;
+    top: -47px;
+    max-width: 101px;
+    padding: 0px 2px;
+  }
+
+  .btn-group button:disabled {
+    display: none;
+  }
+
+  .btn-group button {
+    font-size: 11px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+
+  .popup.position {
+    top: 182px;
+    left: 220px;
+  }
+  
+  .scale {
+    transform: scale(0.36) rotate(90deg);
+  }
+  
+  .scale.position {
+    margin-right: calc(100vw - 448px);
+    margin-top: -437px;
+  }
+
+  .commands {
+    display: none;
+  }
+
+  .ticker {
+    padding: 2.5px;
+    font-size: 13.5px;
+    top: 440px;
+    left: 150px;
+    width: 155px;
+    min-height: 20px;
+    max-height: 20px;
+  }
+
+  #switch {
+    top: -1px;
+    left: 419px;
+    width: 64px;
+    height: 29px;
+  }
+
+  #switch .slider {
+    height: 27px;
+  }
+
+  #switch .slider:before {
+    padding: 6px;
+    font-size: 12px;
+    height: 13px;
+    width: 30px;
+    bottom: 1px;
+    left: 1px;
+  }
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+  }
+  /* input hack - hide stupid browser buttons so i can make the number fields less wide */
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+ 
+  input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+  }
+}
+
+@media (max-width: 500px) {
+  .footer {
+    z-index: 4;
+  }
+
+  .btn-group {
+    left: 295px;
+  }
+
+  .ticker {
+    width: 140px;
+  }
+
+  #switch {
+    top: 52px;
+    left: 260px;
+    z-index: 3;
+  }
+  .scale.position {
+    margin-right: calc(100vw - 446px);
+    margin-top: -437px;
+  }
+}
+
+@media (max-width: 412px) {
+  .footer > span {
+    margin-left: 36px;
+  }
+
+  .logo {
+    left: 171px;
+  }
+
+  .scale {
+    transform: scale(0.3) rotate(90deg);
+  }
+
+  .scale.position {
+    margin-right: calc(100vw - 400px);
+    margin-top: -459px;
+  }
+
+  .label {
+    min-height: 16px;
+    max-height: 16px;
+    min-width: 132px;
+    max-width: 132px;
+  }
+
+  .label.left {
+    top: 12px;
+  }
+
+  .label.right {
+    top: 342px;
+  }
+
+  .capture {
+    font-size: 12.5px;
+    left: 242px;
+    min-width: 100px;
+    max-width: 100px;
+  }
+
+  .capture.right {
+    top: 334px;
+  }
+
+  .clock {
+    transform: scale(.2);
+    left: -120px;
+  }
+
+  .clock.left {
+    top: -10px;
+  }
+
+  .clock.right {
+    top: 254px;
+  }
+
+  form.configForm {
+    top: 406px;
+  }
+
+  .moveLog {
+    top: 444px;
+  }
+
+  .moveLog-list {
+    margin-top: 60px;
+    min-height: 95px;
+    height: calc(100vh - 640px);
+  }
+
+  .ticker {
+    top: 371px;
+    left: 8px;
+    width: 337px;
+  }
+
+  .btn-group {
+    left: 155px;
+  }
+
+  #switch {
+    top: -1px;
+    left: 281px;
+  }
+}
+
+/* css world record holder */ 

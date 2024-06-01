@@ -1,0 +1,116 @@
+.clock {
+  position: absolute;
+  text-align: center;
+  font-size: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 106px;
+  min-width: 316px;
+  max-width: 316px;
+  font-family: 'Courier New', Courier, monospace;
+  border: 2px solid #445; /*&*/
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-radius: 5px;
+  background-color: #B398D6;
+}
+
+.digit-container.blinking .digit.current {
+  animation: blink .5s alternate infinite;
+  box-sizing: border-box;
+}
+
+
+
+@keyframes blink {
+  from {
+    background: rgb(246, 0, 205, .54);
+  }
+  to {
+    background: rgba(5,5,5,.09);
+
+  }
+}
+
+.digit-container {
+  font: Courier monospace;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 68px;  /* Adjust as needed */
+  max-width: 68px;
+  height: 80px; /* Adjust as needed */
+  margin-top: -24px;  /* Adjust for spacing between digits */
+  margin-left: 2px;
+  margin-right: 2px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.digit {
+  position: absolute;
+  top: 0;
+  left: 4px;
+  min-width: 58px;
+  max-width: 58px;
+  height: 72px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #445;/*&*/
+  border-radius: 4px;
+  text-align: center;
+  transition: transform 1s, opacity 1s;
+  color:white;
+  font-weight:1000;
+  background-color: rgb(5, 5, 5, .56);
+}
+
+.seconds, .minutes {
+  font-size: 30px;
+  font-family: sans-serif;
+  position: absolute;
+  bottom: 2px;
+  color: #445;
+  font-weight: 400;
+  letter-spacing: 3px;
+}
+.seconds {
+  right: 9px;
+}
+
+.minutes {
+  left: 13px;
+}
+
+.digit-container.blinking .digit {
+  background-color: transparent;
+}
+
+.colon {
+  margin-top: -30px;
+  font-weight: 1000;
+}
+
+/* Style for the previous digit */
+.previous {
+  transform: translateY(-100%);
+  opacity: 0;
+  animation: slide-out 1s forwards;
+}
+
+@keyframes slide-out {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-100%); opacity: 0; }
+}
+
+/* Style for the current digit */
+.current {
+  animation: slide-in 1s forwards;
+}
+
+@keyframes slide-in {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

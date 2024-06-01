@@ -1,0 +1,41 @@
+.ticker {
+  border: 1px solid #445;
+  position: absolute;
+  top: 165px;  /* Position it at the bottom, you can adjust as needed */
+  left: 788px;
+  width: 284px;  /* Full width of the viewport */
+  white-space: nowrap;
+  overflow: hidden;
+  background-color: white; /* Light grey background, adjust as needed */
+  color: #445; /*&*/ /* #333 Dark text color, adjust as needed */
+  padding: 4px 0;
+  font-family: Arial, sans-serif;
+  font-size: 13.5px;
+  z-index: -1;
+  border-radius: 1px;
+}
+
+.ticker .scroller {
+  width: fit-content;
+  display: flex;
+  animation: scrollText 18s linear infinite;
+}
+
+@keyframes scrollText {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.commands {
+  border-radius: 1px;
+  position: absolute;
+  background-color: rgb(179 152 214);
+  border: 1px solid #445;
+  color: white;
+  padding: 6.5px;
+  padding-right: 9px;
+}

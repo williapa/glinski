@@ -7,6 +7,7 @@
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
     "canvas-confetti": "^1.9.3",
+    "crypto-js": "^4.2.0",
     "react": "^18.2.0",
     "react-app-rewired": "^2.2.1",
     "react-dom": "^18.2.0",
@@ -16,7 +17,7 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "export PORT=3003 REACT_APP_API_STAGE=local && react-scripts start",
+    "start": "export PORT=3003 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

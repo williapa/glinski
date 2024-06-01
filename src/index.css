@@ -2,8 +2,26 @@ body {
   font-family: sans-serif;
   font-size: 40px;
   text-align: center;
-  background: linear-gradient(to right, #9d9d9d 0%, #fffeed 1%, #efefef 46%, white 99%);
+  background-image: url('../public/6pt-star-pattern.png');
+  background-blend-mode: screen, normal;
+  background-repeat: repeat;
+  background-size: 5%;
   margin: 0px;
+  background-color: rgb(179 152 214 / 20%);/*inc. opacity of the movelog header bg */ /* rgb(153 71 215 / 21%); */ /*rgba(183, 127, 215, 0.182);  */
+  animation: pan 120s ease-in-out alternate-reverse infinite;
+  will-change: background-position;
+}
+
+@keyframes pan {
+  0% {
+    background-position: 0% 100%;
+  }
+  50% {
+    background-position: 50% 50%;
+  }
+  100% {
+    background-position: 0% 100%;
+  }
 }
 
 label {
@@ -12,20 +30,46 @@ label {
 
 .footer {
   position: fixed;
-  bottom: 0;
+  bottom: 0px;
   width: 100%;
   border-top: 1px solid #B398D6;
-  background-color: #D9BFFF;
+  background-color: #445;
   color: #efefef;
   padding-bottom: 0px;
   font-size: 13px;
-  min-height: 32px;
-  max-height: 32px;
-  padding-top: 8px;
-  z-index: 1;
+  min-height: 30px;
+  max-height: 30px;
+  padding-top: 11px; /*8px; */
+  z-index: 3;
+  text-align: left;
 }
 
 .footer-link {
   color: white;
   font-size: 13px;
+  margin-left: 16px;
+  margin-right: 16px;
+  text-decoration: none;
+}
+
+video {
+  position: absolute;
+  top: 23%;
+  left: 17%;
+}
+
+.space {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.perspective {
+  z-index: -1;
+  position: fixed;
+  bottom: 40px; /* Positioned 40px above the bottom of the screen */
+  height: max(calc(100vh - 1152px), 48px); /* Height is the full viewport height minus 1500px 592 */
+  width: 100%; /* Full width at the bottom */
+  left: 0;
+  background: rgb(7,11,171, .11); /* white; */ /* #fffeee; */
+  clip-path: polygon(5% 0, 95% 0, 100% 100%, 0% 100%); /* Creates the inward slant */
 }

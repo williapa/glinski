@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import pieceMap from '../util/pieceMap';
+import pieceMap from '../../util/pieceMap';
 import './Popup.css';
 
 function Popup({ isVisible, color, onCancel, onConfirm }) {
@@ -9,8 +9,12 @@ function Popup({ isVisible, color, onCancel, onConfirm }) {
   };
 
   const handleConfirm = () => {
-    const { row, col } = isVisible.dest;
-    onConfirm(selectedOption, row, col);
+    if (!color) {
+      onConfirm();
+    } else {
+      const { row, col } = isVisible.dest;
+      onConfirm(selectedOption, row, col);
+    }
   };
 
   const filter = ([key]) => (key.charAt(0) === color && key.indexOf('Pawn') < 0 && key.indexOf('King') < 0);
@@ -24,25 +28,32 @@ function Popup({ isVisible, color, onCancel, onConfirm }) {
     }
   }, [options, selectedOption, color]);
 
+  const ColorOptions = (
+    <div className="options" style={{ display: 'flex' }}>
+      {options.map((option, index) => (
+        <button
+          key={index}
+          type="button"
+          className={`option-button ${selectedOption === option ? 'selected' : ''}`}
+          onClick={() => handleOptionClick(option)}
+          onMouseOver={(e) => e.target.style.backgroundColor = 'lightgray'}
+          onMouseOut={(e) => e.target.style.backgroundColor = ''}
+        >
+          {pieceMap[option]}
+        </button>
+      ))}
+    </div>
+  );
+
   return (
     isVisible && (
-      <div className="popup position" style={{ }}>
+      <div className="popup position">
         <form className="form">
-          <div className="options" style={{ display: 'flex' }}>
-            {options.map((option, index) => (
-              <button
-                key={index}
-                type="button"
-                className={`option-button ${selectedOption === option ? 'selected' : ''}`}
-                onClick={() => handleOptionClick(option)}
-                onMouseOver={(e) => e.target.style.backgroundColor = 'lightgray'}
-                onMouseOut={(e) => e.target.style.backgroundColor = ''}
-              >
-                {pieceMap[option]}
-              </button>
-            ))}
-          </div>
-          
+          { color ? ColorOptions : (
+            <p> 
+              Please confirm to hear sounds.
+            </p>
+          )}
           <button type="button" className="cancel-button" onClick={onCancel}>
             Cancel
           </button>

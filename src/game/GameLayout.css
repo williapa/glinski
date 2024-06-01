@@ -1668,7 +1668,7 @@ form.configForm {
   .btn-group {
     left: 309px;
     top: -47px;
-    max-width: 101px;
+    max-width: 110px;
     padding: 0px 2px;
   }
 
@@ -1746,6 +1746,10 @@ form.configForm {
  
   input[type="number"] {
     -moz-appearance: textfield; /* Firefox */
+  }
+
+  .hex .middle span {
+    font-size: 60px;
   }
 }
 

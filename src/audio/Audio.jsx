@@ -10,6 +10,8 @@ const Audio = ({ src, play }) => {
       const audio = audioRef.current;
       if (play && audioRef.current) {
         try {
+          // todo: this should be a form setting
+          audio.volume = .75;
           await audio.play();
         } catch (e) {
           console.warn('you played audio and it did not work: ', e);

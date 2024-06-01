@@ -41,7 +41,7 @@ function DraggablePiece({ turn, onStart, cellContent, row, col, chatFirst }) {
     const multiple = getMultiple();
     el.style.fontSize = `${baseFont * multiple}px`; // set font size of the piece
     el.style.top = '-10000px'; // Position it off-screen
-    el.style.color = team === 'w' ? "white" : "black";
+    el.style.color = team === 'w' ? "white" : "#445";
     document.body.appendChild(el); // Append to body
 
     // Set the created element as the drag image

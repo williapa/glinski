@@ -1,20 +1,25 @@
 const ConfigInstructions = () => (
   <>
-    <li key="bdg" className="moveLog-item instruction">
-      ▶️
-      <i><b>!play</b> - <br/> start a new game.</i>
-    </li>
-    <li key="bdh" className="moveLog-item instruction">
-      ⏱️
-      <i><b>!minutes #</b> - <br/> set clocks to # minutes</i>.
-    </li>
-    <li key="bdi" className="moveLog-item instruction">
-      🗳️
-      <i> <b>!votes #</b> - <br/> 1st move to get # votes is selected. </i>
-    </li>
-    <li key="bdj" className="moveLog-item instruction">
-      ⬛<i><b>!black</b></i> or ⚪<i><b>!white</b> - <br/> choose chat piece color.</i>
-    </li>
+    <span className="space" >
+      <span> 😎 </span>
+      <i><b>!g</b> - start game in </i> 𝙜𝙪𝙞𝙙𝙚𝙙 <i> mode with </i> 𝙃𝙚𝙭𝙌𝘾 <i> on chat's team.  </i>
+    </span>
+    <span className="space" >
+      <span> ▶️ </span>
+      <i><b>!play</b> - start a new game. </i>
+    </span>
+    <span className="space">
+      <span> ⏱️ </span> 
+      <i><b>!minutes #</b> - set clock <b> # </b> minutes</i>. 
+    </span>
+    <span className="space">
+      <span> 🗳️ </span> 
+      <i> <b>!votes #</b> - first move to <b> # </b> votes is selected. </i>
+    </span>
+    <span className="space">
+      <span> ⬛ </span>
+    <i> <b>!black</b> </i> or <span> ⚪ </span> <i> <b>!white</b> - choose chat's piece color. </i>
+    </span>
   </>
 );
 

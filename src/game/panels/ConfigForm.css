@@ -1,0 +1,72 @@
+
+/* w3schools toggle lfg */
+#switch {
+  position: absolute;
+  top: -66px;
+  right: 176px;
+  display: inline-block;
+  width: 58px;
+  height: 32px;
+}
+
+/* Hide default HTML checkbox */
+#switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider input for the ai on/off toggle selection */
+#switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(131, 131, 131, 1);
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 1px;
+}
+
+#switch .slider:before {
+  position: absolute;
+  content: "AI";
+  height: 26px;
+  width: 30px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+  font-size: 24px;
+  font-weight: 100;
+  border-radius: 1px;
+}
+
+#switch input:checked + .slider {
+  background-color: rgb(173 117 187);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px rgb(173 117 187);
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(32px);
+  -ms-transform: translateX(32px);
+  transform: translateX(32px);
+}
+
+/* input hack - hide stupid browser buttons so i can make the number fields less wide */
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}

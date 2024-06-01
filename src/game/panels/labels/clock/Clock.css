@@ -1,20 +1,22 @@
 .clock {
-  position: fixed;
+  position: absolute;
   text-align: center;
   font-size: 32px;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80px;
+  height: 106px;
+  min-width: 316px;
+  max-width: 316px;
   font-family: 'Courier New', Courier, monospace;
-  border: 2px solid black;
+  border: 2px solid #445; /*&*/
   padding-top: 8px;
   padding-bottom: 8px;
-  border-radius: 8px;
+  border-radius: 5px;
   background-color: #B398D6;
 }
 
-.digit-container.blinking {
+.digit-container.blinking .digit.current {
   animation: blink .5s alternate infinite;
   box-sizing: border-box;
 }
@@ -32,41 +34,54 @@
 }
 
 .digit-container {
+  font: Courier monospace;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 68px;  /* Adjust as needed */
-  height: 84px; /* Adjust as needed */
-  margin: 4px;  /* Adjust for spacing between digits */
+  min-width: 68px;  /* Adjust as needed */
+  max-width: 68px;
+  height: 80px; /* Adjust as needed */
+  margin-top: -24px;  /* Adjust for spacing between digits */
+  margin-left: 2px;
+  margin-right: 2px;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 4px;
 }
-
 .digit {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 56px;
+  left: 4px;
+  min-width: 58px;
+  max-width: 58px;
   height: 72px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 4px;
-  border: 2px solid black;
-  border-radius: 5px;
+  border: 2px solid #445;/*&*/
+  border-radius: 4px;
   text-align: center;
   transition: transform 1s, opacity 1s;
   color:white;
   font-weight:1000;
-}
-
-.left .digit {
-  background-color: rgba(146, 146, 146, .8);
-}
-
-.right .digit {
   background-color: rgb(5, 5, 5, .56);
+}
+
+.seconds, .minutes {
+  font-size: 30px;
+  font-family: sans-serif;
+  position: absolute;
+  bottom: 2px;
+  color: #445;
+  font-weight: 400;
+  letter-spacing: 3px;
+}
+.seconds {
+  right: 9px;
+}
+
+.minutes {
+  left: 13px;
 }
 
 .digit-container.blinking .digit {
@@ -74,9 +89,8 @@
 }
 
 .colon {
-  padding: 10px;
-  margin: 6px;
-  font-size: 24px;
+  margin-top: -30px;
+  font-weight: 1000;
 }
 
 /* Style for the previous digit */

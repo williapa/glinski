@@ -13,7 +13,7 @@ const typing = (inputString, setterFunction, sendFunction) => {
       clearInterval(intervalId); // Clear the interval
     }
     index++;
-  }, 350);
+  }, 100);
   return intervalId;
 };
 

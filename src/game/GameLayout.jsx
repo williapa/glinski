@@ -1,4 +1,3 @@
- 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import pieceColor from '../util/pieceColor';
 import Moves from '../moves';
@@ -9,21 +8,24 @@ import checkMate from '../util/checkMate';
 import filterMoves from '../util/filterMoves';
 import isValidPromotion from '../util/isValidPromotion';
 import newBoard from '../util/newBoard';
+import rng from '../util/rng.js';
 import CapturedPieces from './panels/CapturedPieces.jsx';
-import Animation from './animation/Animation.jsx';
 import BoardCell from './BoardCell';
 import ConfigForm from './panels/ConfigForm.jsx';
 import MoveLog from './panels/MoveLog.jsx';
 import PlayerLabels from './panels/labels/PlayerLabels';
-import useFetch from "../hooks/useFetch";
+import useFetch from '../hooks/useFetch';
+import archiveGame from '../storage/archiveGame.js';
+import endGame from '../storage/endGame.js';
+import saveGame from '../storage/saveGame.js';
 import { useDisableClicks } from '../hooks/useDisableClicks';
-import Ftr from "../footer/Ftr";
-import Borderline from "./Borderline.jsx";
-import Clocks from "./panels/labels/clock/Clocks";
-import AudioPlayer from "../audio/AudioPlayer";
+import Ftr from '../footer/Ftr';
+import Clocks from './panels/labels/clock/Clocks';
+import AudioPlayer from '../audio/AudioPlayer';
+import Ticker from './panels/ticker/Ticker.jsx';
+import hashRepeatedThrice from '../util/hashRepeatedThrice.js';
 import './GameBoard.css';
 import './GameLayout.css';
-import rowColToLetterCol from '../util/rowColToLetterCol.js';
 
 const cellColors = ['beige', 'peach', 'brown']; // these correspond to class names they are not the real colors im sorry
 
@@ -35,6 +37,10 @@ function GameLayout({ id }) {
     endPosition: { row: -1, col: -1, },
     keyCount: 0
   });
+  const [playersRng, setPlayersRng] = useState({ 
+    chat: 0,
+    streamer: 0
+  });
   const [chatFirst, setChatFirst] = useState(true);
   const [colorChoice, setColorChoice] = useState('white');
   const [inCheck, setCheck] = useState(false);
@@ -42,51 +48,68 @@ function GameLayout({ id }) {
   const [turn, setTurn] = useState('w');
   const [board, setBoard] = useState(newBoard());
   const [moves, setMoves] = useState([]);
+  const [moveHashTable, setMoveHashTable] = useState({});
   const [votes, setVotes] = useState([]);
   const [newMove, setNewMove] = useState({});
   const [hilightedCells, setHilightedCells] = useState({});
   const [enPassantPawnPosition, setEnPassantPawnPosition] = useState(false);
   const [capturedPieces, setCapturedPieces] = useState({ b: [], w: [] });
   const [gameOver, setGameOver] = useState(true);
-  const [turnMins, setTurnMins] = useState(10);
+  const [turnMins, setTurnMins] = useState(2);
   const useMuted = useState(false);
   const [sound, playSound] = useState(null);
   const [startTime, setStartTime] = useState(null);
   const [opponent, setOpponent] = useState('');
   const [block, setBlock] = useState(false);
-  const [aiMoveText, setAiMoveText] = useState(false);
+  const [soundAlert, setSoundAlert] = useState(true);
+  
+  const aiMove = async (isChatsMove = false) => {
+    console.log(playersRng);
+    const letAiMoveForStreamer = document.getElementById('aiMove').checked;
+    const letAiMoveForChat = document.getElementById('votes').value < 1;
+    const letAiMove = (chatFirst === (turn === 'w')) ? letAiMoveForChat : letAiMoveForStreamer;
+    if (!letAiMove) {
+      console.log('ai no move!');
+      return;
+    };
+    // force a random selection at later times in the game as well
+    const randomization = isChatsMove ? playersRng.chat : playersRng.streamer;
+    // now we roll the dice and find out if we get a good move or a borked one
+    // starting moves = random moves hence making it 0
+    const halfMoves = Math.floor(Math.random() * 100) < randomization ? 0 : moves.length;
 
-  const aiMove = async () => {
-    // todo: make a toggle that returns here, toggling ai
     setBlock(true);
     console.log('start ai move worker...');
     const startTime = new Date().getTime();
-    const aiWorker = new Worker(new URL('../worker/worker.js', import.meta.url), {
+    const aiWorker = new Worker(new URL('../worker/ai/worker.js', import.meta.url), {
       type: 'module'
     });
     const [moveValue, coords] = await new Promise((resolve) => {
-      aiWorker.addEventListener("message", (message) => {
+      aiWorker.addEventListener('message', (message) => {
         resolve(message.data);
       });
       aiWorker.onerror = (e) => {
         console.error('Worker error:', e.message);
       }; 
-      aiWorker.postMessage({ board, capturedPieces, chatFirst, enPassantPawnPosition });
+      aiWorker.postMessage({ board, capturedPieces, chatFirst, enPassantPawnPosition, isChatsMove, halfMoves });
     });
     const endTime = new Date().getTime();
     const totalTimeTaken = endTime - startTime;
     console.log(`ai took ${totalTimeTaken} ms to find this move:`); // includes module load
-    console.log(`coords: ${JSON.stringify(coords.startPosition)} to ${JSON.stringify(coords.endPosition)}. valued at: ${moveValue}`);
-    const remainingTime = calculateRemainingTime(moves, { startTime, turnMins }, chatFirst ? 'b' : 'w');
-    console.log("YOU HAVE THIS MUCH TIME LEFT!");
-    console.log(remainingTime);
+    console.log(coords);
+    console.log(moveValue);
+    const remainingTime = calculateRemainingTime(moves, { startTime, turnMins }, (chatFirst === isChatsMove ? 'w' : 'b'));
+    console.log(`remaining time: ${remainingTime}`);
     if (!coords) {
-      console.warn("coords are missing - not dropping piece. its just gonna sit.");
-    } else if ((remainingTime - 4) < 0) {
-      // the animation basically takes 4 seconds to post
-      // so if less than 4 seconds remain, it's over for the AI
-      console.log("THERE IS NO TIME TO MAKE A MOVE");
-      console.log("Sorry youre not a winner...");
+      if (inCheck) {
+        const winner = isChatsMove ? (chatFirst ? 'b' : 'w') : chatFirst ? 'w': 'b';
+        setGameOver(winner);
+      } else {
+        setGameOver('tie');
+      }
+    } else if ((remainingTime - 1) < 0) {
+      console.log('THERE IS NO TIME TO MAKE A MOVE');
+      console.log('Sorry youre not a winner... you will lose by clock F');
       return;
     } else {
       // re-use build on drop. since there's no more need for that functionality (for streamer)
@@ -97,31 +120,17 @@ function GameLayout({ id }) {
         col: coords.startPosition.column
       }
       const peace = board[startPos.row][startPos.col];
-      const plainTextMove = `${rowColToLetterCol(startPos.row, startPos.col)} ${rowColToLetterCol(coords.endPosition.row, coords.endPosition.col)}${coords.promotion ? ' ' + coords.promotion.charAt(1) : ''}`
-      // typing animation taken care of within Animation component
-      setAiMoveText(plainTextMove);
-      playSound('mouseClick');
-      // hilight cells after 300ms - enough time to see the first coordinate...somethin fucked up tho
-      setTimeout(() => {
-        hilightCells(coords.startPosition.row, coords.startPosition.column, peace);
-      }, 1000);
-      // trying to clean up before we go to bed
-      setTimeout(() => {
-        setHilightedCells({});
-      }, 3000);
       setTimeout(() => {
         setFlasher({
           startPosition: startPos,
           endPosition: coords.endPosition,
         });
         buildOnDrop(coords.endPosition.row, coords.endPosition.col, true, coords.promotion)(startPos);
-        setAiMoveText(false);
-        console.log('terminating...');
         aiWorker.terminate();
         setBlock(false);
-      }, 3600);
+        setClicksDisabled(peace.charAt(0) === (chatFirst ? 'b' : 'w'));
+      }, totalTimeTaken < 1287 ? (1300 - totalTimeTaken) : 13);
     }
-
   };
   
   const gameChanger = useCallback((newVal) => {
@@ -163,6 +172,7 @@ function GameLayout({ id }) {
     setChatFirst(result.chatFirst);
     setEnPassantPawnPosition(result.enPassantPawnPosition);
     setMoves(result.moves);
+    setPlayersRng(result.rng);
     setVotes(result.votes);
     if (result.gameConfig) {
       setTurnMins(result.gameConfig.turnMins);
@@ -173,18 +183,21 @@ function GameLayout({ id }) {
         formRef.current.votes.value = result.gameConfig.votes;
       }
     }
+    setMoveHashTable(result?.moveHashTable || []);
     setCheck(result.check);
     gameChanger(result.gameOver);
     turnChanger(currentTurn);
     // re - enable clicking 
     const urColor = (result.chatFirst) ? 'b' : 'w'; 
-    setClicksDisabled(result.gameOver ? true : currentTurn !== urColor);
+    const clicksShouldBeDisabled = !!result.gameOver ? true : (currentTurn === urColor);
+    setClicksDisabled(clicksShouldBeDisabled);
   };
 
   const resolveGameByClock = async (color) => {
     setGameOver(color);
   }
 
+  // move, formRef, setGameOver, endGame, setPlayersRng, 
   const postMove = (move) => {
     const gameConfig = {
       startTime: new Date().getTime(),
@@ -194,38 +207,53 @@ function GameLayout({ id }) {
     if (move.winner) {
       // winner = end game
       setGameOver(move.winner);
+      endGame(move.winner);
     } else if (!move.piece && !move.startPosition && !move.endPosition) {
       // empty move start game 
       const userChoice = formRef.current.chatFirst.value;
       gameConfig.chatFirst = userChoice;
       gameConfig.opponent = move.username;
-      setResults({ 
+
+      const rngVals = {
+        chat: rng(3, 13, userChoice === 'white'),
+        streamer: rng(3, 13, userChoice === 'black')
+      }
+      setPlayersRng(rngVals);
+      const rxsxlts = { 
+        rng: rngVals,
         board: newBoard(),
         check: false,
         capturedPieces: { 'b': [], 'w': [] },
         chatFirst: userChoice === 'white',
         gameOver: false,
+        id: id,
+        time: '#',
         enPassantPawnPosition: false,
         moves: [],
+        moveHashTable: {}, 
         votes: [],
         gameConfig: {
+          chatFirst: userChoice === 'white',
           startTime: new Date().getTime(),
           turnMins: formRef.current.turnMin.value,
           votes: formRef.current.votes.value,
           opponent: move.username
         }
-      });
+      };
+      setResults(rxsxlts);
       delete move.username;
+      // the value passed to archiveGame is the NEW current-game value. it auto backs up the old currentGame
+      archiveGame(rxsxlts);
+      if (userChoice !== 'white') {
+        console.log('chat is not first');
+        setClicksDisabled(false);
+      }
     } else {
       // execute the move
       const endPos = move.endPosition;
-      console.log(move);
       const startPos = move.startPosition; 
       buildOnDrop(endPos.row, endPos.col, true, move.promoted)(startPos);
     }
-    // todo: write to the local storage 
-    // todo: emit event to socket to notify turn change and also probably the game state
-    // so that it can validate moves
   };
 
   const startGame = async (e, username = '') => {
@@ -278,8 +306,10 @@ function GameLayout({ id }) {
   const buildOnDrop = (row, col, streamer, promo) => {
     return (e) => {
       if (!streamer) e.preventDefault();
+      const nextTurn = (turn === 'w' ? 'b' : 'w');
       // if streamer, e is just the start position right off the bat
       const startPosition = streamer ? e : JSON.parse(e.dataTransfer.getData('application/json'));
+      console.log(startPosition);
       let removedPiece = board[row][col];
       if (gameOver) return; // avoiding race with clock and ai. 
       let isGameOver = false;
@@ -300,17 +330,17 @@ function GameLayout({ id }) {
       } else {
         playSound('putDownMove');
       }
-      console.log(board);
       // check for en passant pawn move. This means the piece is a pawn and the column is changing by more than 1
-      if (board[startPosition.row][startPosition.col].substring(1) === "Pawn" && Math.abs(col - startPosition.col) > 1) {
+      if (board[startPosition.row][startPosition.col] && board[startPosition.row][startPosition.col].substring(1) === 'Pawn' && Math.abs(col - startPosition.col) > 1) {
         setEnPassantPawnPosition({ row, col });
-      } else {
+      } else { 
         // capturing en passant is permitted only on the turn immediately after the two square advance, so 
         // the next move clears whatever position was being tracked.
         setEnPassantPawnPosition(false);
       }
-      // pawn upgrade logic - DISABLED via "Streamer" option which is the ai flag 
-      if (!streamer && isValidPromotion(board, row, col) && board[startPosition.row][startPosition.col].substring(1) === 'Pawn') {
+      // pawn upgrade logic - DISABLED via 'Streamer' option which is the ai flag 
+      if (!streamer && isValidPromotion(board, row, col, startPosition) && board[startPosition.row][startPosition.col].substring(1) === 'Pawn') {
+        console.log('BEAMER');
         setPromotion({ source: startPosition, dest: { row, col }});
         board[row][col] = board[startPosition.row][startPosition.col];
         board[startPosition.row][startPosition.col] = 0;
@@ -339,7 +369,15 @@ function GameLayout({ id }) {
           isGameOver = turn;
         } else if (checkmate === 'tie') {
           isGameOver = checkmate;
+          setGameOver(isGameOver);
         }
+        const hashResult = hashRepeatedThrice(board, moves.length, moveHashTable);
+        console.log(hashResult);
+        if (hashResult[0]) {
+          isGameOver = 'tie';
+          setGameOver(isGameOver);
+        }
+        setMoveHashTable(hashResult[1]);
         // add move to move log
         const thisIsTheMove = {
           time: Date.now(),
@@ -358,13 +396,35 @@ function GameLayout({ id }) {
           ...moves
         ]);
         setNewMove({});
-        turnChanger(nextTurn);
-        if (check(board, nextTurn)) {
-          setCheck(true);
-        }
+        turnChanger(nextTurn); 
+        // update check always 
+        setCheck(check(board, nextTurn));
+        saveGame({
+          board,
+          capturedPieces,
+          chatFirst,
+          enPassantPawnPosition,
+          id,
+          rng: playersRng,
+          votes,
+          check: inCheck,
+          gameConfig: {
+            startTime,
+            chatFirst,
+            opponent,
+            turnMins: formRef.current.turnMin.value,
+            votes: formRef.current.votes.value 
+          },
+          gameOver: isGameOver,
+          moveHashTable: hashResult[1],
+          moves: [
+            thisIsTheMove,
+            ...moves
+          ],
+          time: '#'
+        });
       }
     }
-    // last thing save game 
   }
 
   const promote = (piece, row, column) => {
@@ -376,12 +436,16 @@ function GameLayout({ id }) {
     const checkmate = checkMate(board, newTurn, enPassantPawnPosition);
     // check mate
     if (checkmate && checkmate !== 'tie') {
-      window.alert(`checkmate - ${turn} wins`);
       gameOver = turn;
     } else if (checkmate === 'tie') {
-      window.alert("game is a tie");
       gameOver = checkmate;
     }
+    const hashResult = hashRepeatedThrice(board, moves.length, moveHashTable);
+    if (hashResult[0]) {
+      gameOver = 'tie';
+      setGameOver(gameOver);
+    }
+    setMoveHashTable(hashResult[1]);
     newMove.promoted = true;
     const thisIsTheMove = {
       ...newMove,
@@ -396,7 +460,8 @@ function GameLayout({ id }) {
     setNewMove({});
     turnChanger(newTurn);
     playSound('putDownPromote');
-    postMove(thisIsTheMove);
+    // postMove(thisIsTheMove); this used to save the game, i'm just skipping for promotion fuck it shrudge 
+    // todo: ^this will be a problem if the promotion ends the game.
   };
 
   const cancelPromote = () => {
@@ -413,6 +478,10 @@ function GameLayout({ id }) {
   const { data, loading, error } = useFetch();
 
   useEffect(() => {
+    setSoundAlert(true);
+  }, []);
+
+  useEffect(() => {
     if(!loading && data) {
       setResults(data);
     }
@@ -420,18 +489,18 @@ function GameLayout({ id }) {
 
   useEffect(() => {
     if (!gameOver && !block && turn === (chatFirst ? 'b' : 'w')) {
-      aiMove();
+      aiMove(false);
     }
-  }, [block, chatFirst, gameOver, turn])
+  }, [block, chatFirst, gameOver, turn]);
   
-  if (loading && !data) return <p>Loading...</p>;
+  if (loading && !data) return '';
   if (error) return <p>Error: {error.message}</p>;
   
   // row - index    column - i 
   return (
-    <div style={{ marginTop: '20px',  maxWidth: 'fit-content' }}>
+    <div className="enter" style={{ marginTop: '20px',  maxWidth: 'fit-content' }}>
       <AudioPlayer muted={useMuted[0]} sound={sound} />
-      <div className="scale position" >
+      <div className='scale position' >
       { board.map((row, index) => {
         return (
           <div key={`row${index}`} className='hex-row' style={{ marginLeft: Math.abs(index - 5) * 53 }}>
@@ -484,7 +553,6 @@ function GameLayout({ id }) {
         turnMins={turnMins}
       />
       <CapturedPieces capturedPieces={capturedPieces} />
-      <Borderline />
       <ConfigForm clickDisabled={chatFirst === (turn === 'w')}
         colorChoice={colorChoice}
         gameOver={gameOver}
@@ -499,6 +567,7 @@ function GameLayout({ id }) {
         hilighter={hilighter}
         initialVotes={votes}
         moves={moves}
+        opponent={opponent}
         postMove={postMove}
         setColorChoice={setColorChoice}
         setFlash={setFlasher}
@@ -506,13 +575,20 @@ function GameLayout({ id }) {
         startTime={startTime}
         useMuted={useMuted}
       />
-      <Animation move={aiMoveText} />
+      <Ticker gameOver={gameOver} />
       <Popup 
         isVisible={promotion}
         color={turn}
         onCancel={cancelPromote}
         onConfirm={promote}
       />
+      <Popup
+        isVisible={soundAlert}
+        color={false}
+        onCancel={()=>{ useMuted[1](true); setSoundAlert(false); }}
+        onConfirm={()=>{useMuted[1](false); setSoundAlert(false); }}
+      />
+      <div className='perspective'/>
       <Ftr />
     </div>
   );

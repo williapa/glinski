@@ -48,10 +48,12 @@ body.freeze {
 .splash a {
   color: white;
   position: absolute;
-  bottom: calc(20vh + 3px);
+  bottom: calc(20vh + 4px);
   font-size: 14px;
-  left: calc(54vw - 45px);
+  font-weight: 100;
+  left: calc(54vw - 50px);
 }
+
 
 @keyframes hover {
   0%, 100% {
@@ -64,15 +66,16 @@ body.freeze {
 
 @keyframes shadow {
   0%, 100% {
-    height: 32px;
-    width: 160px;
+    height: 36px;
+    width: 182px;
     opacity: .28;
-    
+    border-radius: 54%;
   }
   50% {
-    height: 27px;
-    width: 132px;
+    height: 30px;
+    width: 144px;
     opacity: .42;
+    border-radius: 46%;
   }
 }
 
@@ -94,6 +97,22 @@ body.freeze {
   transform-origin: center;
 }
 
+.inputSpot {
+  position: absolute;
+  top: calc(66vh - 42px);
+  left: calc(54vw - 174px);
+}
+
+.inputSpot label {
+  color: #99b;
+  font-weight: 100;
+}
+
+.inputSpot input {
+  position: relative;
+  top: -2px;
+}
+
 @media (max-width:500px) {
   .splash h1 {
     margin-left: 4px;
@@ -104,4 +123,19 @@ body.freeze {
   .splash img {
     left: 50vw;
   }
+  .inputSpot {
+    top: 45%;
+    left: 8%
+  }
+}
+
+.splash.blur {
+  opacity: 0;
+}
+.splash.unblur {
+  opacity: 1;
+}
+
+.splash {
+  transition: opacity 1.7s;
 }

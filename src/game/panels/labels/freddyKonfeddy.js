@@ -8,16 +8,19 @@ import confetti from 'canvas-confetti';
 const freddyKonfeddy = (winner) => {
   if (winner === 'b' || winner === 'w') {
     const black = (winner === 'b');
-    const x = document.querySelector(
+    const labelRectangle = document.querySelector(
       `.label.${black ? 'left': 'right'}`
-    ).getBoundingClientRect()[black ? 'right' : 'left']/ window.innerWidth;
+    ).getBoundingClientRect();
+    const origin = {
+      y: labelRectangle[black ? 'bottom' : 'top']/ window.innerHeight,
+      x: (labelRectangle.left + ((labelRectangle.right - labelRectangle.left) / 2)) / window.innerWidth
+    };
+
     confetti({
-      particleCount: 150,
-      ticks: 500,
-      origin: {
-        x,
-        y: .15
-      }
+      origin,
+      gravity: .5,
+      ticks: 600,
+      useWorker: true
     }); 
   } else {
     confetti.reset();

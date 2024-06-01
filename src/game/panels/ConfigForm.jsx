@@ -1,8 +1,10 @@
 import React, { forwardRef } from 'react';
 import ColorButtonPanel from './ColorButtonPanel';
+import './ConfigForm.css';
+
 const style = { 
   border: '1px solid rgb(5,5,5,.85)',
-  backgroundColor: 'rgba(5,5,5,.14)',
+  backgroundColor: '#efefef',
 };
 
 const ConfigForm = forwardRef(({ 
@@ -16,21 +18,25 @@ const ConfigForm = forwardRef(({
       id="turnMin"
       name="turnMin"
       type="number"
-      min={1}
+      min={2}
       max={60}
-      defaultValue={10}
+      defaultValue={2}
       step={1} 
     />
     <label htmlFor="votes"> !votes </label>
-    <input disabled={clickDisabled && !gameOver}
+    <input disabled={!clickDisabled && !gameOver}
       id="votes"
       name="votes"
       type="number"
-      min={1}
+      min={0}
       max={5}
-      defaultValue={1}
+      defaultValue={0}
       step={1}
     />
+    <label id="switch">
+      <input id="aiMove" type="checkbox" />
+      <span className="slider" />
+    </label>
     <ColorButtonPanel initial={colorChoice} gameOver={gameOver} />
   </form>
 )); 

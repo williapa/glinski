@@ -1,14 +1,11 @@
 import React from 'react';
-import QueenBee from '../img/queen-bee.png';
-
-const em = "1.25em";
-
-const Ftr = () => {
+// rgb(173 117 187)rgb(180, 84, 255) or white
+export default function Ftr () {
   return (
     <div className="footer">
       <span>
-        <span> Designed by keyvalue </span>
-        <a className="footer-link" href="https://twitter.com/keyvalue">
+        <span> Designed by <b style={{marginLeft: '2px', color: 'white' }}> keyvalue </b> </span>
+        <a className="footer-link" href="https://twitch.tv/keyvalue">
           🏜️
         </a>
         <span> in Henderson, Nevada </span>
@@ -16,5 +13,3 @@ const Ftr = () => {
     </div>
   )
 };
-
-export default Ftr;

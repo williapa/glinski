@@ -4,9 +4,6 @@ import letChatStartGame from '../../util/letChatStartGame';
 import logChat from '../../util/logChat';
 import logPieceMap from '../../util/logPieceMap';
 import rowColToLetterCol from '../../util/rowColToLetterCol';
-import ConfigInstructions from './instructions/ConfigInstructions';
-import GameInstructions from './instructions/GameInstructions';
-
 
 const MoveLog = ({
   ai,
@@ -18,6 +15,7 @@ const MoveLog = ({
   hilighter,
   initialVotes,
   moves,
+  opponent,
   postMove,
   useMuted,
   setColorChoice,
@@ -25,7 +23,6 @@ const MoveLog = ({
   startGame,
   startTime,
 }) => {
-  
   const [votes, setVotes] = useState(initialVotes);
   const [socket, setSocket] = useState(null);
   const [startGameSocket, setStartGameSocket] = useState(null);
@@ -62,9 +59,9 @@ const MoveLog = ({
     setFlash({ startPosition: s, endPosition: e });
   }
 
-  const scrollToTop = () => {
+  const scrollToBottom = () => {
     if (topRef.current) {
-      topRef.current.scrollTop = 0; // Scrolls to the top of the chat box
+      topRef.current.scrollTo({ top: topRef.current.scrollHeight, behavior: 'smooth' }); // Scrolls to the top of the chat box
     }
   };
 
@@ -86,11 +83,17 @@ const MoveLog = ({
   useEffect(() => {
     // use moves length to determine if chat turn
     const chatTurn = !(moves.length % 2) === chatFirst && !gameOver;
+    const voteThresholdForAiMove = document.getElementById("votes").value;
+    if (chatTurn && voteThresholdForAiMove < 1) {
+      console.log('chat ai move!');
+      // todo: could just 'arg' here to tell whose move it is
+      // this is async but it will clean itself up once it posts the move
+      ai(true);
+    } else if (chatTurn && !socket) {
     // open socket if chat turn & no socket 
-    if (chatTurn && !socket) {
       console.log('start log chat');
       const thresh = document.getElementById("votes").value;
-      const webSocket = logChat(addVote, board, () => setSocket(null), channel, enPassantPawnPosition, hilighter, chatFirst, thresh, postMove);
+      const webSocket = logChat(addVote, board, () => setSocket(null), channel, enPassantPawnPosition, hilighter, chatFirst, thresh, postMove, opponent);
       setSocket(webSocket);
     } else if (socket && (!chatTurn || gameOver)) {
       console.log('stop log chat');
@@ -130,39 +133,22 @@ const MoveLog = ({
     setVotes([...initialVotes]);
   }, [initialVotes]);
 
-  useEffect(() => scrollToTop(), [moves]);
+  useEffect(() => scrollToBottom(), [moves, gameOver]);
 
-  const movesAndVotes = moves.concat(votes).sort((a, b) => b.time - a.time);
+  const movesAndVotes = moves.concat(votes).sort((a, b) => a.time - b.time);
   
   return (
     <div className="moveLog">
       <LogLabel useMuted={useMuted} startGame={wrapStartGame} gameOver={gameOver} turnCount={moves.length} />
       <ul ref={topRef} className="moveLog-list">
-      { (gameOver === 'b' || gameOver === 'w') ? 
-          <ConfigInstructions /> : 
-          <GameInstructions /> 
-        }
-        { (gameOver === 'b' || gameOver === 'w') ? 
-          (
-            <li key="f" className="moveLog-item">
-              <i>
-              {
-                {'w': 'White', 'b': 'Black' }[gameOver] + ' wins!'
-              }
-              </i>
-            </li>
-          ) : ''
-        }
-        { (gameOver === 'tie') ? 
-          (
-            <li key="t" className="moveLog-item">
-              Tie game!
-            </li>
-          ) : ''
-        }
-        <button style={{ display: 'none' }} onClick={ai}> refresh </button>
+        { startTime  ? (
+          <li className="moveLog-item">
+            <span className="timeLabel">{new Date(startTime).toLocaleTimeString()} </span>
+            <span> Game started. </span>
+          </li>
+        ) : '' }
         {movesAndVotes.map((move, index) => (
-          <li key={index} className="moveLog-item" onMouseEnter={() => hoverMove(move.startPosition, move.endPosition)}>
+          <li key={index} className={`moveLog-item ${move.piece.charAt(0)}`} onMouseEnter={() => hoverMove(move.startPosition, move.endPosition)}>
             { move.username ? 
               (
                 <span>
@@ -176,16 +162,20 @@ const MoveLog = ({
             <span>{rowColToLetterCol(move.startPosition.row, move.startPosition.col)} </span>
             <span>{rowColToLetterCol(move.endPosition.row, move.endPosition.col)}</span>
             {move.removedPiece ? <span> taking {logPieceMap[move.removedPiece]}</span> : ''}.
-            { move.check ? <span> {move.piece.charAt(0) === 'b' ? 'white' : 'black' } king is in check. </span> : '' }
+            { move.check ? <span> {move.piece.charAt(0) === 'b' ? 'white' : 'black' } is in check. </span> : '' }
           </li>
         ))}
-        { startTime  ? (
-          <li className="moveLog-item">
-            <span className="timeLabel">{new Date(startTime).toLocaleTimeString()} </span>
-            <span> Game started. </span>
-          </li>
-        ) : '' }
-      
+        { (gameOver === 'b' || gameOver === 'w' || gameOver === 'tie') ? 
+          (
+            <li key="f" className="moveLog-item">
+              <i>
+              {
+                {'w': 'White wins!', 'b': 'Black wins!', 'tie': 'Draw :/' }[gameOver]
+              }
+              </i>
+            </li>
+          ) : ''
+        }
       </ul>
     </div>
   );

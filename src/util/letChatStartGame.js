@@ -1,11 +1,21 @@
 import parseIrcMessage from './parsedIrcMessage';
+import playVideo from '../audio/playVideo';
+import textToVote from './textToVote';
 
 const COMMANDS_ACK  = 'CAP * ACK :twitch.tv/commands';
 const TAGS_ACK = 'CAP * ACK :twitch.tv/tags';
 const CHANNEL_SUCCESS = (channel) => (`:justinfan12345!justinfan12345@justinfan12345.tmi.twitch.tv JOIN #${channel.toLowerCase()}`);
 
-let ws = null;
+const sg = (parsedMessage, startGame, text) => {
+  let username = parsedMessage.prefix.split('!')[0];
+  if (username === 'keyvalue') {
+    username = '𝗧𝘆𝗹𝗲𝗿𝗝𝘂𝗮𝗻';
+  }
+  // start game for user 
+  startGame(username);
+}
 
+let ws = null;
 // use web socket to connect to the twitch channel IRC chat
 const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice) => {
 
@@ -66,31 +76,30 @@ const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice) =>
       const username = parsedMessage.prefix.split('!')[0];
       console.log(text);
       // test to
-      if (/!play/.test(text)) {
-        const username = parsedMessage.prefix.split('!')[0];
-        // start game for user 
-        startGame(username);
+      if(/!g/.test(text)) {
+        document.getElementById("aiMove").checked = true;
+        document.querySelector(`form input[name='votes']`).value = 0;
+        document.querySelector(`form input[name='turnMin']`).value = 2;
+        sg(parsedMessage, startGame, text);
+      } else if (/!play/.test(text)) {
+        sg(parsedMessage, startGame, text);
       } else if (text.startsWith('!black')) {
         setColorChoice('black');
       } else if (text.startsWith('!white')) {
         setColorChoice('white');
       } else if (text.startsWith('!votes')) {
-        // split, if number isn't second part reject
-        // if number isn't less than 10 or greater than 0 reject
-        // set votes
-        const voteThreshold = parseInt(text.split(' ')[1].trim());
-        if(!isNaN(voteThreshold) && voteThreshold < 10 && voteThreshold > 0) {
-          // hack, no i do not care, react can't tell me how to use forms in the dom, go to hell.
-          document.querySelector(`form input[name='votes']`).value = voteThreshold;
-        }
+        textToVote(text);
       } else if (text.startsWith('!minutes')) {
         const mins = parseInt(text.split(' ')[1].trim());
         if(!isNaN(mins) && mins < 61 && mins > 0) {
-          // hack, no i do not care, react can't tell me how to use forms in the dom, go to hell.
+          // hack?! no sir, i do not care, in fact react will ever tell me how to use forms in the dom, go to hell.
           document.querySelector(`form input[name='turnMin']`).value = mins;
         }
       } else if (text.startsWith('!refresh') && username === channel) {
         window.location.reload();
+      } else if (['!chickens', '!dowork', '!22s', '!dirtygirl', '!timetravel'].includes(text)) {
+        console.log("hello!");
+        playVideo(text.substring(1));
       } else {
         console.log("no command executed.");
       }

@@ -6,7 +6,7 @@ const AudioPlayer = ({ muted, sound }) => {
   const sounds = Object.entries(samples);
 
   return (
-    <div>
+    <div className="audioPlayer">
       {sounds.map(([key, value]) => (
         <Audio 
           key={key}

@@ -31,7 +31,7 @@ const calculateRemainingTime = (moves, gameConfig, player ) => {
   const remainingPlayerTime = (allowedTime - totalTimeTaken) / 1000;
   // if the time left is more than 10 minutes something has gone horribly wrong.
   // if this breaks its because i made it run for more than 10  but 15 is probably the upper limit
-  if (remainingPlayerTime > 840) throw new Error('something has gone horribly wrong with the remaining time calculated.');
+  if (remainingPlayerTime > 6000) throw new Error('something has gone horribly wrong with the remaining time calculated.');
   // otherwise return
   return remainingPlayerTime;
 };

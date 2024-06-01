@@ -2,7 +2,7 @@ import React from 'react';
 import QueenBee from '../../../img/queen-bee.png'
 import './LogLabel.css';
 
-const LogLabel = ({ gameOver, useMuted, startGame, turnCount }) => {
+const LogLabel = ({ gameOver, useMuted }) => {
 
   const [muted, setMuted] = useMuted;
 

@@ -1,6 +1,7 @@
 const applyMove = (board, capturedPieces, coords, enPassantPawnPosition) => {
   const { startPosition, endPosition, promotion } = coords;
-  const piece = promotion || board[startPosition.row][startPosition.column];
+  const startingPiece = board[startPosition.row][startPosition.column];
+  const piece = promotion || startingPiece;
   const turn = piece.charAt(0);
   let removedPiece = board[endPosition.row][endPosition.col];
   const newBoard = board.map((row) => [...row]);
@@ -34,8 +35,7 @@ const applyMove = (board, capturedPieces, coords, enPassantPawnPosition) => {
   }
   newBoard[startPosition.row][startPosition.column] = 0;
   newBoard[endPosition.row][endPosition.col] = piece;
-  return { newBoard, newCapturedPieces, newEnPassantPawnPosition };
+  return { newBoard, newCapturedPieces, newEnPassantPawnPosition, removedPiece, startingPiece };
 }
 
 export default applyMove;
-

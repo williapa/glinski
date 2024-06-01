@@ -1,7 +1,7 @@
 import React from 'react';
 import DraggablePiece from './DraggablePiece';
 
-const ROWS = "ABCDEFGHIJK";
+const ROWS = "KJIHGFEDCBA";
 
 const BoardCell = ({
   cell,
@@ -25,15 +25,15 @@ const BoardCell = ({
   >
     <div 
       className={`${cellColor}a ${isDestination ? 'shiny-font': 'regular-font'}`} 
-      style={{ position: "absolute", fontSize: "18px", marginLeft: "33.5px", marginTop: "12px", opacity: 1, zIndex: 999 }}
+      style={{ position: "absolute", fontSize: "18px", marginLeft: "2px", marginTop: "48px", zIndex: 999 }}
     >
-      {`${ROWS.charAt(index)} ${i}`}
+      {`${ROWS.charAt(index)}${i < 10 ? ' ': ''}${i}`}
     </div>
     <div className={`top ${cellColor}`}/>
     <div 
       className={`middle ${cellColor}`} 
       style={{ 
-        color: pieceColor,
+        color: pieceColor === 'white' ? pieceColor : "#445",
         textShadow: `1.5px 1.5px 3px ${pieceColor === 'white' ? 'black': 'lightgrey' }, 1.5px -1.5px 3px ${pieceColor === 'white' ? 'black': 'lightgrey' }, -1.5px 1.5px 3px ${pieceColor === 'white' ? 'black': 'lightgrey' }, -1.5px -1.5px 3px ${pieceColor === 'white' ? 'black': 'lightgrey' }`
       }}
       onDragOver={onDragOver}

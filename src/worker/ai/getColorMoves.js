@@ -1,5 +1,5 @@
-import filterMoves from "../util/filterMoves";
-import Moves from "../moves";
+import filterMoves from "../../util/filterMoves";
+import Moves from "../../moves";
 
 const convertToStartEndPositionArray = (endPositions, startPosition, colorIfPawn) => {
   const coordinateArray = [];

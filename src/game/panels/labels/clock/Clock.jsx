@@ -45,9 +45,11 @@ function Clock({ side, time }) {
     <div className={`${side} clock`}>
       {renderDigit(minutes[0], shouldAnimate(minutes[1]), `minute-tens-${minutes[0]}`, blinking)}
       {renderDigit(minutes[1], shouldAnimate(seconds[0]), `minute-ones-${minutes[1]}`, blinking)}
-      <span style={{ color: 'black', fontWeight: 1000 }}>:</span>
+      <span className="colon" style={{ color: 'black', fontWeight: 1000 }}>:</span>
       {renderDigit(seconds[0], shouldAnimate(seconds[1]), `second-tens-${seconds[0]}`, blinking)} 
       {renderDigit(seconds[1], true, `second-ones-${seconds[1]}`, blinking)}
+      <span className="seconds">seconds</span>
+      <span className="minutes">minutes</span>
     </div>
   );
 }

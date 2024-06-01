@@ -13,6 +13,5 @@ export const DisableClicksProvider = ({ children }) => {
     </DisableClicksContext.Provider>
   );
 };
-
 // Custom hook to use the disable clicks context
 export const useDisableClicks = () => useContext(DisableClicksContext);

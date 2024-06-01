@@ -1,5 +1,5 @@
-export default function isValidPromotion(board, row, col) {
-  const piece = board[row][col];
+export default function isValidPromotion(board, row, col, startPosition) {
+  const piece = board[startPosition.row][startPosition.col];
   if (!piece) {
     return false;
   } else if (piece.charAt(0) === 'w') {

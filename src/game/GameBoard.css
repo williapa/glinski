@@ -8,12 +8,16 @@ div.shiny-font {
   min-width: 33px;
   font-weight: bolder;
   letter-spacing: -1px;
+  writing-mode: tb;
+  transform: rotate(-180deg);
 }
 
 .regular-font {
   font-weight: bolder;
   letter-spacing: -1px;
   min-width: 33px;
+  writing-mode: tb;
+  transform: rotate(-180deg);
 }
 .regular-font.peacha {
   color: #cdcdcd;
@@ -27,11 +31,11 @@ div.shiny-font {
 
 /* these go with the hex classes to flash a chat vote / move */
 .from {
-  animation: animateFromKeyframes 1.5s ease-out;
+  animation: animateFromKeyframes 1.3s ease-in-out;
 }
 
 .to {
-  animation: animateToKeyframes 1.5s ease-out;
+  animation: animateToKeyframes 1.3s ease-in-out;
 }
 
 @keyframes color-change {
@@ -75,6 +79,8 @@ div {
   font-size: 69px;
   position: relative;
   top: -9px;
+  transform: rotate(-90deg);
+  writing-mode: tb;
 }
 
 /* honeycomb stuffs */
@@ -83,7 +89,8 @@ div {
   float: left;
   margin-left: 3px;
   margin-bottom: -26px;
-  transition: border-opacity 1s ease;
+  transition: border 1.5s ease;
+  will-change: opacity;
 }
 
 .hex .top {
@@ -98,8 +105,7 @@ div {
 }
 
 .hex .top.peach {
-
-  border-bottom: 30px solid #8E44AD;
+  border-bottom: 30px solid rgb(173 117 187); /* #8E44AD; */
 }
 
 .hex .top.brown {
@@ -118,7 +124,7 @@ div {
 }
 
 .hex .middle.peach {
-  background: #8E44AD;
+  background: rgb(173 117 187); /* #8E44AD; */
 }
 
 .hex .middle.brown {
@@ -133,7 +139,7 @@ div {
 }
 
 .hex .bottom.peach {
-  border-top: 30px solid #8E44AD;
+  border-top: 30px solid rgb(173 117 187); /* #8E44AD; */
 }
 
 .hex .bottom.beige {

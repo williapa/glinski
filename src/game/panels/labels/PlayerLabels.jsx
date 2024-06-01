@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PlayerLabel from './PlayerLabel';
 
+const minVotesToSayAndChat = 1;
+
 const PlayerLabels = ({ chatFirst, check, id, opponent, gameOver, turn }) => {
   const [ids, setIds] = useState({
     'b': chatFirst ? id : opponent,
@@ -9,7 +11,7 @@ const PlayerLabels = ({ chatFirst, check, id, opponent, gameOver, turn }) => {
 
   useEffect(() => {
     const votes = document.getElementById('votes').value;
-    const opp = `${opponent}${(votes > 1) ? ' & chat': ''}`;
+    const opp = `${opponent}${(votes >= minVotesToSayAndChat) ? ' & 𝕔𝕙𝕒𝕥': ' & 𝐻𝑒𝑥𝑄𝐶'}`;
     setIds({
       'b': chatFirst ? id : opp,
       'w': chatFirst ? opp: id

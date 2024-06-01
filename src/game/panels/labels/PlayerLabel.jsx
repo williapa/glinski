@@ -1,43 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import freddyKonfeddy from './freddyKonfeddy';
-
-const em = "20px";
-const yourTurn = ' ⏳';
-const winner = ' 🏆';
 
 // uses gameOver to store winner instead of true
 // chatFirst === are you second?
 const PlayerLabel = ({ check, turn, gameOver, ids, side }) => {
   // todo: these might need to be part of the class 
-  const style = {};
-  let className = '';
-  if (side === 'b') {
-    className = 'left label';
-  } else {
-    className = 'right label';
-  }
-  let turnIcon = '';
-  if (!gameOver) {
-    if ((turn === side)) {
-      turnIcon = yourTurn;
-      if (check) {
-        className += ' check';
-      }
+  const [labelClass, setLabelClass] = useState('label');
+  
+  useEffect(() => {
+    let className = 'label';
+    if (side === 'b') {
+      className += ' left';
+    } else {
+      className += ' right';
     }
-  }
-
+    if (!gameOver && (turn === side) && !!check) {
+      className += ' check';
+    }
+    setLabelClass(className);
+  }, [check, turn, gameOver, ids, side]);
+  
   useEffect(() => {
     freddyKonfeddy(gameOver);
   }, [gameOver]);
   return (
     <div
-      className={className}
+      className={labelClass}
     >
       {ids[side]}
       <span style={{ fontSize: "76%" }}>
-        {turnIcon}
         {check && (turn === side) && (!gameOver) ? ' (check) ' : ''}
-        { gameOver === side ? <span className="floating">{winner} </span> : '' }
       </span>
     </div>
   )

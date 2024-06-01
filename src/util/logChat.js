@@ -2,6 +2,8 @@ import parseIrcMessage from './parsedIrcMessage';
 import isValidPromotion from './isValidPromotion';
 import letterToNumber from './letterToNumber';
 import validateMove from "./validateMove";
+import playVideo from '../audio/playVideo';
+import textToVote from './textToVote';
 
 const COMMANDS_ACK  = 'CAP * ACK :twitch.tv/commands';
 const TAGS_ACK = 'CAP * ACK :twitch.tv/tags';
@@ -12,7 +14,7 @@ let ws = null;
 // use web socket to connect to the twitch channel IRC chat
 // add moves from chat to the log 
 // disconnect when there's no time left
-const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hilighter, chatFirst, threshold, postMove) => {
+const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hilighter, chatFirst, threshold, postMove, opponent) => {
   const moves = {};
   const voters = {};
   const votes = [];
@@ -39,6 +41,10 @@ const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hili
     ws.send('CAP REQ :twitch.tv/commands');
     ws.send('CAP REQ :twitch.tv/tags');
     ws.send(`JOIN #${channel}`);
+
+    // if the socket connects, also try to get a worker going.
+    // is this the wrong way of going about it? 
+    // i don't know!
   };
 
   ws.onmessage = (event) => {
@@ -75,12 +81,13 @@ const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hili
       console.log(messageText);
       if (!messageText.startsWith("!") || words.length < 1) {
         // not a command, return;
-        console.log('hello');
+        console.log('(^ this message is not a command. returning.)');
         return;
       }
       // assuming it was a command "move" or "see" let's proceed 
       words.shift();
       const text = words.join(' ');
+      const username = parsedMessage.prefix.split('!')[0];
       // test to see if it's a move - for promotion, Q is not included, it's the default for promo 
       if (/^[A-K](?:[0-9]|1[01])\s[A-K](?:[0-9]|1[01])\s?(?:K|B|R)?$/.test(text)) {
         // check to see if it's a valid move - if it's not valid then we bail 
@@ -103,7 +110,7 @@ const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hili
         if (text.split(' ').length > 2) {
           moveData.promoted = true;
           moveData.piece = piece.charAt(0) + { b: 'Bishop', k: 'Knight', q: 'Queen', r: 'Rook' }[text[2].toLowerCase()];
-        } else if (piece.length > 1 && piece.substring(1) === 'Pawn' && isValidPromotion(board, endPosition.row, endPosition.col)) {
+        } else if (piece.length > 1 && piece.substring(1) === 'Pawn' && isValidPromotion(board, endPosition.row, endPosition.col, startPosition)) {
           // case: promotion class not specified for a pawn. make it a queen
           moveData.promoted = true;
           moveData.piece = piece.charAt(0) + 'Queen';
@@ -113,11 +120,11 @@ const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hili
           console.log("invalid move.");
           return;
         } else if (chatFirst === (piece.charAt(0) === 'b')) {
-          console.log('wrong piece L bozo');
+          console.log('invalid move due - not player\'s piece');
           return;
         }
         movesData[text] = moveData;
-        const username = parsedMessage.prefix.split('!')[0];
+        // const username = parsedMessage.prefix.split('!')[0];
         console.log("valid move from ", username);
         moveData.username = username;
         // add the move to be displayed in the log with the function
@@ -135,7 +142,7 @@ const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hili
           moves[text].push(username);
         }
         if (moves[text].length >= threshold) {
-          console.log("THRESHOLD ACHIEVED!");
+          console.log("VOTE THRESHOLD ACHIEVED - POSTING MOVE");
           // post move now 
           // todo - need to make sure votes are saved incase the client disconnects 
           // but that's not super important but ideally we want all votes saved in a game history
@@ -148,11 +155,14 @@ const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hili
         hilighter(moveToFlash.row, moveToFlash.col);
         setTimeout(() => hilighter(false, false), 5900);
         // unflash it after a certain amount of time of course 
-      } else if (text.startsWith('!REFRESH')) {
-        window.location.reload();
-      } else if (text.startsWith('!RESIGN')) {
+      } else if (messageText.startsWith('!VOTE') && username === opponent) {
+        // only the player who started the game can change the votes
+        textToVote(messageText);
+      } else if (messageText.startsWith('!RESIGN')) {
         // post move for other team to win 
-        postMove({ winner: chatFirst ? 'w': 'b' });
+        postMove({ winner: chatFirst ? 'b': 'w' });
+      } else if (['!CHICKENS', '!DOWORK', '!22S', '!DIRTYGIRL', '!TIMETRAVEL'].includes(messageText)) {
+        playVideo(messageText.substring(1).toLowerCase());
       }
     }
   };

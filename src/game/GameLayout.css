@@ -1394,8 +1394,9 @@ form.configForm {
   }
 
   .moveLog-header {
-    margin-left: 1px;
-    width: 509px;
+    position: absolute;
+    margin-left: -1px;
+    width: 511px;
     height: 32px;
   }
 
@@ -1627,8 +1628,9 @@ form.configForm {
   }
 
   .moveLog-header {
+    position: absolute;
     margin-left: -1px;
-    width: calc(100vw - 20px);
+    width: calc(100vw - 26px);
     max-width: 454px;
     height: 32px;
   }
@@ -1873,6 +1875,7 @@ form.configForm {
 
   .btn-group {
     left: 155px;
+    top: -49px;
   }
 
   #switch {

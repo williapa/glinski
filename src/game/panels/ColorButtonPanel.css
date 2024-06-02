@@ -4,7 +4,7 @@
 
 .btn-group button {
   border: 1px solid #445; /*&*/ /* Green border */
-  padding: 8px 10px; /* Some padding */
+  padding: 8px; /* Some padding */
   cursor: pointer; /* Pointer/hand icon */
   float: left; /* Float the buttons side by side */
   background-color: white;

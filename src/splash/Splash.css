@@ -99,18 +99,30 @@ body.freeze {
 
 .inputSpot {
   position: absolute;
-  top: calc(66vh - 82px);
-  left: calc(54vw - 174px);
+  bottom: calc(20vh - 108px);
+  left: calc(54vw - 208px);
 }
 
-.inputSpot label {
+.inputSpot .mabel {
   color: #99b;
   font-weight: 100;
+  rotate: -3 -6 .9 33deg; /*-4 -1.75 -8 350deg;*/
 }
 
-.inputSpot input {
+.inputSpot .mabel label {
+  font-size: 1.35rem;
+}
+
+.inputSpot .input {
   position: relative;
-  top: -2px;
+  top: -48px;
+  left: 218px;
+  rotate: 4 -6 1 -33deg; /* 6 -6 1.1 -33deg;*//*rotate: -2 24 1 300deg;*/
+}
+
+.inputSpot .input input {
+  width: 216px;
+  font-size: 1rem;
 }
 
 @media (max-width:500px) {
@@ -124,8 +136,19 @@ body.freeze {
     left: 50vw;
   }
   .inputSpot {
-    top: 45%;
-    left: 8%
+    bottom: calc(20vh - 90px);
+    left: calc(50vw - 100px);
+  }
+  .inputSpot .input {
+    top: -48px;
+    left: 128px;
+  }
+  .inputSpot .input input {
+    font-size: .6rem;
+    max-width: 130px;
+  }
+  .inputSpot .mabel label {
+    font-size: .8rem;
   }
 }
 

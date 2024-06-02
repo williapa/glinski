@@ -11,7 +11,7 @@ const PlayerLabels = ({ chatFirst, check, id, opponent, gameOver, turn }) => {
 
   useEffect(() => {
     const votes = document.getElementById('votes').value;
-    const opp = `${opponent.length ? opponent : 'You(?)'}${(votes >= minVotesToSayAndChat) ? ' & 𝕔𝕙𝕒𝕥': ' & 𝐻𝑒𝑥𝑄𝐶'}`;
+    const opp = `${opponent.length ? opponent : '𝕔𝕙𝕒𝕥'}${(opponent.length && votes >= minVotesToSayAndChat) ? ' & 𝕔𝕙𝕒𝕥': opponent.length ? ' & 𝐻𝑒𝑥𝑄𝐶' : ''}`;
     setIds({
       'b': chatFirst ? id : opp,
       'w': chatFirst ? opp: id

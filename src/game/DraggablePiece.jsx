@@ -5,7 +5,7 @@ import { useDisableClicks } from '../hooks/useDisableClicks';
 const baseFont = 66;
 
 const getMultiple = () => {
-  if (window.innerWidth > 1916) {
+  if (window.innerWidth > 1923) {
     return .92;
   } else if (window.innerWidth > 1440) {
     return .63;

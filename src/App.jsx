@@ -17,7 +17,7 @@ const IdPage = () => {
 
   const handleResize = () => {
     const sizes = [
-      [1917, 1255],
+      [1924, 1255],
       [1441, 875],
       [1141, 762],
       [911, 699],

@@ -17,6 +17,7 @@ const Splash = () => {
 
   const goToChannel = (e) => {
     e.preventDefault();
+    if (channel.length < 4) return;
     setBlurClass('blur');
     setTimeout(() => {
       window.location.href += `${channel}`;
@@ -30,8 +31,13 @@ const Splash = () => {
       <div className="ellipse" />
     </div>
     <form className="inputSpot" onSubmit={goToChannel}>
-      <label htmlFor="channel">Type your twitch channel </label>
-      <input onSubmit={goToChannel} id="channel" name="channel" type="text" value={channel} onChange={(e) => setChannel(e.target.value)} />
+      <div className="mabel">
+        <label htmlFor="channel">type your twitch channel </label>
+      </div>
+      <div className="input">
+        <input onSubmit={goToChannel} id="channel" name="channel" type="text" value={channel} onChange={(e) => setChannel(e.target.value)} />
+      </div>
+      
     </form>
     <a href="" onClick={goToChannel}>play glinski with chat!</a>
     <svg>

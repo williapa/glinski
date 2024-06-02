@@ -142,7 +142,7 @@ form.configForm {
 /* todo - might put this in a responsive.css */
 
 /* above 840px the screen scales the viewport to fit the grid on the left and the move log to the right */
-@media (min-width: 1917px) {
+@media (min-width: 1924px) {
   .footer > span {
     margin-left: calc(50vw - 380px);
   }
@@ -364,7 +364,7 @@ form.configForm {
   }
 }
 
-@media (max-width: 1916px) and (min-width: 1441px) {
+@media (max-width: 1923px) and (min-width: 1441px) {
   .perspective {
     height: max(calc(100vh - 804px), 48px); /* Height is the full viewport height minus 1500px */
   }
@@ -1215,6 +1215,7 @@ form.configForm {
 
   form.configForm input {
     font-size: 10px;
+    max-width: 16px;
   }
 
   .btn-group {
@@ -1697,7 +1698,6 @@ form.configForm {
     padding-top: 6px;
     padding-bottom: 6px;
   }
-
 
   .popup.position {
     top: 182px;

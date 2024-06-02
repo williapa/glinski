@@ -103,6 +103,16 @@
 .logo {
   position: fixed;
   top: 24px;
+  animation: key 3.4s alternate-reverse ease-in-out infinite;
+}
+
+@keyframes key {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(359deg);
+  }
 }
 
 .label {
@@ -1075,6 +1085,7 @@ form.configForm {
 @media (max-width: 911px) and (min-width: 768px) {
   body {
     background-image: none;
+    animation: none;
   }
   .perspective {
     height: max(calc(100vh - 526px), 48px); /* Height is the full viewport height minus 1500px */
@@ -1154,6 +1165,7 @@ form.configForm {
     left: 154px;
     top: 16px;
     position: absolute;
+    animation: none;
   }
 
   .moveLog {
@@ -1300,6 +1312,7 @@ form.configForm {
 @media (max-width: 767px) and (min-width: 600px) {
   body {
     background-image: none;
+    animation: none;
   }
 
   .bodyScroll {
@@ -1382,6 +1395,7 @@ form.configForm {
     left: 211px;
     top: 16px;
     position: absolute;
+    animation: none;
   }
 
   .moveLog {
@@ -1615,6 +1629,7 @@ form.configForm {
     left: 192px;
     top: 16px;
     position: absolute;
+    animation: none;
   }
 
   .moveLog {
@@ -1767,8 +1782,10 @@ form.configForm {
   .hex .middle span {
     font-size: 60px;
   }
+
   body {
     background-image: none;
+    animation: none;
   }
 }
 

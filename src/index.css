@@ -8,7 +8,7 @@ body {
   background-size: 5%;
   margin: 0px;
   background-color: rgb(179 152 214 / 20%);/*inc. opacity of the movelog header bg */ /* rgb(153 71 215 / 21%); */ /*rgba(183, 127, 215, 0.182);  */
-  animation: pan 120s ease-in-out alternate-reverse infinite;
+  animation: pan 120s linear alternate-reverse infinite;
   will-change: background-position;
 }
 
@@ -39,7 +39,7 @@ label {
   font-size: 13px;
   min-height: 30px;
   max-height: 30px;
-  padding-top: 11px; /*8px; */
+  padding-top: 8px; /*8px; 11? */
   z-index: 3;
   text-align: left;
 }

@@ -29,10 +29,10 @@ const Splash = () => {
     <div className="container">
       <div className="ellipse" />
     </div>
-    <div className="inputSpot">
+    <form className="inputSpot" onSubmit={goToChannel}>
       <label htmlFor="channel">Type your twitch channel </label>
-      <input id="channel" name="channel" type="text" value={channel} onChange={(e) => setChannel(e.target.value)} />
-    </div>
+      <input onSubmit={goToChannel} id="channel" name="channel" type="text" value={channel} onChange={(e) => setChannel(e.target.value)} />
+    </form>
     <a href="" onClick={goToChannel}>play glinski with chat!</a>
     <svg>
       <polygon points="250,50 450,150 450,350 250,450 50,350 50,150" />

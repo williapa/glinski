@@ -5,18 +5,18 @@ import { useDisableClicks } from '../hooks/useDisableClicks';
 const baseFont = 66;
 
 const getMultiple = () => {
-  if (window.innerWidth > 1700) {
-    return 1.1;
-  } else if (window.innerWidth > 1400) {
-    return .7;
-  } else if (window.innerWidth > 1100) {
-    return .66;
-  } else if (window.innerWidth > 840 ) {
-    return .48;
+  if (window.innerWidth > 1916) {
+    return .92;
+  } else if (window.innerWidth > 1440) {
+    return .63;
+  } else if (window.innerWidth > 1141) {
+    return .55;
+  } else if (window.innerWidth > 911 ) {
+    return .5;
   } else if (window.innerWidth > 600) {
-    return .45;
+    return .4;
   }
-  return .4; 
+  return .36; 
 }
 
 function DraggablePiece({ turn, onStart, cellContent, row, col, chatFirst }) {
@@ -24,6 +24,7 @@ function DraggablePiece({ turn, onStart, cellContent, row, col, chatFirst }) {
   if (!cellContent) return null;
   const team = cellContent.charAt(0);
   const piece = pieceMap[cellContent];
+  const isPawn = !!cellContent && cellContent.substring(1) === "Pawn" ? "pawn safari" : "";
   const handleDragStart = (e) => {
     // Create a new element
     if (clicksDisabled) {
@@ -61,7 +62,7 @@ function DraggablePiece({ turn, onStart, cellContent, row, col, chatFirst }) {
   }
 
   return (
-    <span draggable={(turn !== (chatFirst ? 'w' : 'b')) && (team === turn)} onDragStart={handleDragStart} onDragEnd={handleDragEnd} >{piece}</span>
+    <span className={isPawn} draggable={(turn !== (chatFirst ? 'w' : 'b')) && (team === turn)} onDragStart={handleDragStart} onDragEnd={handleDragEnd} >{piece}</span>
   );
 }
 

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, useParams } from 'react-router-
 import { v4 as uuidv4 } from 'uuid';
 import Splash from './splash/Splash';
 import GameLayout from './game/GameLayout';
+import dealWithSafari from './util/dealWithSafari';
 import { DisableClicksProvider } from './hooks/useDisableClicks';
 
 const setYScroll = (bool) => {
@@ -16,11 +17,11 @@ const IdPage = () => {
 
   const handleResize = () => {
     const sizes = [
-      [1700, 1205],
-      [1441, 858],
-      [1131, 788],
-      [912, 692],
-      [768, 568],
+      [1917, 1255],
+      [1441, 875],
+      [1141, 762],
+      [911, 699],
+      [767, 574],
       [600, 792],
       [10, 680]
     ];
@@ -41,6 +42,7 @@ const IdPage = () => {
       existingId = uuidv4();
       localStorage.setItem('playerId', existingId);
     }
+    dealWithSafari();
     setPlayerId(existingId);
   }, []);
 

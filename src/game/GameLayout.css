@@ -142,7 +142,7 @@ form.configForm {
 /* todo - might put this in a responsive.css */
 
 /* above 840px the screen scales the viewport to fit the grid on the left and the move log to the right */
-@media (min-width: 1824px) {
+@media (min-width: 1917px) {
   .footer > span {
     margin-left: calc(50vw - 380px);
   }
@@ -237,7 +237,8 @@ form.configForm {
   }
 
   .moveLog-header {
-    width: 290px;
+    margin-left: -1px;
+    width: 292px;
     height: 50px;
   }
   
@@ -310,7 +311,7 @@ form.configForm {
   .ticker {
     padding: 2.5px;
     top: 1128px;
-    left: calc(50vw - 136px);
+    left: calc(50vw - 137px);
     min-width: 465px;
     max-width: 465px;
     min-height: 30px;
@@ -363,7 +364,7 @@ form.configForm {
   }
 }
 
-@media (max-width: 1823px) and (min-width: 1441px) {
+@media (max-width: 1916px) and (min-width: 1441px) {
   .perspective {
     height: max(calc(100vh - 804px), 48px); /* Height is the full viewport height minus 1500px */
   }
@@ -451,7 +452,8 @@ form.configForm {
   }
 
   .moveLog-header {
-    width: 268px;
+    margin-left: -1px;
+    width: 270px;
     height: 36px;
   }
 
@@ -518,7 +520,7 @@ form.configForm {
 
   .popup.position {
     top: 222px;
-    left: 503px;
+    left: 574px;
   }
 
   .commands {
@@ -666,7 +668,8 @@ form.configForm {
   }
 
   .moveLog-header {
-    width: 226px;
+    margin-left: -1px;
+    width: 228px;
     height: 32px;
   }
 
@@ -683,7 +686,7 @@ form.configForm {
     top: 74px;
     left: 878px;
     bottom: 60px;
-    width: 250px;
+    width: 249px;
     height: calc(100vh - 130px);
     max-height: 632px;
   }
@@ -816,7 +819,10 @@ form.configForm {
   }
 }
 
-@media (max-width: 1142px) and (min-width: 912px) {
+@media (max-width: 1141px) and (min-width: 912px) {
+  body {
+    background-image: none;
+  }
   .perspective {
     height: max(calc(100vh - 647px), 48px); /* Height is the full viewport height minus 1500px */
   }
@@ -904,12 +910,13 @@ form.configForm {
     font-size: 20px;
     height: calc(100vh - 72px);
     max-height: 627px;
-    width: 221px;
+    width: 220px;
   }
 
   .moveLog-header {
-    min-width: 197px;
-    max-width: 197px;
+    margin-left: -1px;
+    min-width: 198px;
+    max-width: 198px;
     height: 20px;
   }
 
@@ -930,7 +937,7 @@ form.configForm {
     top: 62px;
     left: 676px;
     bottom: 57px;
-    width: 224px;
+    width: 221px;
     height: calc(100vh - 120px);
     max-height: 579px;
   }
@@ -1066,6 +1073,9 @@ form.configForm {
 
 /* below 840px the log is displayed below the board */
 @media (max-width: 911px) and (min-width: 768px) {
+  body {
+    background-image: none;
+  }
   .perspective {
     height: max(calc(100vh - 526px), 48px); /* Height is the full viewport height minus 1500px */
   }
@@ -1157,8 +1167,8 @@ form.configForm {
   }
 
   .moveLog-header {
-    position: absolute;
-    width: calc(100vw - 576px);
+    margin-left: -1px;
+    width: 170px;
     height: 32px;
   }
 
@@ -1286,7 +1296,11 @@ form.configForm {
   }
 }
 
-@media (max-width: 768px) and (min-width: 600px) {
+@media (max-width: 767px) and (min-width: 600px) {
+  body {
+    background-image: none;
+  }
+
   .bodyScroll {
     /*overflow-y: auto; */
   }
@@ -1380,8 +1394,8 @@ form.configForm {
   }
 
   .moveLog-header {
-    position: absolute;
-    width: 97.25%;
+    margin-left: 1px;
+    width: 509px;
     height: 32px;
   }
 
@@ -1613,9 +1627,9 @@ form.configForm {
   }
 
   .moveLog-header {
-    position: absolute;
-    width: calc(100vw - 22px);
-    max-width: 476px;
+    margin-left: -1px;
+    width: calc(100vw - 20px);
+    max-width: 454px;
     height: 32px;
   }
 
@@ -1751,6 +1765,9 @@ form.configForm {
   .hex .middle span {
     font-size: 60px;
   }
+  body {
+    background-image: none;
+  }
 }
 
 @media (max-width: 500px) {
@@ -1861,6 +1878,19 @@ form.configForm {
   #switch {
     top: -1px;
     left: 281px;
+  }
+}
+
+/* fuck chat gpt who said this would target safari and it definitely does NOT only target safari */
+@supports (-webkit-appearance: none) {
+  .safari .hex .middle span {
+    top: -4px;
+  }
+
+  .safari .hex .middle span.pawn.safari {
+    /* why do pawns not rotate like every other character, only in safari? i don't know */
+    transform: rotate(-180deg); /* give em an extra 90 degrees */
+    top: -19px;
   }
 }
 

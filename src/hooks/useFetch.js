@@ -7,7 +7,7 @@ function loadGame() {
   if (gameData) {
     return JSON.parse(gameData);
   } else {
-    console.error('something broke 112');
+    console.warn('failed to parse game data in local storage. if you expected something, see entry for "current-game".');
   }
 }
 

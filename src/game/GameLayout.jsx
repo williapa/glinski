@@ -21,9 +21,11 @@ import { useDisableClicks } from '../hooks/useDisableClicks';
 import Ftr from '../footer/Ftr';
 import Clocks from './panels/labels/clock/Clocks';
 import AudioPlayer from '../audio/AudioPlayer';
+import Meter from './panels/labels/meter/Meter.jsx';
 import Videos from '../audio/Videos.jsx'
 import Ticker from './panels/ticker/Ticker.jsx';
 import hashRepeatedThrice from '../util/hashRepeatedThrice.js';
+import evaluateBoard from '../worker/ai/evaluateBoard.js';
 import './GameBoard.css';
 import './GameLayout.css';
 
@@ -41,6 +43,7 @@ function GameLayout({ id }) {
     chat: 0,
     streamer: 0
   });
+  const [boardEval, setBoardEval] = useState(0);
   const [chatFirst, setChatFirst] = useState(true);
   const [colorChoice, setColorChoice] = useState('white');
   const [inCheck, setCheck] = useState(false);
@@ -84,7 +87,7 @@ function GameLayout({ id }) {
     const aiWorker = new Worker(new URL('../worker/ai/worker.js', import.meta.url), {
       type: 'module'
     });
-    const [moveValue, coords] = await new Promise((resolve) => {
+    const [moveValue, coords, isRandom] = await new Promise((resolve) => {
       aiWorker.addEventListener('message', (message) => {
         resolve(message.data);
       });
@@ -98,6 +101,9 @@ function GameLayout({ id }) {
     console.log(`ai took ${totalTimeTaken} ms to find this move:`); // includes module load
     console.log(coords);
     console.log(moveValue);
+    if (isRandom) {
+      console.log("RANDOM MOVE!");
+    } 
     const remainingTime = calculateRemainingTime(moves, { startTime, turnMins }, (chatFirst === isChatsMove ? 'w' : 'b'));
     console.log(`remaining time: ${remainingTime}`);
     if (!coords) {
@@ -125,7 +131,7 @@ function GameLayout({ id }) {
           startPosition: startPos,
           endPosition: coords.endPosition,
         });
-        buildOnDrop(coords.endPosition.row, coords.endPosition.col, true, coords.promotion)(startPos);
+        buildOnDrop(coords.endPosition.row, coords.endPosition.col, true, coords.promotion)(startPos, isRandom);
         aiWorker.terminate();
         setBlock(false);
         setClicksDisabled(peace.charAt(0) === (chatFirst ? 'b' : 'w'));
@@ -218,6 +224,7 @@ function GameLayout({ id }) {
         chat: rng(3, 13, userChoice === 'white'),
         streamer: rng(3, 13, userChoice === 'black')
       }
+      setBoardEval(0);
       setPlayersRng(rngVals);
       const rxsxlts = { 
         rng: rngVals,
@@ -302,9 +309,8 @@ function GameLayout({ id }) {
   }
   // the onDrop function needs to setBoard based on the piece for which the move is being received.
   const buildOnDrop = (row, col, streamer, promo) => {
-    return (e) => {
+    return (e, isRandom = false) => {
       if (!streamer) e.preventDefault();
-      const nextTurn = (turn === 'w' ? 'b' : 'w');
       // if streamer, e is just the start position right off the bat
       const startPosition = streamer ? e : JSON.parse(e.dataTransfer.getData('application/json'));
       console.log(startPosition);
@@ -347,6 +353,7 @@ function GameLayout({ id }) {
         setNewMove({
           startPosition,
           removedPiece,
+          isRandom,
           endPosition: {
             row, 
             col,
@@ -387,6 +394,7 @@ function GameLayout({ id }) {
             row,
             col
           },
+          isRandom,
           startPosition
         };
         setMoves([
@@ -422,6 +430,8 @@ function GameLayout({ id }) {
           time: '#'
         });
       }
+      // eval board
+      setBoardEval(evaluateBoard(board));
     }
   }
 
@@ -573,6 +583,7 @@ function GameLayout({ id }) {
         startTime={startTime}
         useMuted={useMuted}
       />
+      <Meter currentValue={boardEval} />
       <Ticker gameOver={gameOver} />
       <Videos />
       <Popup 

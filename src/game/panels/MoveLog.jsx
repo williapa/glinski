@@ -163,6 +163,7 @@ const MoveLog = ({
             <span>{rowColToLetterCol(move.endPosition.row, move.endPosition.col)}</span>
             {move.removedPiece ? <span> taking {logPieceMap[move.removedPiece]}</span> : ''}.
             { move.check ? <span> {move.piece.charAt(0) === 'b' ? 'white' : 'black' } is in check. </span> : '' }
+            { move.isRandom ? <span> 🎰 </span> : '' }
           </li>
         ))}
         { (gameOver === 'b' || gameOver === 'w' || gameOver === 'tie') ? 

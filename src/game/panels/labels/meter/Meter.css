@@ -1,0 +1,16 @@
+.vertical-meter-container {
+  position: absolute;
+  left: calc(50vw - 808px);
+  top: 84px;
+  width: 22px; /* Set the width as needed */
+  height: 938px; /* Set the height as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.vertical-meter-bar {
+  width: 20px; /* Set the bar width as needed */
+  border: 1px solid #445;
+  position: absolute;
+}

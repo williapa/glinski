@@ -1,11 +1,13 @@
 /* eslint-disable no-restricted-globals */
 import findBestMove from "./findBestMove";
 import getColorMoves from "./getColorMoves";
+import applyMove from "./applyMove";
+import evaluateBoard from "./evaluateBoard";
 
 const depth = 3;
 const disableChatDepth = 0;
-const whiteHalfMoves = 5; //(white makes 3 moves)
-const blackHalfMoves = 2; // black makes 1 move
+const whiteHalfMoves = 5; //(white makes 3 moves) (white half-moves are odd #1,3,5)
+const blackHalfMoves = 2; // black makes 1 move (half-move #2)
 
 addEventListener("message", async ({ data }) => {
   const { board, capturedPieces, chatFirst, enPassantPawnPosition, isChatsMove, halfMoves } = data;
@@ -17,7 +19,9 @@ addEventListener("message", async ({ data }) => {
   if (halfMoves < randomStartingMoves) {
     const moves = getColorMoves(board, (chatFirst === isChatsMove) ? 'w': 'b', enPassantPawnPosition);
     const random = Math.floor(Math.random() * moves.length);
-    postMessage(['random', moves[random]]);
+    const boardResultFromRandomMove = applyMove(board, capturedPieces, moves[random], enPassantPawnPosition);
+    const score = evaluateBoard(boardResultFromRandomMove.newBoard);
+    postMessage([score, moves[random], true]);
   } else {
     // note, using chatFirst since always asking for non chat move so can use this + depth to figure out move
     const bestMove = findBestMove(board, capturedPieces, chatFirst, (depth - (isChatsMove ? disableChatDepth: 0)), enPassantPawnPosition, isChatsMove);

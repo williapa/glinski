@@ -547,7 +547,7 @@ form.configForm {
     left: calc(5vw + 555px);
     min-height: 30px;
     max-height: 30px;
-    font-size: 18px;
+    font-size: 20px;
     z-index: 1;
   }
 

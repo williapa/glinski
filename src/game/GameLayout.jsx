@@ -22,7 +22,6 @@ import Ftr from '../footer/Ftr';
 import Clocks from './panels/labels/clock/Clocks';
 import AudioPlayer from '../audio/AudioPlayer';
 import Meter from './panels/labels/meter/Meter.jsx';
-import Videos from '../audio/Videos.jsx'
 import Ticker from './panels/ticker/Ticker.jsx';
 import hashRepeatedThrice from '../util/hashRepeatedThrice.js';
 import evaluateBoard from '../worker/ai/evaluateBoard.js';
@@ -585,7 +584,6 @@ function GameLayout({ id }) {
       />
       <Meter currentValue={boardEval} />
       <Ticker gameOver={gameOver} />
-      <Videos />
       <Popup 
         isVisible={promotion}
         color={turn}

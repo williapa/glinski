@@ -1,9 +1,9 @@
 .vertical-meter-container {
-  position: absolute;
   left: calc(50vw - 808px);
   top: 84px;
-  width: 22px; /* Set the width as needed */
-  height: 938px; /* Set the height as needed */
+  height: 938px;
+  position: absolute;
+  width: 22px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,4 +13,52 @@
   width: 20px; /* Set the bar width as needed */
   border: 1px solid #445;
   position: absolute;
+}
+
+@media (max-width: 1923px) and (min-width: 1441px) {
+  .vertical-meter-container {
+    left: 89px;
+    top: 83px;
+    height: 585px;
+  }
+}
+
+@media (max-width: 1440px) and (min-width: 1142px) {
+  .vertical-meter-container {
+    left: 14px;
+    top: 66px;
+    height: 525px;
+  }
+}
+
+@media (max-width: 1141px) and (min-width: 912px) {
+  .vertical-meter-container {
+    left: 10px;
+    top: 116px;
+    height: 360px;
+  }
+}
+
+@media (max-width: 911px) and (min-width: 768px) {
+  .vertical-meter-container {
+    left: 480px;
+    top: 10px;
+    height: 460px;
+  }
+}
+
+@media (max-width: 767px) and (min-width: 600px) {
+  .vertical-meter-container {
+    left: 480px;
+    top: 10px;
+    height: 460px;
+  }
+}
+
+@media (max-width: 600px) {
+  .vertical-meter-container {
+    left: 440px;
+    top: 10px;
+    height: 420px;
+  }
 }

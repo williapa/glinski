@@ -97,10 +97,10 @@ const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice) =>
         }
       } else if (text.startsWith('!refresh') && username === channel) {
         window.location.reload();
-      } else if (['!chickens', '!dowork', '!22s', '!dirtygirl', '!timetravel'].includes(text)) {
+      } /* else if (['!chickens', '!dowork', '!22s', '!dirtygirl', '!timetravel'].includes(text)) {
         console.log("hello!");
         playVideo(text.substring(1));
-      } else {
+      } */ else {
         console.log("no command executed.");
       }
     }

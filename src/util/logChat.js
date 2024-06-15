@@ -161,9 +161,9 @@ const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hili
       } else if (messageText.startsWith('!RESIGN')) {
         // post move for other team to win 
         postMove({ winner: chatFirst ? 'b': 'w' });
-      } else if (['!CHICKENS', '!DOWORK', '!22S', '!DIRTYGIRL', '!TIMETRAVEL'].includes(messageText)) {
+      } /* else if (['!CHICKENS', '!DOWORK', '!22S', '!DIRTYGIRL', '!TIMETRAVEL'].includes(messageText)) {
         playVideo(messageText.substring(1).toLowerCase());
-      }
+      } */
     }
   };
 

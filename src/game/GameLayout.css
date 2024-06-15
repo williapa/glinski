@@ -243,7 +243,7 @@ form.configForm {
     bottom: 60px;
     width: 314px;
     height: calc(100vh - 159px);
-    max-height: 1065px;
+    max-height: 1064px;
   }
 
   .moveLog-header {

@@ -34,6 +34,7 @@ const calculatePiece = (piece, isEndGame, position) => {
 }
 
 // todo: technically this does not correctly calculate a en passant capture's delta but the diff would be slight. 
+// i fixed this in calculateMoveDelta and I actually dont even use this fn 
 const calculateDelta = (previousValue, move, endGame) => {
   const { startPosition, endPosition, removedPiece, startingPiece, promotion, isEndGame } = move;
   const startingPieceAndPositionValue = calculatePiece(startingPiece, isEndGame, startPosition); //  pieceValues[startingPiece.substring(1)] + positionIncentives[startingPiece][startPosition.row][startPosition.column];

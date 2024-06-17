@@ -1,4 +1,7 @@
-const applyMove = (board, capturedPieces, coords, enPassantPawnPosition) => {
+import calculateMoveDelta from "./calculateMoveDelta";
+
+const applyMove = (board, capturedPieces, coords, enPassantPawnPosition, wasEndGameAtMoveStart) => {
+  let enPassantCaptureFlag = false;
   const { startPosition, endPosition, promotion } = coords;
   const startingPiece = board[startPosition.row][startPosition.column];
   const piece = promotion || startingPiece;
@@ -21,6 +24,7 @@ const applyMove = (board, capturedPieces, coords, enPassantPawnPosition) => {
     if (enPassantPawnPosition.row === endPosition.row && enPassantPawnPosition.col  === endPosition.col + dir) {
       removedPiece = board[enPassantPawnPosition.row][enPassantPawnPosition.col];
       newBoard[enPassantPawnPosition.row][enPassantPawnPosition.col] = 0;
+      enPassantCaptureFlag = enPassantPawnPosition;
     }
   }
   // now clear enPassantPosition
@@ -35,7 +39,8 @@ const applyMove = (board, capturedPieces, coords, enPassantPawnPosition) => {
   }
   newBoard[startPosition.row][startPosition.column] = 0;
   newBoard[endPosition.row][endPosition.col] = piece;
-  return { newBoard, newCapturedPieces, newEnPassantPawnPosition, removedPiece, startingPiece };
+  const scoreDelta = calculateMoveDelta(coords, startingPiece, piece, removedPiece, wasEndGameAtMoveStart, enPassantCaptureFlag);
+  return { newBoard, newCapturedPieces, newEnPassantPawnPosition, removedPiece, scoreDelta, startingPiece };
 }
 
 export default applyMove;

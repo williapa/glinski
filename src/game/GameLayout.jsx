@@ -91,7 +91,8 @@ function GameLayout({ id }) {
         resolve(message.data);
       });
       aiWorker.onerror = (e) => {
-        console.error('Worker error:', e.message);
+        console.error('Worker error:', e);
+        console.log(e);
       }; 
       aiWorker.postMessage({ board, capturedPieces, chatFirst, enPassantPawnPosition, isChatsMove, halfMoves });
     });

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, useParams } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import Splash from './splash/Splash';
 import GameLayout from './game/GameLayout';
@@ -55,7 +55,7 @@ const IdPage = () => {
 
 const App = () => {
   return (
-    <Router basename="/glinski">
+    <Router>
       <Routes>
         <Route path="/" element={<Splash />} />
         <Route path="/:id" element={<IdPage />} />

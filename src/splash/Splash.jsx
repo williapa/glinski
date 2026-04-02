@@ -20,7 +20,7 @@ const Splash = () => {
     if (channel.length < 4) return;
     setBlurClass('blur');
     setTimeout(() => {
-      window.location.href += `${channel}`;
+      window.location.href += `/#/${channel}`;
     }, 1750);
   }
 

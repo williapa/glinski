@@ -25,7 +25,7 @@ const Splash = () => {
   }
 
   return <div className={`splash ${blurClass}`}>
-    <h1>glin.ski</h1>
+    <h1>glin ski</h1>
     <img src={QueenBee} alt="Honeycomb chess mascot, Beatrice" />
     <div className="container">
       <div className="ellipse" />

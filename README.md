@@ -1,16 +1,17 @@
-# Honeycomb-client
+# Glinski
 
-Glinski chess client side app that lets you not only play Glinski Chess, the most famous Hexagonal Chess variant, but also:
+This repository contains a Glinski chess react app that lets users play Glinski Chess, the most famous Hexagonal Chess variant, as well as a number of twitch chat integrations enabling real-time multiplayer! 
 
-- streamer plays with chat (1-Many)
-- let chat play as a team and vote on move (1-M)
-- split chat into teams and play against each other (1-M)
-- streamer plays ai
-- chat (1-M) plays ai
-- AIs play each other!
-- no login or auth required for streamers or chatters. just broadcast the
-- battle-tested in streams with up to (3) chatters! (todo: test with more chatters)
+- Streamer plays vs. chat (1-Many)
+- Chat plays as a team and vote on move (1-Many) 
+- Streamer plays vs. AI (set "votes" to 0)
+- chat (1-Many) plays vs. AI (enable the "AI" input toggle)
+- AIs play against each other! (set "votes" to 0 & enable the "AI" input toggle)
+- No login or auth required for streamers or chatters. Simply broadcast your browser screen!
+- battle-tested in streams with up to (3) chatters! (Todo: test with more chatters)
+- Todo: Split chat into teams and play against each other (1-Many)
 
+For information on key scripts, I have retained the create-react-app readme contents below.
 
 ## Available Scripts
 
@@ -19,7 +20,7 @@ In the project directory, you can run:
 ### `yarn start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Open [http://localhost:3003](http://localhost:3003) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.

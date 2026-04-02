@@ -154,7 +154,7 @@ form.configForm {
 /* above 840px the screen scales the viewport to fit the grid on the left and the move log to the right */
 @media (min-width: 1924px) {
   .footer > span {
-    margin-left: calc(50vw - 380px);
+    margin-left: calc(50vw - 372px);
   }
   
   .animation .bg {
@@ -380,7 +380,7 @@ form.configForm {
   }
 
   .footer > span {
-    margin-left: 410px;
+    margin-left: 416px;
   }
 
   .animation .bg {
@@ -596,7 +596,7 @@ form.configForm {
   }
 
   .footer > span {
-    margin-left: 274px;
+    margin-left: 282px;
   }
 
   .animation input {
@@ -838,7 +838,7 @@ form.configForm {
   }
 
   .footer > span {
-    margin-left: calc(100px + 7vw);
+    margin-left: calc(108px + 7vw);
   }
 
   .animation input {
@@ -1901,7 +1901,6 @@ form.configForm {
   }
 }
 
-/* fuck chat gpt who said this would target safari and it definitely does NOT only target safari */
 @supports (-webkit-appearance: none) {
   .safari .hex .middle span {
     top: -4px;

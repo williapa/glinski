@@ -2,7 +2,7 @@ import pieceValues from "./pieceValues";
 import isEndGame from "../../util/isEndGame";
 import positionIncentives from "./positionIncentives";
 
-// reduces a file - i wrote separate file + cell reducers but need row/col in same call, so fuck it - u get 1
+// reduces a file - i wrote separate file + cell reducers but need row/col in same call
 const fileReducer = (acc, file, row) => {
   return file.reduce((acc, cell, col) => {
     let black = 0;

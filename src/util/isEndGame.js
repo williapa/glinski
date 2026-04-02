@@ -9,7 +9,7 @@ const calculateSufficientLoss = (materialArray) => {
 /** determines whether game is in "end" state based on remaining material
  * cant use captured pieces cuz there could have been promotions
  * so it's probably bad cuz I noticed that most other games just track piece positions
- * not the whole fucking board
+ * not the whole board
  * what was i thinking :(
 **/
 const isEndGame = (board) => {

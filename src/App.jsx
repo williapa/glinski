@@ -55,7 +55,7 @@ const IdPage = () => {
 
 const App = () => {
   return (
-    <Router>
+    <Router basename="/glinski">
       <Routes>
         <Route path="/" element={<Splash />} />
         <Route path="/:id" element={<IdPage />} />

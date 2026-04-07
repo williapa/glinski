@@ -1,17 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-button.newGame {
-  position: relative;
-  margin: 0 auto;
-  left: 6px;
-  top: -2px;
-  background-color: white; /* Green background */
-  border: 1px solid #445; /*&*/ /* Green border */
-  color: #445;/*&*/ /* White text */
-  padding: 1.5px 13.4px; /* Some padding */
-  cursor: pointer; /* Pointer/hand icon */
-}
-
 button.volume {
   position: relative;
   margin: 0 auto;

@@ -124,7 +124,17 @@ body.freeze {
   width: 216px;
   font-size: 1rem;
 }
-
+.soloButton {
+  position: absolute;
+  bottom: calc(40vh - 28px);
+  left: calc(54vw - 100px);
+  border-radius: 2px;
+  border-color: rebeccapurple;
+  background-color: white;
+  color: mediumpurple;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
 @media (max-width:500px) {
   .splash h1 {
     margin-left: 4px;

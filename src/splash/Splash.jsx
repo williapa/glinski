@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import SoloGameLayout from '../game/SoloGameLayout';
+import { DisableClicksProvider } from '../hooks/useDisableClicks';
 import QueenBee from '../img/queen-bee.png';
-
 import './Splash.css';
 
 const Splash = () => {
+  const [playSolo, setPlaySolo] = useState(false);
   const [channel, setChannel] = useState('');
   const [blurClass, setBlurClass] = useState('blur');
 
@@ -20,8 +22,17 @@ const Splash = () => {
     if (channel.length < 4) return;
     setBlurClass('blur');
     setTimeout(() => {
-      window.location.href += `/#/${channel}`;
+      const href = window.location.href;
+      window.location.href += `${href.endsWith('/') ? '' : '/'}#/${channel}`;
     }, 1750);
+  }
+
+  if (playSolo) {
+    return (
+      <DisableClicksProvider>
+        <SoloGameLayout />
+      </DisableClicksProvider>
+    );
   }
 
   return <div className={`splash ${blurClass}`}>
@@ -39,7 +50,10 @@ const Splash = () => {
       </div>
       
     </form>
-    <a href="" onClick={goToChannel}>play glinski with chat!</a>
+    
+    <button className="soloButton" onClick={() => setPlaySolo(true)}>No twitch? Play solo!</button>
+    
+    <a href={`#/${channel || ''}`} onClick={goToChannel}>play glinski with chat!</a>
     <svg>
       <polygon points="250,50 450,150 450,350 250,450 50,350 50,150" />
     </svg>

@@ -8,6 +8,7 @@ This repository contains a Glinski chess react app that lets users play Glinski 
 - chat (1-Many) plays vs. AI (enable the "AI" input toggle)
 - AIs play against each other! (set "votes" to 0 & enable the "AI" input toggle)
 - No login or auth required for streamers or chatters. Simply broadcast your browser screen!
+- No twitch? No problem - click "Play solo" to face AI sans twitch integration
 - battle-tested in streams with up to (3) chatters! (Todo: test with more chatters)
 - Todo: Split chat into teams and play against each other (1-Many)
 

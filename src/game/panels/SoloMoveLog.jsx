@@ -3,10 +3,11 @@ import LogLabel from './labels/LogLabel';
 import logPieceMap from '../../util/logPieceMap';
 import rowColToLetterCol from '../../util/rowColToLetterCol';
 
-const USER_SIDE = 'w';
-
-function SoloMoveLog({ gameOver, isGameActive, moves, onHover, startTime }) {
+function SoloMoveLog({ gameOver, isGameActive, moves, onHover, playerColor, startTime }) {
   const topRef = useRef(null);
+  const userSide = playerColor === 'black' ? 'b' : 'w';
+  const aiSide = playerColor === 'black' ? 'w' : 'b';
+  const aiColor = playerColor === 'black' ? 'white' : 'black';
 
   const resolveMovePiece = (move) => {
     if (typeof move?.piece === 'string') return move.piece;
@@ -27,11 +28,11 @@ function SoloMoveLog({ gameOver, isGameActive, moves, onHover, startTime }) {
         {isGameActive ? (
           <li className="moveLog-item">
             <span className="timeLabel">{new Date(startTime).toLocaleTimeString()} </span>
-            <span>You are white. AI is black.</span>
+            <span>You are {playerColor}. AI is {aiColor}.</span>
           </li>
         ) : (
           <li className="moveLog-item">
-            <span>Click start game to begin. You are white. AI is black.</span>
+            <span>Click start game to begin. You are {playerColor}. AI is {aiColor}.</span>
           </li>
         )}
         {moves
@@ -48,7 +49,7 @@ function SoloMoveLog({ gameOver, isGameActive, moves, onHover, startTime }) {
                 onMouseEnter={() => onHover(move.startPosition, move.endPosition)}
               >
                 <span className="timeLabel">{new Date(move.time).toLocaleTimeString()} </span>
-                <span>{piece.charAt(0) === USER_SIDE ? 'You' : 'AI'} played </span>
+                <span>{piece.charAt(0) === userSide ? 'You' : 'AI'} played </span>
                 {move.promoted ? <span>promotion to </span> : ''}
                 <span>{logPieceMap[piece]} </span>
                 <span>{rowColToLetterCol(move.startPosition.row, move.startPosition.col)} </span>
@@ -61,7 +62,7 @@ function SoloMoveLog({ gameOver, isGameActive, moves, onHover, startTime }) {
           })}
         {(gameOver === 'b' || gameOver === 'w' || gameOver === 'tie') ? (
           <li className="moveLog-item">
-            <i>{{ w: 'You win!', b: 'AI wins.', tie: 'Draw.' }[gameOver]}</i>
+            <i>{{ [userSide]: 'You win!', [aiSide]: 'AI wins.', tie: 'Draw.' }[gameOver]}</i>
           </li>
         ) : null}
       </ul>

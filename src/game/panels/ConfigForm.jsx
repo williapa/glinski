@@ -37,7 +37,7 @@ const ConfigForm = forwardRef(({
       <input id="aiMove" type="checkbox" />
       <span className="slider" />
     </label>
-    <ColorButtonPanel initial={colorChoice} gameOver={gameOver} />
+    <ColorButtonPanel initial={colorChoice} label="chat:" />
   </form>
 )); 
 

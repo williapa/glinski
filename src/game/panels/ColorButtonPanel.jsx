@@ -3,7 +3,7 @@ import './ColorButtonPanel.css';
 
 const options = ['black', 'white']
 
-const ColorButtonPanel = ({ gameOver, initial }) => {
+const ColorButtonPanel = ({ label, initial }) => {
 
   const [selected, setSelected] = useState(initial);
 
@@ -15,13 +15,11 @@ const ColorButtonPanel = ({ gameOver, initial }) => {
     e.preventDefault();
     setSelected(e.target.innerHTML.substring(1));
   }
-  
-  // if (!gameOver) return '';
 
   return (
     <div className="btn-group">
       <button disabled key={1}>
-        chat:
+        {label}:
       </button>
       {options.map((option) => (
         <button key={option} className={selected === option ? 'option selected' : 'option'} onClick={onClick} >

@@ -143,6 +143,16 @@ form.configForm {
   border-radius: 1px;
 }
 
+button.newGame {
+  position: absolute;
+  margin: 0 auto;
+  top: -1px;
+  background-color: white;
+  border: 1px solid #445;
+  color: #445;
+  cursor: pointer;
+}
+
 .capture {
   z-index: -1;
 }
@@ -288,15 +298,11 @@ form.configForm {
   }
 
   button.newGame {
-    position: relative;
-    margin: 0 auto;
-    left: 5px;
-    top: -15.5px;
-    background-color: white; /* Green background */
-    border: 1px solid #445; /*&*/ /* Green border */
-    color: #445;/*&*/ /* White text */
-    padding: 1.5px 13.4px; /* Some padding */
-    cursor: pointer; /* Pointer/hand icon */
+    left: 470px;
+    width: 140px;
+    height: 37px;
+    font-size: 16px;
+    padding: 1.5px 13.4px;
   }
 
   .btn-group {
@@ -330,7 +336,7 @@ form.configForm {
     max-height: 23px;
   }
 
-  .ticker {
+  div.ticker {
     padding: 2.5px;
     top: 1128px;
     left: calc(50vw - 137px);
@@ -350,18 +356,18 @@ form.configForm {
     max-height: 22px;
   }
 
-  #switch {
+  label#switch {
     top: -1px;
     left: 471px;
     width: 64px;
     height: 37px;
   }
 
-  #switch .slider {
+  label#switch .slider {
     height: 37px;
   }
 
-  #switch .slider:before {
+  label#switch .slider:before {
     padding-top: 8px;
     font-size: 15px;
     height: 25px;
@@ -521,15 +527,10 @@ form.configForm {
   }
 
   button.newGame {
-    position: relative;
-    margin: 0 auto;
-    left: 3px;
-    top: -18px;
-    background-color: white; /* Green background */
-    border: 1px solid #445; /*&*/ /* Green border */
-    color: #445;/*&*/ /* White text */
-    padding: 1.5px 13.4px; /* Some padding */
-    cursor: pointer; /* Pointer/hand icon */
+    left: 369px;
+    width: 140px;
+    height: 32px;
+    padding: 1.5px 13.4px;
   }
 
   .btn-group {
@@ -563,7 +564,7 @@ form.configForm {
     font-size: 15px;
   }
 
-  .ticker {
+  div.ticker {
     padding: 0px;
     top: 776px; /*904px; */
     min-width: calc(488px - 5vw);
@@ -584,17 +585,17 @@ form.configForm {
     margin-left: -10px; /* 27px; -188px  */
   }
 
-  #switch {
+  label#switch {
     left: 369px;
     top: -1px;
     width: 60px;
   }
 
-  #switch .slider {
+  label#switch .slider {
     height: 32px;
   }
 
-  #switch .slider:before {
+  label#switch .slider:before {
     padding-top: 7px;
     font-size: 12.5px;
     height: 21px;
@@ -764,17 +765,12 @@ form.configForm {
   }
 
   button.newGame {
-    position: relative;
-    margin: 0 auto;
-    left: 5px;
-    top: -18px;
-    background-color: white; /* Green background */
-    border: 1px solid #445; /*&*/ /* Green border */
-    color: #445;/*&*/ /* White text */
-    padding: 1.5px 13.4px; /* Some padding */
-    cursor: pointer; /* Pointer/hand icon */
+    left: 385px;
+    width: 120px;
+    height: 32px;
+    font-size: 13px;
+    padding: 1.5px 13.4px;
   }
-
 
   /* input hack - hide stupid browser buttons so i can make the number fields less wide */
 
@@ -816,7 +812,7 @@ form.configForm {
     max-height: 17px;
   }
 
-  .ticker {
+  div.ticker {
     top: 677px;
     min-width: calc(342px - 5vw);
     max-width: calc(342px - 5vw);
@@ -828,7 +824,7 @@ form.configForm {
     max-height: 26px;
   }
 
-  #switch {
+  label#switch {
     z-index: 5;
     top: -1px;
     left: 326px;
@@ -836,11 +832,11 @@ form.configForm {
     height: 32px;
   }
 
-  #switch .slider {
+  label#switch .slider {
     height: 32px;
   }
 
-  #switch .slider:before {
+  label#switch .slider:before {
     padding-top: 7px;
     font-size: 13px;
     height: 21px;
@@ -1025,11 +1021,10 @@ form.configForm {
   }
 
   button.newGame {
-    position: absolute;
     height: 26px;
-    top: -1px;
-    left: 140px;
-    width: 100px;
+    left: 245px;
+    width: 120px;
+    font-size: 11px;
   }
 
   .btn-group {
@@ -1061,12 +1056,12 @@ form.configForm {
     font-size: 10px;
   }
 
-  .ticker {
+  div.ticker {
     top: 617px;
     min-width: calc(262px - 5vw);
     max-width: calc(262px - 5vw);
-    min-height: 16.5px;
-    max-height: 16.5px;
+    min-height: 16px;
+    max-height: 16px;
     left: calc(5vw + 395px);
     font-size: 10.5px;
     z-index: 0;
@@ -1084,7 +1079,7 @@ form.configForm {
     margin-top: calc(-225px - (max(0px, (941px - 100vw)) / 8));
   }
 
-  #switch {
+  label#switch {
     top: -1px;
     left: 245px;
     width: 60px;
@@ -1092,11 +1087,11 @@ form.configForm {
     z-index: 1;
   }
 
-  #switch .slider {
+  label#switch .slider {
     height: 26px;
   }
 
-  #switch .slider:before {
+  label#switch .slider:before {
     padding-top: 6px;
     font-size: 11px;
     height: 18px;
@@ -1275,11 +1270,10 @@ form.configForm {
   }
 
   button.newGame {
-    position: absolute;
-    top: -1px;
+    left: 239px;
     height: 27px;
-    left: 144px;
-    width: 100px;
+    width: 120px;
+    font-size: 11px;
   }
 
   .btn-group {
@@ -1317,7 +1311,7 @@ form.configForm {
     display: none;
   }
 
-  .ticker {
+  div.ticker {
     min-width: calc(222px - 5vw);
     max-width: calc(222px - 5vw);
     left: calc(5vw + 328px);
@@ -1329,18 +1323,18 @@ form.configForm {
     z-index: 1;
   }
 
-  #switch {
+  label#switch {
     top: -1px;
     left: 247px;
     width: 64px;
     height: 29px;
   }
 
-  #switch .slider {
+  label#switch .slider {
     height: 27px;
   }
 
-  #switch .slider:before {
+  label#switch .slider:before {
     padding-top: 7px;
     font-size: 11px;
     height: 18px;
@@ -1516,11 +1510,10 @@ form.configForm {
   }
 
   button.newGame {
-    position: absolute;
-    top: -1px;
     height: 27px;
-    left: 144px;
-    width: 100px;
+    left: 202px;
+    width: 120px;
+    font-size: 11px;
   }
 
   .btn-group {
@@ -1556,7 +1549,7 @@ form.configForm {
     display: none;
   }
 
-  .ticker {
+  div.ticker {
     padding: 3px;
     top: 486px;
     left: 158px;
@@ -1566,7 +1559,7 @@ form.configForm {
     font-size: 13px;
   }
 
-  #switch {
+  label#switch {
     top: -1px;
     left: 476px;
     width: 64px;
@@ -1574,11 +1567,11 @@ form.configForm {
     z-index: 1;
   }
 
-  #switch .slider {
+  label#switch .slider {
     height: 27px;
   }
 
-  #switch .slider:before {
+  label#switch .slider:before {
     padding-top: 7px;
     font-size: 9px;
     height: 18px;
@@ -1758,11 +1751,10 @@ form.configForm {
   }
 
   button.newGame {
-    position: absolute;
-    top: -1px;
     height: 27px;
-    left: 140px;
+    left: 164px;
     width: 100px;
+    font-size: 11px;
   }
 
   .btn-group {
@@ -1800,7 +1792,7 @@ form.configForm {
     display: none;
   }
 
-  .ticker {
+  div.ticker {
     padding: 2.5px;
     font-size: 13.5px;
     top: 440px;
@@ -1810,18 +1802,18 @@ form.configForm {
     max-height: 20px;
   }
 
-  #switch {
+  label#switch {
     top: -1px;
     left: 419px;
     width: 64px;
     height: 29px;
   }
 
-  #switch .slider {
+  label#switch .slider {
     height: 27px;
   }
 
-  #switch .slider:before {
+  label#switch .slider:before {
     padding: 6px;
     font-size: 12px;
     height: 13px;
@@ -1866,7 +1858,7 @@ form.configForm {
     left: 295px;
   }
 
-  .ticker {
+  div.ticker {
     width: 140px;
   }
 
@@ -1952,7 +1944,7 @@ form.configForm {
     height: calc(100vh - 640px);
   }
 
-  .ticker {
+  div.ticker {
     top: 371px;
     left: 8px;
     width: 337px;

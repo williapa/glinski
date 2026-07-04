@@ -258,8 +258,8 @@ button.newGame {
 
   .moveLog-header {
     margin-left: -1px;
-    width: 292px;
-    height: 50px;
+    width: 314px;
+    height: 76px;
   }
   
   .moveLog-header .log #findme {
@@ -481,8 +481,8 @@ button.newGame {
 
   .moveLog-header {
     margin-left: -1px;
-    width: 270px;
-    height: 36px;
+    width: 292px;
+    height: 66px;
   }
 
   .moveLog-header .log #findme {
@@ -704,8 +704,8 @@ button.newGame {
 
   .moveLog-header {
     margin-left: -1px;
-    width: 228px;
-    height: 32px;
+    width: 250px;
+    height: 60px;
   }
 
   .moveLog-header .log {
@@ -957,9 +957,9 @@ button.newGame {
 
   .moveLog-header {
     margin-left: -1px;
-    min-width: 198px;
-    max-width: 198px;
-    height: 20px;
+    min-width: 220px;
+    max-width: 220px;
+    height: 52px;
   }
 
   .moveLog-header #findme {
@@ -1219,8 +1219,8 @@ button.newGame {
 
   .moveLog-header {
     margin-left: -1px;
-    width: 170px;
-    height: 32px;
+    width: 192px;
+    height: 56px;
   }
 
   .moveLog-header #findme {
@@ -1455,10 +1455,10 @@ button.newGame {
   }
 
   .moveLog-header {
-    position: absolute;
+    /*position: absolute;*/
     margin-left: -1px;
-    width: 511px;
-    height: 32px;
+    width: 533px;
+    height: 62px;
   }
 
   .moveLog-item {
@@ -1697,11 +1697,11 @@ button.newGame {
   }
 
   .moveLog-header {
-    position: absolute;
+    /*position: absolute;*/
     margin-left: -1px;
-    width: calc(100vw - 26px);
-    max-width: 454px;
-    height: 32px;
+    width: calc(100vw - 22px);
+    max-width: 476px;
+    height: 56px;
   }
 
   .moveLog-header .log {

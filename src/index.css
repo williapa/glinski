@@ -40,7 +40,7 @@ label {
   font-size: 13px;
   min-height: 30px;
   max-height: 30px;
-  padding-top: 8px; /*8px; 11? */
+  padding-top: 4px;
   z-index: 3;
   text-align: left;
 }
@@ -62,15 +62,4 @@ video {
 .space {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
-}
-
-.perspective {
-  z-index: -1;
-  position: fixed;
-  bottom: 40px; /* Positioned 40px above the bottom of the screen */
-  height: max(calc(100vh - 1152px), 48px); /* Height is the full viewport height minus 1500px 592 */
-  width: 100%; /* Full width at the bottom */
-  left: 0;
-  background: rgb(7,11,171, .11); /* white; */ /* #fffeee; */
-  clip-path: polygon(5% 0, 95% 0, 100% 100%, 0% 100%); /* Creates the inward slant */
 }

@@ -1,6 +1,6 @@
 .capture {
   position: absolute;
-  color: #445;
+  /*color: #445;*/
   z-index: 1;
 }
 
@@ -64,6 +64,9 @@
   list-style-type: none;
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
+  border-bottom: 1px solid rebeccapurple;
+  box-shadow: 0px 2px 0px 0px white, 0px 3px 0px 0px rebeccapurple;
 }
 
 .moveLog-item {
@@ -123,9 +126,10 @@
   padding: 8px 6px;
   position: absolute;
   word-break: break-word;
-  opacity: .75;
+  opacity: .95;
   z-index: 1;
   text-align: left;
+  height: 50px;
 }
 
 .label.left {
@@ -136,25 +140,50 @@
 .label.right {
   background: white;
   color: #445;/*&*/;
-}
-
-form.configForm {
-  height: 30px;
-  border-radius: 1px;
-}
-
-button.newGame {
-  position: absolute;
-  margin: 0 auto;
-  top: -1px;
-  background-color: white;
-  border: 1px solid #445;
-  color: #445;
-  cursor: pointer;
-}
-
-.capture {
+}.capture {
   z-index: -1;
+}
+
+.moveLog-config {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border-top: 1px solid rebeccapurple;
+  background: white;
+  box-shadow: 0 -2px 0 0 rgb(179 152 214 / 19%);
+  box-sizing: border-box;
+}
+
+.moveLog-config-button {
+  min-width: 80px;
+  min-height: 42px;
+  padding: 0 18px;
+  border: 1px solid #445;
+  border-radius: 4px;
+  background: rgba(47, 255, 123, 0.9);
+  color: #445;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 0 rebeccapurple;
+}
+
+.moveLog-config-button.secondary {
+  background: white;
+}
+
+.moveLog-config-button:hover {
+  background: rgba(47, 255, 123, 0.69);
+}
+
+.moveLog-config-button.secondary:hover {
+  background: rgb(179 152 214 / 19%);
 }
 
 /* screen size specifics */
@@ -188,13 +217,11 @@ button.newGame {
     font-size: 19px;
     min-width: 260px;
     max-width: 260px;
-    min-height: 32px;
-    max-height: 32px;
     z-index: 1;
   }
 
   .label.left {
-    top: 20px;
+    top: 22px;
   }
 
   .label.right {
@@ -248,12 +275,12 @@ button.newGame {
 
   .moveLog-list {
     position: fixed;
-    top: 97px;
+    top: 98px;
     left: calc(50vw + 358px); /*1231px;*/
     bottom: 60px;
     width: 314px;
-    height: calc(100vh - 159px);
-    max-height: 1064px;
+    height: calc(100vh - 231px);
+    max-height: 992px;
   }
 
   .moveLog-header {
@@ -269,64 +296,7 @@ button.newGame {
 
   .moveLog-header .count {
     font-size: 26px;
-  }
-
-  form.configForm {
-    position: absolute;
-    top: 1128px;
-    left: calc(50vw - 812px);
-    padding: 0px 3px;
-    z-index: 0;
-    min-height: 35px;
-    max-height: 35px;
-    padding-left: 5px;
-    padding-right: 10px;
-  }
-
-  form.configForm label {
-    top: -15px;
-    position: relative;
-    font-size: 15px;
-    padding-left: 6px;
-  }
-
-  form.configForm input {
-    font-size: 13.5px;
-    width: 18.5px;
-    top: -15px;
-    position: relative;
-  }
-
-  button.newGame {
-    left: 470px;
-    width: 140px;
-    height: 37px;
-    font-size: 16px;
-    padding: 1.5px 13.4px;
-  }
-
-  .btn-group {
-    left: 238px;
-    top: -47px;
-  }
-
-  .btn-group button {
-    padding-top: 9px;
-    font-size: 16px;
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-
-  .btn-group button:nth-child(1) {
-    border-top-left-radius: 1px;
-    border-bottom-left-radius: 1px;
-  }
-  .btn-group button:nth-child(2) {
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-  }
-
-  .popup.position {
+  }.popup.position {
     top: 288px;
     left: calc(50vw - 220px);
   }
@@ -354,35 +324,7 @@ button.newGame {
     font-size: 19px;
     min-height: 22px;
     max-height: 22px;
-  }
-
-  label#switch {
-    top: -1px;
-    left: 471px;
-    width: 64px;
-    height: 37px;
-  }
-
-  label#switch .slider {
-    height: 37px;
-  }
-
-  label#switch .slider:before {
-    padding-top: 8px;
-    font-size: 15px;
-    height: 25px;
-    width: 32px;
-    bottom: 2px;
-    left: 2px;
-  }
-
-  input:checked + .slider:before {
-    -webkit-transform: translateX(34px);
-    -ms-transform: translateX(34px);
-    transform: translateX(34px);
-  }
-  
-  .scale {
+  }.scale {
     transform: scale(0.92) rotate(90deg);
   }
   
@@ -393,9 +335,6 @@ button.newGame {
 }
 
 @media (max-width: 1923px) and (min-width: 1441px) {
-  .perspective {
-    height: max(calc(100vh - 804px), 48px); /* Height is the full viewport height minus 1500px */
-  }
 
   .footer > span {
     margin-left: 416px;
@@ -422,17 +361,15 @@ button.newGame {
     font-size: 18px;
     min-width: 211px;
     max-width: 211px;
-    min-height: 32px;
-    max-height: 32px;
     z-index: 1;
   }
 
   .label.right {
-    top: 700px;
+    top: 717px;
   }
 
   .label.left {
-    top: 16px;
+    top: 17px;
   }
 
   .clock {
@@ -445,7 +382,7 @@ button.newGame {
   }
 
   .right.clock {
-    top: 661px;
+    top: 677px;
   }
 
   .capture {
@@ -461,7 +398,7 @@ button.newGame {
   }
 
   .right.capture {
-    top: 696px;
+    top: 704px;
   }
 
   .logo {
@@ -495,64 +432,13 @@ button.newGame {
 
   .moveLog-list {
     position: fixed;
-    top: 79px;
+    top: 84px;
     left: 1060px;
     width: 292px;
-    height: calc(100vh - 150px);
-    max-height: 726px;
-  }
-
-  form.configForm {
-    position: absolute;
-    top: 776px;
-    left: calc(5vw + 16px);
-    min-height: 30px;
-    max-height: 30px;
-    padding-right: 7px;
-    padding-left: 7px;
-  }
-
-  form.configForm input {
-    top: -18px;
-    position: relative;
-    font-size: 12.5px;
-    min-width: 20px;
-    max-width: 20px;
-  }
-
-  form.configForm label {
-    position: relative;
-    top: -18px;
-    font-size: 13.5px;
-  }
-
-  button.newGame {
-    left: 369px;
-    width: 140px;
-    height: 32px;
-    padding: 1.5px 13.4px;
-  }
-
-  .btn-group {
-    left: 185px;
-    top: -47px;
-  }
-
-  .btn-group button {
-    padding: 8px 11.5px;
-    font-size: 12.5px;
-  }
-
-  .btn-group button:nth-child(1) {
-    border-top-left-radius: 1px;
-    border-bottom-left-radius: 1px;
+    height: calc(100vh - 226px);
+    max-height: 650px;
   }
   
-  .btn-group button:nth-child(2) {
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-  }
-
   .popup.position {
     top: 222px;
     left: 574px;
@@ -566,7 +452,7 @@ button.newGame {
 
   div.ticker {
     padding: 0px;
-    top: 776px; /*904px; */
+    top: 776px;
     min-width: calc(488px - 5vw);
     max-width: calc(488px - 5vw);
     left: calc(5vw + 555px);
@@ -583,38 +469,9 @@ button.newGame {
   .scale.position {
     margin-top: -146px;
     margin-left: -10px; /* 27px; -188px  */
-  }
-
-  label#switch {
-    left: 369px;
-    top: -1px;
-    width: 60px;
-  }
-
-  label#switch .slider {
-    height: 32px;
-  }
-
-  label#switch .slider:before {
-    padding-top: 7px;
-    font-size: 12.5px;
-    height: 21px;
-    width: 28px;
-    bottom: 2px;
-    left: 2px;
-  }
-
-  input:checked + .slider:before {
-    -webkit-transform: translateX(28px);
-    -ms-transform: translateX(28px);
-    transform: translateX(28px);
-  }
-}
+  }}
 
 @media (max-width: 1440px) and (min-width: 1142px) {
-  .perspective {
-    height: max(calc(100vh - 707px), 48px); /* Height is the full viewport height minus 1500px */
-  }
 
   .footer {
     z-index: 11;
@@ -645,12 +502,11 @@ button.newGame {
     font-size: 14px;
     min-width: 160px;
     max-width: 160px;
-    min-height: 28px;
-    max-height: 28px;
+    height: 46px;
   }
 
   .label.right {
-    top: 608px;
+    top: 627px;
   }
 
   .label.left {
@@ -667,7 +523,7 @@ button.newGame {
   }
   
   .right.clock {
-    top: 567px;
+    top: 586px;
   }
 
   .capture {
@@ -718,12 +574,12 @@ button.newGame {
 
   .moveLog-list {
     position: fixed;
-    top: 74px;
-    left: 878px;
+    top: 77px;
+    left: 876px;
     bottom: 60px;
-    width: 249px;
-    height: calc(100vh - 130px);
-    max-height: 632px;
+    width: 250px;
+    height: calc(100vh - 204px);
+    max-height: 558px;
   }
 
   .moveLog-item {
@@ -732,47 +588,7 @@ button.newGame {
 
   .moveLog-item .timeLabel {
     font-size: 8px;
-  }
-
-  form.configForm label, form.configForm input {
-    top: -18px;
-    position: relative;
-  }
-
-  form.configForm {
-    position: absolute;
-    top: 677px;
-    left: calc(5vw + 16px);
-    min-height: 30px;
-    max-height: 30px;
-    padding-right: 10px;
-    padding-left: 10px;
-  }
-
-  form.configForm input .btn-group button {
-    font-size: 13px;
-  }
-
-  form.configForm label {
-    font-size: 13px;
-    padding-left: 5.5px;
-    padding-right: 5.5px;
-  }
-
-  form.configForm input {
-    font-size: 13px;
-    width: 20px;
-  }
-
-  button.newGame {
-    left: 385px;
-    width: 120px;
-    height: 32px;
-    font-size: 13px;
-    padding: 1.5px 13.4px;
-  }
-
-  /* input hack - hide stupid browser buttons so i can make the number fields less wide */
+  }/* input hack - hide stupid browser buttons so i can make the number fields less wide */
 
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
@@ -782,24 +598,7 @@ button.newGame {
 
   input[type="number"] {
     -moz-appearance: textfield; /* Firefox */
-  }
-
-
-  .btn-group {
-    left: 193px;
-    top: -47px;
-  }
-
-  .btn-group button {
-    padding: 8px 11.5px;
-    font-size: 12.5px;
-  }
-
-  .btn-group button:disabled {
-    display: none;
-  }
-
-  .popup.position {
+  }.popup.position {
     top: 204px;
     left: 438px;
   }
@@ -822,37 +621,8 @@ button.newGame {
     padding: 2px 0px;
     min-height: 26px;
     max-height: 26px;
-  }
-
-  label#switch {
-    z-index: 5;
-    top: -1px;
-    left: 326px;
-    width: 58px;
-    height: 32px;
-  }
-
-  label#switch .slider {
-    height: 32px;
-  }
-
-  label#switch .slider:before {
-    padding-top: 7px;
-    font-size: 13px;
-    height: 21px;
-    width: 30px;
-    bottom: 2px;
-    left: 2px;
-  }
-
-  input:checked + .slider:before {
-    -webkit-transform: translateX(35px);
-    -ms-transform: translateX(35px);
-    transform: translateX(35px);
-  }
-  
-  .scale {
-    transform: scale(0.55) rotate(90deg); /* future use for table look: perspective(2800px) rotateY(-10deg) */
+  }.scale {
+    transform: scale(0.55) rotate(90deg);
   }
 
   .scale.position {
@@ -864,9 +634,6 @@ button.newGame {
 @media (max-width: 1141px) and (min-width: 912px) {
   body {
     background-image: none;
-  }
-  .perspective {
-    height: max(calc(100vh - 647px), 48px); /* Height is the full viewport height minus 1500px */
   }
 
   .footer > span {
@@ -903,7 +670,7 @@ button.newGame {
   }
 
   .label.right {
-    top: 557px;
+    top: 575px;
   }
 
   .label.left {
@@ -920,7 +687,7 @@ button.newGame {
   }
   
   .right.clock {
-    top: 460px;
+    top: 472px;
   }
 
   .capture {
@@ -976,12 +743,12 @@ button.newGame {
 
   .moveLog-list {
     position: fixed;
-    top: 62px;
+    top: 69px;
     left: 676px;
     bottom: 57px;
-    width: 221px;
-    height: calc(100vh - 120px);
-    max-height: 579px;
+    width: 220px;
+    height: calc(100vh - 198px);
+    max-height: 501px;
   }
 
   .moveLog-item {
@@ -990,58 +757,7 @@ button.newGame {
   }
   .moveLog-item .timeLabel {
     font-size: 8px;
-  }
-
-  form.configForm {
-    position: absolute;
-    top: 617px;
-    left: calc(5vw + 16px);
-    min-height: 24px;
-    max-height: 24px;
-    width: 123px;
-    padding: 0px 6px;
-  }
-
-  form.configForm label {
-    font-size: 11px;
-  }
-
-  form.configForm input {
-    padding: 0px;
-    width: 17px;
-  }
-
-  form.configForm label, form.configForm input {
-    position: relative;
-    top: -21px;
-  }
-
-  form.configForm input, .btn-group button {
-    font-size: 10.5px;
-  }
-
-  button.newGame {
-    height: 26px;
-    left: 245px;
-    width: 120px;
-    font-size: 11px;
-  }
-
-  .btn-group {
-    left: 137px;
-    top: -50px;
-    padding: 3px 1px;
-  }
-
-  .btn-group button:disabled {
-    display: none;
-  }
-
-  .btn-group button {
-    padding: 6px 9px;
-  }
-
-  .popup.position {
+  }.popup.position {
     top: 192px;
     left: calc(262px + 7vw);
   }
@@ -1077,37 +793,7 @@ button.newGame {
   .scale.position {
     margin-left: calc(-320px + 7vw); /* -247px; /* -321px */
     margin-top: calc(-225px - (max(0px, (941px - 100vw)) / 8));
-  }
-
-  label#switch {
-    top: -1px;
-    left: 245px;
-    width: 60px;
-    height: 26px;
-    z-index: 1;
-  }
-
-  label#switch .slider {
-    height: 26px;
-  }
-
-  label#switch .slider:before {
-    padding-top: 6px;
-    font-size: 11px;
-    height: 18px;
-    width: 28px;
-    bottom: 1px;
-    left: 1px;
-
-  }
-
-  input:checked + .slider:before {
-    -webkit-transform: translateX(30px);
-    -ms-transform: translateX(30px);
-    transform: translateX(30px);
-  }
-
-  /* input hack - hide stupid browser buttons so i can make the number fields less wide */
+  }/* input hack - hide stupid browser buttons so i can make the number fields less wide */
 
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
@@ -1125,9 +811,6 @@ button.newGame {
   body {
     background-image: none;
     animation: none;
-  }
-  .perspective {
-    height: max(calc(100vh - 526px), 48px); /* Height is the full viewport height minus 1500px */
   }
 
   .footer > span {
@@ -1162,7 +845,7 @@ button.newGame {
   }
 
   .right.label {
-    top: 447px;
+    top: 467px;
   }
 
   .left.label {
@@ -1179,7 +862,7 @@ button.newGame {
   }
   
   .right.clock {
-    top: 355px;
+    top: 371px;
   }
 
   .capture {
@@ -1233,67 +916,19 @@ button.newGame {
   }
 
   .moveLog-list {
-    height: calc(100vh - 128px);
-    max-height: 446px;
-    margin-top: 60px;
-    bottom: 60px;
+    height: calc(100vh - 198px);
+    max-height: 376px;
+    position: fixed;
+    top: 70px;
+    width: 192px;
+    margin-left: -1px;
   }
 
 
   .moveLog-item .timeLabel {
     top: -3px;
     font-size: 6px;
-  }
-
-
-  form.configForm {
-    position: absolute;
-    top: 494px;
-    left: calc(5vw + 8px);
-    max-height: 25px;
-    width: 140px;
-    padding: 0px;
-  }
-
-  form.configForm label {
-    font-size: 11px;
-  }  
-  
-  form.configForm label, form.configForm input {
-    position: relative;
-    top: -21px;
-  }
-
-  form.configForm input {
-    font-size: 10px;
-    max-width: 16px;
-  }
-
-  button.newGame {
-    left: 239px;
-    height: 27px;
-    width: 120px;
-    font-size: 11px;
-  }
-
-  .btn-group {
-    left: 139px;
-    top: -47px;
-    max-width: 91px;
-    padding: 0px 10px;
-  }
-
-  .btn-group button:disabled {
-    display: none;
-  }
-
-  .btn-group button {
-    min-height: 27px;
-    max-height: 27px;
-    font-size: 9px;
-  }
-
-  .popup.position {
+  }.popup.position {
     top: 192px;
     left: 237px;
   }
@@ -1321,28 +956,7 @@ button.newGame {
     min-height: 22px;
     max-height: 22px;
     z-index: 1;
-  }
-
-  label#switch {
-    top: -1px;
-    left: 247px;
-    width: 64px;
-    height: 29px;
-  }
-
-  label#switch .slider {
-    height: 27px;
-  }
-
-  label#switch .slider:before {
-    padding-top: 7px;
-    font-size: 11px;
-    height: 18px;
-    width: 30px;
-    bottom: 1px;
-    left: 1px;
-  }
-  /* input hack - hide stupid browser buttons so i can make the number fields less wide */
+  }/* input hack - hide stupid browser buttons so i can make the number fields less wide */
 
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
@@ -1363,10 +977,6 @@ button.newGame {
 
   .bodyScroll {
     /*overflow-y: auto; */
-  }
-
-  .perspective {
-    display: none;
   }
 
   .footer > span {
@@ -1390,7 +1000,7 @@ button.newGame {
   
   .label {
     left: 12px;
-    font-size: 30%;
+    font-size: 11px;
     min-width: 155px;
     max-width: 155px;
     min-height: 25px;
@@ -1400,7 +1010,7 @@ button.newGame {
   }
 
   .right.label {
-    top: 447px;
+    top: 467px;
   }
 
   .left.label {
@@ -1417,7 +1027,7 @@ button.newGame {
   }
   
   .right.clock {
-    top: 355px;
+    top: 371px;
   }
 
   .capture {
@@ -1445,19 +1055,19 @@ button.newGame {
   }
 
   .moveLog {
-    position: absolute;
+    position: fixed;
     left: 12px;
     top: 524px;
     font-size: 20px;
     min-height: 222px;
     height: calc(100vh - 630px);
-    width: 533px;
+    width: 448px;
   }
 
   .moveLog-header {
-    /*position: absolute;*/
+    position: fixed;
     margin-left: -1px;
-    width: 533px;
+    width: 448px;
     height: 62px;
   }
 
@@ -1475,63 +1085,19 @@ button.newGame {
   }
 
   .moveLog-list {
-    margin-top: 60px;
-    min-height: 162px;
-    height: calc(100vh - 691px);
+    position: fixed;
+    margin-top: 65px;
+    margin-left: -1px;
+    width:448px; /*533px;*/
+    min-height: 86px;
+    height: calc(100vh - 766px);
   }
 
 
   .moveLog-item .timeLabel {
     top: -3px;
     font-size: 6px;
-  }
-
-
-  form.configForm {
-    position: absolute;
-    top: 486px;
-    left: 9px;
-    max-height: 25px;
-    width: 139px;
-    padding: 0px;
-  }
-
-  form.configForm label {
-    font-size: 11px;
-  }  
-  
-  form.configForm label, form.configForm input {
-    position: relative;
-    top: -21px;
-  }
-
-  form.configForm input {
-    font-size: 10px;
-  }
-
-  button.newGame {
-    height: 27px;
-    left: 202px;
-    width: 120px;
-    font-size: 11px;
-  }
-
-  .btn-group {
-    left: 373px;
-    top: -47px;
-    max-width: 91px;
-    padding: 0px 10px;
-  }
-
-  .btn-group button:disabled {
-    display: none;
-  }
-
-  .btn-group button {
-    font-size: 8px;
-  }
-
-  .popup.position {
+  }.popup.position {
     top: 192px;
     left: 236px;
   }
@@ -1557,29 +1123,7 @@ button.newGame {
     min-height: 19px;
     max-height: 19px;
     font-size: 13px;
-  }
-
-  label#switch {
-    top: -1px;
-    left: 476px;
-    width: 64px;
-    height: 29px;
-    z-index: 1;
-  }
-
-  label#switch .slider {
-    height: 27px;
-  }
-
-  label#switch .slider:before {
-    padding-top: 7px;
-    font-size: 9px;
-    height: 18px;
-    width: 30px;
-    bottom: 1px;
-    left: 1px;
-  }
-  /* input hack - hide stupid browser buttons so i can make the number fields less wide */
+  }/* input hack - hide stupid browser buttons so i can make the number fields less wide */
 
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
@@ -1596,10 +1140,6 @@ button.newGame {
   .bodyScroll {
     /* overflow-x: auto;
     overflow-y: auto; */
-  }
-
-  .perspective {
-    display: none;
   }
 
   .footer > span {
@@ -1639,7 +1179,7 @@ button.newGame {
   }
 
   .right.label {
-    top: 406px;
+    top: 428px;
   }
 
   .left.label {
@@ -1657,7 +1197,7 @@ button.newGame {
   }
   
   .right.clock {
-    top: 315px;
+    top: 331px;
   }
 
   .capture {
@@ -1686,21 +1226,19 @@ button.newGame {
   }
 
   .moveLog {
-    position: absolute;
     left: 11px;
     top: 478px;
     font-size: 13px;
     min-height: 157px;
     height: calc(100vh - 580px);
     width: calc(100vw - 22px);
-    max-width: 476px;
+    max-width: 448px;
   }
 
   .moveLog-header {
-    /*position: absolute;*/
     margin-left: -1px;
     width: calc(100vw - 22px);
-    max-width: 476px;
+    max-width: 448px;
     height: 56px;
   }
 
@@ -1718,63 +1256,18 @@ button.newGame {
   }
 
   .moveLog-list {
-    margin-top: 60px;
-    min-height: 97px;
-    height: calc(100vh - 640px);
+    position: fixed;
+    width: 448px;
+    margin-left: -1px;
+    margin-top: 59px;
+    min-height: 27px;
+    height: calc(100vh - 710px);
   }
 
   .moveLog-item .timeLabel {
     top: -2px;
     font-size: 6px;
-  }
-
-  form.configForm {
-    position: absolute;
-    top: 440px;
-    left: 8px;
-    max-height: 25px;
-    width: 132px;
-    padding: 0px;
-  }
-
-  form.configForm label {
-    font-size: 11px;
-  }  
-  
-  form.configForm label, form.configForm input {
-    position: relative;
-    top: -21px;
-  }
-
-  form.configForm input {
-    font-size: 10px;
-  }
-
-  button.newGame {
-    height: 27px;
-    left: 164px;
-    width: 100px;
-    font-size: 11px;
-  }
-
-  .btn-group {
-    left: 309px;
-    top: -47px;
-    max-width: 110px;
-    padding: 0px 2px;
-  }
-
-  .btn-group button:disabled {
-    display: none;
-  }
-
-  .btn-group button {
-    font-size: 11px;
-    padding-top: 6px;
-    padding-bottom: 6px;
-  }
-
-  .popup.position {
+  }.popup.position {
     top: 182px;
     left: 220px;
   }
@@ -1800,34 +1293,7 @@ button.newGame {
     width: 155px;
     min-height: 20px;
     max-height: 20px;
-  }
-
-  label#switch {
-    top: -1px;
-    left: 419px;
-    width: 64px;
-    height: 29px;
-  }
-
-  label#switch .slider {
-    height: 27px;
-  }
-
-  label#switch .slider:before {
-    padding: 6px;
-    font-size: 12px;
-    height: 13px;
-    width: 30px;
-    bottom: 1px;
-    left: 1px;
-  }
-
-  input:checked + .slider:before {
-    -webkit-transform: translateX(20px);
-    -ms-transform: translateX(20px);
-    transform: translateX(20px);
-  }
-  /* input hack - hide stupid browser buttons so i can make the number fields less wide */
+  }/* input hack - hide stupid browser buttons so i can make the number fields less wide */
 
   input[type="number"]::-webkit-inner-spin-button,
   input[type="number"]::-webkit-outer-spin-button {
@@ -1852,22 +1318,9 @@ button.newGame {
 @media (max-width: 500px) {
   .footer {
     z-index: 4;
-  }
-
-  .btn-group {
-    left: 295px;
-  }
-
-  div.ticker {
+  }div.ticker {
     width: 140px;
-  }
-
-  #switch {
-    top: 52px;
-    left: 260px;
-    z-index: 3;
-  }
-  .scale.position {
+  }.scale.position {
     margin-right: calc(100vw - 446px);
     margin-top: -437px;
   }
@@ -1892,8 +1345,9 @@ button.newGame {
   }
 
   .label {
-    min-height: 16px;
-    max-height: 16px;
+    /* min-height: 16px;
+    max-height: 16px; */
+    height: 50px;
     min-width: 132px;
     max-width: 132px;
   }
@@ -1928,38 +1382,22 @@ button.newGame {
 
   .clock.right {
     top: 254px;
-  }
-
-  form.configForm {
-    top: 406px;
-  }
-
-  .moveLog {
+  }.moveLog {
     top: 444px;
   }
 
   .moveLog-list {
     margin-top: 60px;
     min-height: 95px;
-    height: calc(100vh - 640px);
+    height: calc(100vh - 711px);
+    width: 368px;
   }
 
   div.ticker {
     top: 371px;
     left: 8px;
     width: 337px;
-  }
-
-  .btn-group {
-    left: 155px;
-    top: -49px;
-  }
-
-  #switch {
-    top: -1px;
-    left: 281px;
-  }
-}
+  }}
 
 @supports (-webkit-appearance: none) {
   .safari .hex .middle span {

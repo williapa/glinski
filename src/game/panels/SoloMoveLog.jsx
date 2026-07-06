@@ -3,11 +3,23 @@ import LogLabel from './labels/LogLabel';
 import logPieceMap from '../../util/logPieceMap';
 import rowColToLetterCol from '../../util/rowColToLetterCol';
 
-function SoloMoveLog({ gameOver, isGameActive, moves, onHover, playerColor, startTime }) {
+function SoloMoveLog({
+  gameOver,
+  isGameActive,
+  moves,
+  onHover,
+  onStartGame,
+  onSwitchPlayerColor,
+  logPlayerColor,
+  nextPlayerColor,
+  startTime,
+}) {
   const topRef = useRef(null);
-  const userSide = playerColor === 'black' ? 'b' : 'w';
-  const aiSide = playerColor === 'black' ? 'w' : 'b';
-  const aiColor = playerColor === 'black' ? 'white' : 'black';
+  const userSide = logPlayerColor === 'black' ? 'b' : 'w';
+  const canSwitchPlayerColor = !isGameActive || !!gameOver;
+  const displayedPlayerColor = canSwitchPlayerColor ? nextPlayerColor : logPlayerColor;
+  const displayedAiColor = displayedPlayerColor === 'black' ? 'white' : 'black';
+  const switchToPlayerColor = nextPlayerColor === 'white' ? 'black' : 'white';
 
   const resolveMovePiece = (move) => {
     if (typeof move?.piece === 'string') return move.piece;
@@ -28,11 +40,11 @@ function SoloMoveLog({ gameOver, isGameActive, moves, onHover, playerColor, star
         {isGameActive ? (
           <li className="moveLog-item">
             <span className="timeLabel">{new Date(startTime).toLocaleTimeString()} </span>
-            <span>You are {playerColor}. AI is {aiColor}.</span>
+            <span>You are {displayedPlayerColor}. AI is {displayedAiColor}.</span>
           </li>
         ) : (
           <li className="moveLog-item">
-            <span>Click start game to begin. You are {playerColor}. AI is {aiColor}.</span>
+            <span>Click start game to begin. You are {displayedPlayerColor}. AI is {displayedAiColor}.</span>
           </li>
         )}
         {moves
@@ -62,10 +74,20 @@ function SoloMoveLog({ gameOver, isGameActive, moves, onHover, playerColor, star
           })}
         {(gameOver === 'b' || gameOver === 'w' || gameOver === 'tie') ? (
           <li className="moveLog-item">
-            <i>{{ [userSide]: 'You win!', [aiSide]: 'AI wins.', tie: 'Draw.' }[gameOver]}</i>
+            <i>{{ 'w': 'White won!', 'b': 'Black won!', tie: 'Draw.' }[gameOver]}</i>
           </li>
         ) : null}
       </ul>
+      <form className="moveLog-config" onSubmit={(event) => event.preventDefault()}>
+        {canSwitchPlayerColor ? (
+            <button className="moveLog-config-button secondary" type="button" onClick={onSwitchPlayerColor}>
+              Use {switchToPlayerColor}
+            </button>
+        ) : null}
+        <button className="moveLog-config-button" type="button" onClick={onStartGame}>
+          {isGameActive ? 'New game' : 'Start game'}
+        </button>
+      </form>
     </div>
   );
 }

@@ -3,25 +3,34 @@ import DraggablePiece from './DraggablePiece';
 
 const ROWS = "KJIHGFEDCBA";
 
-const BoardCell = ({
-  cell,
-  cellColor,
-  from,
-  i,
-  index,
-  isDestination,
-  movable,
-  onDragOver,
-  onDrop,
-  onStart,
-  pieceColor,
-  to,
-  turn,
-  chatFirst,
-}) => (
+function BoardCell(props) {
+  const {
+    cell,
+    cellColor,
+    from,
+    i,
+    index,
+    isDestination,
+    movable,
+    onDragOver,
+    onDrop,
+    onStart,
+    pieceColor,
+    playerCanMove,
+    playerSide,
+    to,
+    turn,
+    chatFirst,
+  } = props;
+
+  const activePlayerSide = playerSide || (chatFirst ? 'b' : 'w');
+  const activePlayerColor = activePlayerSide === 'b' ? 'black' : 'white';
+  const controlsEnabled = typeof playerCanMove === 'boolean' ? playerCanMove : true;
+
+  return (
   <div 
     className={`hex${isDestination ? ' shiny-effect' : ''}${from ? ' from':''}${to? ' to': ''}`}
-    style={{ cursor: (movable && pieceColor === (chatFirst ? 'black' : 'white')) ? 'pointer': 'default' }}
+    style={{ cursor: (controlsEnabled && movable && pieceColor === activePlayerColor) ? 'pointer': 'default' }}
   >
     <div 
       className={`${cellColor}a ${isDestination ? 'shiny-font': 'regular-font'}`} 
@@ -46,10 +55,13 @@ const BoardCell = ({
         row={index}
         col={i}
         chatFirst={chatFirst}
+        playerCanMove={playerCanMove}
+        playerSide={activePlayerSide}
       />
     </div>
     <div className={`bottom ${cellColor}`}/>
   </div>
-);
+  );
+}
 
 export default BoardCell;

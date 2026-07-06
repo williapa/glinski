@@ -176,7 +176,7 @@ const SplashV2 = () => {
         <Container size="xl">
           <div className="splash-v2-info-heading">
             <Text className="splash-v2-kicker">What is this?</Text>
-            <Title order={2}>Chess geometry, rebuilt for streams.</Title>
+            <Title order={2}>Hexagonal chess, designed for twitch.</Title>
           </div>
           <SimpleGrid cols={{ base: 1, md: 3 }} spacing="md">
             {featureCards.map(({ icon: Icon, title, copy }) => (

@@ -19,19 +19,21 @@ const getMultiple = () => {
   return .36; 
 }
 
-function DraggablePiece({ turn, onStart, cellContent, row, col, chatFirst }) {
+function DraggablePiece({ turn, onStart, cellContent, row, col, chatFirst, playerCanMove, playerSide }) {
   const { clicksDisabled } = useDisableClicks();
   if (!cellContent) return null;
   const team = cellContent.charAt(0);
+  const activePlayerSide = playerSide || (chatFirst ? 'b' : 'w');
+  const controlsEnabled = typeof playerCanMove === 'boolean' ? playerCanMove : !clicksDisabled;
   const piece = pieceMap[cellContent];
   const isPawn = !!cellContent && cellContent.substring(1) === "Pawn" ? "pawn safari" : "";
   const handleDragStart = (e) => {
     // Create a new element
-    if (clicksDisabled) {
+    if (!controlsEnabled) {
       console.log("clicks are disabled so no moves.");
       return;
     }
-    if ((chatFirst && turn === 'w') || (!chatFirst && turn === 'b')) {
+    if (turn !== activePlayerSide) {
       console.log("its not your turn so no moves!");
       return;
     }
@@ -62,7 +64,7 @@ function DraggablePiece({ turn, onStart, cellContent, row, col, chatFirst }) {
   }
 
   return (
-    <span className={isPawn} draggable={(turn !== (chatFirst ? 'w' : 'b')) && (team === turn)} onDragStart={handleDragStart} onDragEnd={handleDragEnd} >{piece}</span>
+    <span className={isPawn} draggable={controlsEnabled && (turn === activePlayerSide) && (team === turn)} onDragStart={handleDragStart} onDragEnd={handleDragEnd} >{piece}</span>
   );
 }
 

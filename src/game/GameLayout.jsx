@@ -561,11 +561,7 @@ function GameLayout({ id }) {
         turnMins={turnMins}
       />
       <CapturedPieces capturedPieces={capturedPieces} />
-      <ConfigForm clickDisabled={chatFirst === (turn === 'w')}
-        colorChoice={colorChoice}
-        gameOver={gameOver}
-        ref={formRef}
-      />
+      <ConfigForm colorChoice={colorChoice} ref={formRef} />
       <MoveLog ai={aiMove} 
         board={board}
         channel={id}
@@ -597,7 +593,6 @@ function GameLayout({ id }) {
         onCancel={()=>{ useMuted[1](true); setSoundAlert(false); }}
         onConfirm={()=>{useMuted[1](false); setSoundAlert(false); }}
       />
-      <div className='perspective'/>
       <Ftr />
     </div>
   );

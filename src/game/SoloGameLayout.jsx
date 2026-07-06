@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import pieceColor from '../util/pieceColor.js';
 import Moves from '../moves/index.js';
 import Popup from './popup/Popup.jsx';
@@ -11,7 +11,6 @@ import newBoard from '../util/newBoard.js';
 import CapturedPieces from './panels/CapturedPieces.jsx';
 import BoardCell from './BoardCell.jsx';
 import PlayerLabel from './panels/labels/PlayerLabel.jsx';
-import ColorButtonPanel from './panels/ColorButtonPanel.jsx';
 import SoloMoveLog from './panels/SoloMoveLog.jsx';
 import Ftr from '../footer/Ftr.jsx';
 import Clocks from './panels/labels/clock/Clocks.jsx';
@@ -25,8 +24,6 @@ import './GameLayout.css';
 
 const cellColors = ['beige', 'peach', 'brown'];
 const TURN_MINS = 2;
-const MIN_TURN_MINS = 2;
-const MAX_TURN_MINS = 60;
 
 const resolveSides = (colorChoice) => ({
   userSide: colorChoice === 'black' ? 'b' : 'w',
@@ -59,8 +56,6 @@ const createInitialState = (colorChoice) => {
 
 function SoloGameLayout() {
   const { setClicksDisabled } = useDisableClicks();
-  const configFormRef = useRef(null);
-  const turnMinsInputRef = useRef(null);
   const [flash, setFlash] = useState(createInitialFlash);
   const [boardEval, setBoardEval] = useState(0);
   const [inCheck, setCheck] = useState(false);
@@ -79,20 +74,18 @@ function SoloGameLayout() {
   const [startTime, setStartTime] = useState(Date.now());
   const [block, setBlock] = useState(false);
   const [soundAlert, setSoundAlert] = useState(true);
-  const [hasStartedGame, setHasStartedGame] = useState(false);
   const [isGameActive, setIsGameActive] = useState(false);
-  const [gameTurnMins, setGameTurnMins] = useState(TURN_MINS);
-  const [colorChoice, setColorChoice] = useState('white');
+  const gameTurnMins = TURN_MINS;
+  const [activePlayerColor, setActivePlayerColor] = useState('white');
+  const [nextPlayerColor, setNextPlayerColor] = useState('white');
 
-  const { userSide, aiSide } = resolveSides(colorChoice);
+  const { userSide, aiSide } = resolveSides(activePlayerColor);
+  const panelPlayerColor = isGameActive && !gameOver ? activePlayerColor : nextPlayerColor;
+  const { userSide: panelUserSide } = resolveSides(panelPlayerColor);
+  const playerCanMove = isGameActive && !block && !gameOver && !promotion && turn === userSide;
   const playerIds = {
-    b: userSide === 'b' ? 'You' : 'AI',
-    w: userSide === 'w' ? 'You' : 'AI',
-  };
-
-  const configFormStyle = {
-    backgroundColor: '#efefef',
-    border: '1px solid rgb(5,5,5,.85)',
+    b: panelUserSide === 'b' ? 'You' : 'AI',
+    w: panelUserSide === 'w' ? 'You' : 'AI',
   };
 
   const setFlasher = (newFlash) => {
@@ -127,13 +120,9 @@ function SoloGameLayout() {
   }, [gameOver, userSide]);
 
   const resetGame = useCallback(() => {
-    const currentColorChoice = configFormRef.current?.elements?.chatFirst?.value || 'white';
-    setColorChoice(currentColorChoice);
-    const initialState = createInitialState(currentColorChoice);
-    const nextTurnMins = Math.min(
-      MAX_TURN_MINS,
-      Math.max(MIN_TURN_MINS, Number(turnMinsInputRef.current?.value) || TURN_MINS),
-    );
+    const selectedPlayerColor = nextPlayerColor;
+    const initialState = createInitialState(selectedPlayerColor);
+    setActivePlayerColor(selectedPlayerColor);
     setBoard(initialState.board);
     setBoardEval(initialState.boardEval);
     setCapturedPieces(initialState.capturedPieces);
@@ -146,23 +135,17 @@ function SoloGameLayout() {
     setPromotion(false);
     setHilightedCells({});
     setBlock(false);
-    setHasStartedGame(true);
     setIsGameActive(true);
-    setGameTurnMins(nextTurnMins);
     setStartTime(initialState.startTime);
     setTurn(initialState.turn);
     gameChanger(initialState.gameOver);
     playSound('startGame');
-  }, [gameChanger]);
+  }, [gameChanger, nextPlayerColor]);
 
-  const syncColorChoiceFromForm = useCallback(() => {
-    window.requestAnimationFrame(() => {
-      const nextColorChoice = configFormRef.current?.elements?.chatFirst?.value;
-      if (nextColorChoice) {
-        setColorChoice(nextColorChoice);
-      }
-    });
-  }, []);
+  const switchPlayerColor = useCallback(() => {
+    if (isGameActive && !gameOver) return;
+    setNextPlayerColor((currentColor) => (currentColor === 'white' ? 'black' : 'white'));
+  }, [gameOver, isGameActive]);
 
   const hilightCells = (row, column, piece) => {
     const pieceClass = piece.substr(1);
@@ -446,9 +429,11 @@ function SoloGameLayout() {
                   onDrop={buildOnDrop(index, i)}
                   onStart={buildHilightCells(index, i)}
                   pieceColor={pieceColor(cell)}
+                  playerCanMove={playerCanMove}
+                  playerSide={userSide}
                   to={flash.endPosition.row === index && flash.endPosition.col === i}
                   turn={turn}
-                  chatFirst={userSide === 'b'}
+                  chatFirst={false}
                 />
               );
             })}
@@ -479,42 +464,15 @@ function SoloGameLayout() {
         turnMins={gameTurnMins}
       />
       <CapturedPieces capturedPieces={capturedPieces} />
-      <form
-        ref={configFormRef}
-        style={configFormStyle}
-        className="configForm"
-        onClickCapture={(e) => {
-          if (e.target.closest('.btn-group')) {
-            syncColorChoiceFromForm();
-          }
-        }}
-      >
-        <label htmlFor="solo-turn-mins">Minutes </label>
-        <input
-          ref={turnMinsInputRef}
-          id="solo-turn-mins"
-          name="solo-turn-mins"
-          type="number"
-          min={MIN_TURN_MINS}
-          max={MAX_TURN_MINS}
-          step={1}
-          defaultValue={TURN_MINS}
-        />
-        <ColorButtonPanel
-          initial={colorChoice}
-          label="color"
-        />
-        <button id="solo-new-game" className="newGame" type="button" onClick={resetGame}>
-          {hasStartedGame ? 'New game ' : 'Start game '}
-          ▶️
-        </button>
-      </form>
       <SoloMoveLog
         gameOver={gameOver}
         isGameActive={isGameActive}
         moves={moves}
         onHover={(startPosition, endPosition) => setFlasher({ startPosition, endPosition })}
-        playerColor={colorChoice}
+        onStartGame={resetGame}
+        onSwitchPlayerColor={switchPlayerColor}
+        logPlayerColor={activePlayerColor}
+        nextPlayerColor={nextPlayerColor}
         startTime={startTime}
       />
       <Meter currentValue={boardEval} />
@@ -530,7 +488,6 @@ function SoloGameLayout() {
         onCancel={() => { setUseMuted(true); setSoundAlert(false); }}
         onConfirm={() => { setUseMuted(false); setSoundAlert(false); }}
       />
-      <div className="perspective" />
       <Ftr />
     </div>
   );

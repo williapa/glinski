@@ -9,10 +9,14 @@ const LogLabel = ({ gameOver, useMuted }) => {
   const toggleMuted = () => {
     setMuted((prev) => !prev);
   }
-  // glinsk.ai glinsk.io glins.ki glins.ke
+  
   return (
     <div className="moveLog-header">
-      <span className="log"><span id="findme">Glinski</span> {/*turnCount ? <span className="count">({turnCount})</span>: '' */}</span>
+      <span className="log">
+        <span id="findme">
+          Glinski
+        </span>
+      </span>
       {
         <button style={{ display: 'none' }} className="volume" onClick={toggleMuted}>
           {muted ? '🔇': '🔊' }

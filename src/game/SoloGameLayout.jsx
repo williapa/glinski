@@ -23,7 +23,6 @@ import './GameBoard.css';
 import './GameLayout.css';
 
 const cellColors = ['beige', 'peach', 'brown'];
-const TURN_MIN_OPTIONS = [1, 2, 5, 10, 15, 20, 30, 45, 60, 90];
 const TURN_MINS = 2;
 
 const resolveSides = (colorChoice) => ({
@@ -148,14 +147,9 @@ function SoloGameLayout() {
     setNextPlayerColor((currentColor) => (currentColor === 'white' ? 'black' : 'white'));
   }, [gameOver, isGameActive]);
 
-  const updateTurnMins = useCallback((direction) => {
+  const updateTurnMins = useCallback((nextMins) => {
     if (isGameActive && !gameOver) return;
-    setTurnMins((mins) => {
-      const currentIndex = TURN_MIN_OPTIONS.indexOf(mins);
-      const safeIndex = currentIndex > -1 ? currentIndex : 0;
-      const nextIndex = (safeIndex + direction + TURN_MIN_OPTIONS.length) % TURN_MIN_OPTIONS.length;
-      return TURN_MIN_OPTIONS[nextIndex];
-    });
+    setTurnMins(nextMins);
   }, [gameOver, isGameActive]);
 
   const hilightCells = (row, column, piece) => {

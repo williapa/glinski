@@ -29,7 +29,6 @@ import './GameBoard.css';
 import './GameLayout.css';
 
 const cellColors = ['beige', 'peach', 'brown']; // these correspond to class names they are not the real colors im sorry
-const TURN_MIN_OPTIONS = [1, 2, 5, 10, 15, 20, 30, 45, 60, 90];
 
 function GameLayout({ id }) {
   const formRef = useRef(null);
@@ -280,19 +279,12 @@ function GameLayout({ id }) {
     setColorChoice((currentColor) => (currentColor === 'white' ? 'black' : 'white'));
   }, [gameOver]);
 
-  const updateTurnMins = useCallback((direction) => {
+  const updateTurnMins = useCallback((nextMins) => {
     if (!gameOver) return;
-    setTurnMins((mins) => {
-      const numericMins = Number(mins);
-      const currentIndex = TURN_MIN_OPTIONS.indexOf(numericMins);
-      const safeIndex = currentIndex > -1 ? currentIndex : 0;
-      const nextIndex = (safeIndex + direction + TURN_MIN_OPTIONS.length) % TURN_MIN_OPTIONS.length;
-      const nextMins = TURN_MIN_OPTIONS[nextIndex];
-      if (formRef.current) {
-        formRef.current.turnMin.value = nextMins;
-      }
-      return nextMins;
-    });
+    if (formRef.current) {
+      formRef.current.turnMin.value = nextMins;
+    }
+    setTurnMins(nextMins);
   }, [gameOver]);
 
   const toggleStreamerAi = useCallback(() => {

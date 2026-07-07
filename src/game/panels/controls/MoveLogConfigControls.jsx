@@ -1,5 +1,6 @@
 import React from 'react';
 import ConfigSwitch from './ConfigSwitch';
+import MinutesPerPlayerStepper from './MinutesPerPlayerStepper';
 
 function MoveLogConfigControls({
   aiEnabled = false,
@@ -13,23 +14,14 @@ function MoveLogConfigControls({
   showAiToggle = false,
   turnMins,
 }) {
-  const displayedTurnMins = String(turnMins).padStart(2, '0');
-
   return (
     <form className="moveLog-config" onSubmit={(event) => event.preventDefault()}>
       <div className="moveLog-config-control">
-        <div className="moveLog-config-stepper" aria-label="Minutes per player">
-          <button disabled={!canConfigureGame} type="button" onClick={() => onUpdateTurnMins(-1)}>
-            -
-          </button>
-          <span className="moveLog-config-minutes">
-            {displayedTurnMins}
-            <small>min</small>
-          </span>
-          <button disabled={!canConfigureGame} type="button" onClick={() => onUpdateTurnMins(1)}>
-            +
-          </button>
-        </div>
+        <MinutesPerPlayerStepper
+          disabled={!canConfigureGame}
+          onChange={onUpdateTurnMins}
+          value={turnMins}
+        />
       </div>
       <div className="moveLog-config-control">
         <button className="game-config-button moveLog-config-button" type="button" onClick={onStartGame}>

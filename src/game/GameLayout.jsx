@@ -29,6 +29,7 @@ import './GameBoard.css';
 import './GameLayout.css';
 
 const cellColors = ['beige', 'peach', 'brown']; // these correspond to class names they are not the real colors im sorry
+const TURN_MIN_OPTIONS = [1, 2, 5, 10, 15, 20, 30, 45, 60, 90];
 
 function GameLayout({ id }) {
   const formRef = useRef(null);
@@ -64,10 +65,11 @@ function GameLayout({ id }) {
   const [opponent, setOpponent] = useState('');
   const [block, setBlock] = useState(false);
   const [soundAlert, setSoundAlert] = useState(true);
+  const [streamerAiEnabled, setStreamerAiEnabled] = useState(false);
   
   const aiMove = async (isChatsMove = false) => {
     console.log(playersRng);
-    const letAiMoveForStreamer = document.getElementById('aiMove').checked;
+    const letAiMoveForStreamer = streamerAiEnabled;
     const letAiMoveForChat = document.getElementById('votes').value < 1;
     const letAiMove = (chatFirst === (turn === 'w')) ? letAiMoveForChat : letAiMoveForStreamer;
     if (!letAiMove) {
@@ -184,9 +186,11 @@ function GameLayout({ id }) {
       setTurnMins(result.gameConfig.turnMins);
       setStartTime(result.gameConfig.startTime);
       setOpponent(result.gameConfig.opponent);
+      setStreamerAiEnabled(!!result.gameConfig.streamerAiEnabled);
       if (formRef.current) {
         formRef.current.turnMin.value = result.gameConfig.turnMins;
         formRef.current.votes.value = result.gameConfig.votes;
+        formRef.current.aiMove.checked = !!result.gameConfig.streamerAiEnabled;
       }
     }
     setMoveHashTable(result?.moveHashTable || []);
@@ -205,10 +209,12 @@ function GameLayout({ id }) {
 
   // move, formRef, setGameOver, endGame, setPlayersRng, 
   const postMove = (move) => {
+    const aiEnabledFromForm = !!formRef.current.aiMove.checked;
     const gameConfig = {
       startTime: new Date().getTime(),
       turnMins: formRef.current.turnMin.value,
       votes: formRef.current.votes.value,
+      streamerAiEnabled: aiEnabledFromForm,
     };
     if (move.winner) {
       // winner = end game
@@ -219,6 +225,7 @@ function GameLayout({ id }) {
       const userChoice = formRef.current.chatFirst.value;
       gameConfig.chatFirst = userChoice;
       gameConfig.opponent = move.username;
+      setStreamerAiEnabled(aiEnabledFromForm);
 
       const rngVals = {
         chat: rng(3, 13, userChoice === 'white'),
@@ -244,6 +251,7 @@ function GameLayout({ id }) {
           startTime: new Date().getTime(),
           turnMins: formRef.current.turnMin.value,
           votes: formRef.current.votes.value,
+          streamerAiEnabled: aiEnabledFromForm,
           opponent: move.username
         }
       };
@@ -266,6 +274,36 @@ function GameLayout({ id }) {
     playSound('startGame');
     await postMove({ username });
   };
+
+  const switchPlayerColor = useCallback(() => {
+    if (!gameOver) return;
+    setColorChoice((currentColor) => (currentColor === 'white' ? 'black' : 'white'));
+  }, [gameOver]);
+
+  const updateTurnMins = useCallback((direction) => {
+    if (!gameOver) return;
+    setTurnMins((mins) => {
+      const numericMins = Number(mins);
+      const currentIndex = TURN_MIN_OPTIONS.indexOf(numericMins);
+      const safeIndex = currentIndex > -1 ? currentIndex : 0;
+      const nextIndex = (safeIndex + direction + TURN_MIN_OPTIONS.length) % TURN_MIN_OPTIONS.length;
+      const nextMins = TURN_MIN_OPTIONS[nextIndex];
+      if (formRef.current) {
+        formRef.current.turnMin.value = nextMins;
+      }
+      return nextMins;
+    });
+  }, [gameOver]);
+
+  const toggleStreamerAi = useCallback(() => {
+    setStreamerAiEnabled((enabled) => {
+      const nextEnabled = !enabled;
+      if (formRef.current) {
+        formRef.current.aiMove.checked = nextEnabled;
+      }
+      return nextEnabled;
+    });
+  }, []);
 
   const hilightCells = (row, column, piece) => {
     const pieceClass = piece.substr(1);
@@ -419,7 +457,8 @@ function GameLayout({ id }) {
             chatFirst,
             opponent,
             turnMins: formRef.current.turnMin.value,
-            votes: formRef.current.votes.value 
+            votes: formRef.current.votes.value,
+            streamerAiEnabled,
           },
           gameOver: isGameOver,
           moveHashTable: hashResult[1],
@@ -499,7 +538,7 @@ function GameLayout({ id }) {
     if (!gameOver && !block && turn === (chatFirst ? 'b' : 'w')) {
       aiMove(false);
     }
-  }, [block, chatFirst, gameOver, turn]);
+  }, [block, chatFirst, gameOver, streamerAiEnabled, turn]);
   
   if (loading && !data) return '';
   if (error) return <p>Error: {error.message}</p>;
@@ -561,22 +600,33 @@ function GameLayout({ id }) {
         turnMins={turnMins}
       />
       <CapturedPieces capturedPieces={capturedPieces} />
-      <ConfigForm colorChoice={colorChoice} ref={formRef} />
+      <ConfigForm
+        colorChoice={colorChoice}
+        ref={formRef}
+        streamerAiEnabled={streamerAiEnabled}
+        turnMins={turnMins}
+      />
       <MoveLog ai={aiMove} 
+        aiEnabled={streamerAiEnabled}
         board={board}
         channel={id}
         chatFirst={chatFirst}
+        colorChoice={colorChoice}
         enPassantPawnPosition={enPassantPawnPosition}
         gameOver={gameOver}
         hilighter={hilighter}
         initialVotes={votes}
         moves={moves}
+        onSwitchPlayerColor={switchPlayerColor}
+        onToggleAi={toggleStreamerAi}
+        onUpdateTurnMins={updateTurnMins}
         opponent={opponent}
         postMove={postMove}
         setColorChoice={setColorChoice}
         setFlash={setFlasher}
         startGame={startGame}
         startTime={startTime}
+        turnMins={turnMins}
         useMuted={useMuted}
       />
       <Meter currentValue={boardEval} />

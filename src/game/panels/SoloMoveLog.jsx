@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import LogLabel from './labels/LogLabel';
+import MoveLogConfigControls from './controls/MoveLogConfigControls';
 import logPieceMap from '../../util/logPieceMap';
 import rowColToLetterCol from '../../util/rowColToLetterCol';
 
@@ -10,16 +11,18 @@ function SoloMoveLog({
   onHover,
   onStartGame,
   onSwitchPlayerColor,
+  onUpdateTurnMins,
   logPlayerColor,
   nextPlayerColor,
   startTime,
+  turnMins,
 }) {
   const topRef = useRef(null);
   const userSide = logPlayerColor === 'black' ? 'b' : 'w';
-  const canSwitchPlayerColor = !isGameActive || !!gameOver;
-  const displayedPlayerColor = canSwitchPlayerColor ? nextPlayerColor : logPlayerColor;
+  const canConfigureGame = !isGameActive || !!gameOver;
+  const displayedPlayerColor = canConfigureGame ? nextPlayerColor : logPlayerColor;
   const displayedAiColor = displayedPlayerColor === 'black' ? 'white' : 'black';
-  const switchToPlayerColor = nextPlayerColor === 'white' ? 'black' : 'white';
+  const playerColorIsBlack = nextPlayerColor === 'black';
 
   const resolveMovePiece = (move) => {
     if (typeof move?.piece === 'string') return move.piece;
@@ -78,16 +81,15 @@ function SoloMoveLog({
           </li>
         ) : null}
       </ul>
-      <form className="moveLog-config" onSubmit={(event) => event.preventDefault()}>
-        {canSwitchPlayerColor ? (
-            <button className="moveLog-config-button secondary" type="button" onClick={onSwitchPlayerColor}>
-              Use {switchToPlayerColor}
-            </button>
-        ) : null}
-        <button className="moveLog-config-button" type="button" onClick={onStartGame}>
-          {isGameActive ? 'New game' : 'Start game'}
-        </button>
-      </form>
+      <MoveLogConfigControls
+        canConfigureGame={canConfigureGame}
+        isGameActive={isGameActive}
+        onStartGame={onStartGame}
+        onSwitchPlayerColor={onSwitchPlayerColor}
+        onUpdateTurnMins={onUpdateTurnMins}
+        playerColorIsBlack={playerColorIsBlack}
+        turnMins={turnMins}
+      />
     </div>
   );
 }

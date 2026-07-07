@@ -23,6 +23,7 @@ import './GameBoard.css';
 import './GameLayout.css';
 
 const cellColors = ['beige', 'peach', 'brown'];
+const TURN_MIN_OPTIONS = [1, 2, 5, 10, 15, 20, 30, 45, 60, 90];
 const TURN_MINS = 2;
 
 const resolveSides = (colorChoice) => ({
@@ -75,7 +76,7 @@ function SoloGameLayout() {
   const [block, setBlock] = useState(false);
   const [soundAlert, setSoundAlert] = useState(true);
   const [isGameActive, setIsGameActive] = useState(false);
-  const gameTurnMins = TURN_MINS;
+  const [turnMins, setTurnMins] = useState(TURN_MINS);
   const [activePlayerColor, setActivePlayerColor] = useState('white');
   const [nextPlayerColor, setNextPlayerColor] = useState('white');
 
@@ -145,6 +146,16 @@ function SoloGameLayout() {
   const switchPlayerColor = useCallback(() => {
     if (isGameActive && !gameOver) return;
     setNextPlayerColor((currentColor) => (currentColor === 'white' ? 'black' : 'white'));
+  }, [gameOver, isGameActive]);
+
+  const updateTurnMins = useCallback((direction) => {
+    if (isGameActive && !gameOver) return;
+    setTurnMins((mins) => {
+      const currentIndex = TURN_MIN_OPTIONS.indexOf(mins);
+      const safeIndex = currentIndex > -1 ? currentIndex : 0;
+      const nextIndex = (safeIndex + direction + TURN_MIN_OPTIONS.length) % TURN_MIN_OPTIONS.length;
+      return TURN_MIN_OPTIONS[nextIndex];
+    });
   }, [gameOver, isGameActive]);
 
   const hilightCells = (row, column, piece) => {
@@ -308,7 +319,7 @@ function SoloGameLayout() {
       const totalTimeTaken = Date.now() - moveStartedAt;
       console.log(moveValue);
       console.log(coords);
-      const remainingTime = calculateRemainingTime(moves, { startTime, turnMins: gameTurnMins }, aiSide);
+      const remainingTime = calculateRemainingTime(moves, { startTime, turnMins }, aiSide);
 
       if (!coords) {
         gameChanger(inCheck ? userSide : 'tie');
@@ -336,7 +347,7 @@ function SoloGameLayout() {
     } finally {
       aiWorker.terminate();
     }
-  }, [aiSide, board, buildOnDrop, capturedPieces, enPassantPawnPosition, gameChanger, gameTurnMins, inCheck, moves, startTime, userSide]);
+  }, [aiSide, board, buildOnDrop, capturedPieces, enPassantPawnPosition, gameChanger, inCheck, moves, startTime, turnMins, userSide]);
 
   const promote = (piece, row, column) => {
     const newTurn = turn === 'w' ? 'b' : 'w';
@@ -461,7 +472,7 @@ function SoloGameLayout() {
         moves={moves}
         startTime={startTime}
         turn={turn}
-        turnMins={gameTurnMins}
+        turnMins={turnMins}
       />
       <CapturedPieces capturedPieces={capturedPieces} />
       <SoloMoveLog
@@ -471,9 +482,11 @@ function SoloGameLayout() {
         onHover={(startPosition, endPosition) => setFlasher({ startPosition, endPosition })}
         onStartGame={resetGame}
         onSwitchPlayerColor={switchPlayerColor}
+        onUpdateTurnMins={updateTurnMins}
         logPlayerColor={activePlayerColor}
         nextPlayerColor={nextPlayerColor}
         startTime={startTime}
+        turnMins={turnMins}
       />
       <Meter currentValue={boardEval} />
       <Popup

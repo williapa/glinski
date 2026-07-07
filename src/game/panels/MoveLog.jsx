@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import LogLabel from './labels/LogLabel';
+import MoveLogConfigControls from './controls/MoveLogConfigControls';
 import letChatStartGame from '../../util/letChatStartGame';
 import logChat from '../../util/logChat';
 import logPieceMap from '../../util/logPieceMap';
@@ -7,14 +8,19 @@ import rowColToLetterCol from '../../util/rowColToLetterCol';
 
 const MoveLog = ({
   ai,
+  aiEnabled,
   board,
   channel,
   chatFirst,
+  colorChoice,
   enPassantPawnPosition,
   gameOver,
   hilighter,
   initialVotes,
   moves,
+  onSwitchPlayerColor,
+  onToggleAi,
+  onUpdateTurnMins,
   opponent,
   postMove,
   useMuted,
@@ -22,6 +28,7 @@ const MoveLog = ({
   setFlash,
   startGame,
   startTime,
+  turnMins,
 }) => {
   const [votes, setVotes] = useState(initialVotes);
   const [socket, setSocket] = useState(null);
@@ -136,6 +143,8 @@ const MoveLog = ({
   useEffect(() => scrollToBottom(), [moves, gameOver]);
 
   const movesAndVotes = moves.concat(votes).sort((a, b) => a.time - b.time);
+  const canConfigureGame = !!gameOver;
+  const playerColorIsBlack = colorChoice === 'black';
   
   return (
     <div className="moveLog">
@@ -178,6 +187,18 @@ const MoveLog = ({
           ) : ''
         }
       </ul>
+      <MoveLogConfigControls
+        aiEnabled={aiEnabled}
+        canConfigureGame={canConfigureGame}
+        isGameActive={!gameOver}
+        onStartGame={wrapStartGame}
+        onSwitchPlayerColor={onSwitchPlayerColor}
+        onToggleAi={onToggleAi}
+        onUpdateTurnMins={onUpdateTurnMins}
+        playerColorIsBlack={playerColorIsBlack}
+        showAiToggle
+        turnMins={turnMins}
+      />
     </div>
   );
 };

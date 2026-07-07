@@ -12,8 +12,19 @@ const Clocks = ({
   turnMins,
 }) => {
   const timerRef = useRef(null);
+  const previousTurnMinsRef = useRef(turnMins);
   const [blackRemainingSeconds, setBlackRemainingTime] = useState(turnMins * 60);
   const [whiteRemainingSeconds, setWhiteRemainingTime] = useState(turnMins * 60);
+
+  useEffect(() => {
+    const turnMinsChanged = previousTurnMinsRef.current !== turnMins;
+
+    if (moves.length === 0 || (gameOver && turnMinsChanged)) {
+      setBlackRemainingTime(turnMins * 60);
+      setWhiteRemainingTime(turnMins * 60);
+    }
+    previousTurnMinsRef.current = turnMins;
+  }, [gameOver, moves.length, startTime, turnMins]);
 
   useEffect(() => {
     // Function to start the timer

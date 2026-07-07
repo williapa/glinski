@@ -166,7 +166,7 @@ const SplashV2 = () => {
 
           <div className="splash-v2-showcase" aria-label="Glinski gameplay preview">
             <div className="splash-v2-media-frame">
-              <div className="splash-v2-media-placeholder" />
+              <img src={`${process.env.PUBLIC_URL}/glinski.png`} alt="" />
             </div>
           </div>
         </Container>

@@ -1,9 +1,11 @@
 .ticker {
-  border: 1px solid #445;
+  border: 1px solid rebeccapurple;
+  border-radius: 1px;
+  box-shadow: 0px 0px 2px 2px white, 0px 0px 0px 3px rebeccapurple;
   position: absolute;
   top: 165px;  /* Position it at the bottom, you can adjust as needed */
-  left: 788px;
-  width: 284px;  /* Full width of the viewport */
+  left: calc(50vw - 808px);
+  width: 1132px;  /* Full width of the viewport */
   white-space: nowrap;
   overflow: hidden;
   background-color: white; /* Light grey background, adjust as needed */

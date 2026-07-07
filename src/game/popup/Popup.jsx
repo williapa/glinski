@@ -47,19 +47,21 @@ function Popup({ isVisible, color, onCancel, onConfirm }) {
 
   return (
     isVisible && (
-      <div className="popup position">
+      <div className={`popup position ${color ? 'promotion-popup' : 'sound-popup'}`}>
         <form className="form">
           { color ? ColorOptions : (
-            <p> 
+            <p className="sound-popup-message"> 
               Please confirm to hear sounds.
             </p>
           )}
-          <button type="button" className="cancel-button" onClick={onCancel}>
-            Cancel
-          </button>
-          <button type="button" className="confirm-button" onClick={handleConfirm}>
-            Confirm
-          </button>
+          <div className={color ? 'popup-actions promotion-popup-actions' : 'popup-actions sound-popup-actions'}>
+            <button type="button" className="game-config-button game-config-button-secondary popup-action-button" onClick={onCancel}>
+              Cancel
+            </button>
+            <button type="button" className="game-config-button popup-action-button" onClick={handleConfirm}>
+              Confirm
+            </button>
+          </div>
         </form>
       </div>
     )

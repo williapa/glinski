@@ -32,7 +32,7 @@ function MoveLogConfigControls({
         </div>
       </div>
       <div className="moveLog-config-control">
-        <button className="moveLog-config-button" type="button" onClick={onStartGame}>
+        <button className="game-config-button moveLog-config-button" type="button" onClick={onStartGame}>
           {isGameActive ? '▶️' : '▶️'}
         </button>
       </div>

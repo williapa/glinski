@@ -11,7 +11,7 @@ const double = (El) => (
 
 const Ticker = ({ gameOver }) => (
   <>
-    <div className="commands">Commands: </div> 
+    {/*<div className="commands">Commands: </div>*/}
     <div className="ticker" >
       <span className="scroller">
         {gameOver ? double(ConfigInstructions) : double(GameInstructions)}

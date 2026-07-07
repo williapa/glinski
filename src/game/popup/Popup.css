@@ -2,9 +2,10 @@
   position: fixed;
   transform: translate(-50%, -50%);
   background-color: white;
-  border: 1px solid #ccc;
+  border: 1px solid var(--mantine-color-dark-9);
   padding: 20px;
   z-index: 1000;
+  box-sizing: border-box;
 }
 
 .options {
@@ -24,23 +25,25 @@
   color: white;
 }
 
-.cancel-button {
-  margin-right: 6px;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  text-align: center;
+.popup-actions {
+  display: flex;
+  gap: 12px;
 }
 
-.confirm-button {
-  padding: 10px 20px;
-  border: none;
-  background-color: #28a745;
-  color: white;
-  cursor: pointer;
-  margin-left: 6px;
+.sound-popup {
+  min-width: min(320px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
 }
 
-.popup p {
+.popup-action-button {
+  flex: 1 1 50%;
+  min-width: 0;
+  min-height: 34px;
+}
+
+.sound-popup-message {
+  color: var(--mantine-color-dark-9);
   font-size: 20px;
+  margin: 0 0 20px;
+  text-align: center;
 }

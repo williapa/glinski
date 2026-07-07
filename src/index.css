@@ -9,8 +9,10 @@ body {
   animation: pan 120s linear alternate-reverse infinite;
   will-change: background-position;*/
   margin: 0px;
-  background-color: rgb(179 152 214 / 30%);/*inc. opacity of the movelog header bg */ /* rgb(153 71 215 / 21%); */ /*rgba(183, 127, 215, 0.182);  */
-  
+  /*inc. opacity of the movelog header bg */ /* rgb(153 71 215 / 21%); */ /*rgba(183, 127, 215, 0.182);  */
+}
+body.bodyScroll {
+  background-color: rgb(179 152 214 / 30%);
 }
 
 @keyframes pan {

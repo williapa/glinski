@@ -3,7 +3,6 @@ import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
 import { HashRouter as Router, Route, Routes, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import Splash from './splash/Splash';
 import SplashV2 from './splash/SplashV2';
 import GameLayout from './game/GameLayout';
 import dealWithSafari from './util/dealWithSafari';
@@ -61,8 +60,7 @@ const App = () => {
     <MantineProvider defaultColorScheme="dark">
       <Router>
         <Routes>
-          <Route path="/" element={<Splash />} />
-          <Route path="/home-v2" element={<SplashV2 />} />
+          <Route path="/" element={<SplashV2 />} />
           <Route path="/:id" element={<IdPage />} />
         </Routes>
       </Router>

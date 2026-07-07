@@ -157,7 +157,7 @@
   padding: 12px;
   min-height: var(--move-log-config-height);
   border-top: 1px solid rebeccapurple;
-  background: white;
+  background: rgb(179 152 214 / 19%);
   box-shadow: 0 -2px 0 0 rgb(179 152 214 / 19%);
   box-sizing: border-box;
 }
@@ -242,6 +242,7 @@
   font-size: 13px;
   line-height: 1;
   pointer-events: none;
+  color: black;
 }
 
 .moveLog-config-switch-thumb {

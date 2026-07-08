@@ -17,7 +17,7 @@ const sg = (parsedMessage, startGame, text) => {
 
 let ws = null;
 // use web socket to connect to the twitch channel IRC chat
-const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice) => {
+const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice, onUpdateVoteThreshold) => {
 
   if (!channel) return;
 
@@ -80,6 +80,9 @@ const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice) =>
         document.getElementById("aiMove").checked = true;
         document.querySelector(`form input[name='votes']`).value = 0;
         document.querySelector(`form input[name='turnMin']`).value = 2;
+        if (onUpdateVoteThreshold) {
+          onUpdateVoteThreshold(0);
+        }
         sg(parsedMessage, startGame, text);
       } else if (/!play/.test(text)) {
         sg(parsedMessage, startGame, text);
@@ -88,7 +91,7 @@ const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice) =>
       } else if (text.startsWith('!white')) {
         setColorChoice('white');
       } else if (text.startsWith('!votes')) {
-        textToVote(text);
+        textToVote(text, onUpdateVoteThreshold);
       } else if (text.startsWith('!minutes')) {
         const mins = parseInt(text.split(' ')[1].trim());
         if(!isNaN(mins) && mins < 61 && mins > 0) {
@@ -109,12 +112,12 @@ const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice) =>
   return ws;
 };
 
-const letChatStartGame = (startGame, cancel, channel, setColorChoice) => {
+const letChatStartGame = (startGame, cancel, channel, setColorChoice, onUpdateVoteThreshold) => {
   const intervalId = setInterval(() => {
     console.log('interval firing');
-    internalLetChatStartGame(startGame, cancel, channel, setColorChoice);
+    internalLetChatStartGame(startGame, cancel, channel, setColorChoice, onUpdateVoteThreshold);
   }, 600000);
-  const socket = internalLetChatStartGame(startGame, cancel, channel, setColorChoice);
+  const socket = internalLetChatStartGame(startGame, cancel, channel, setColorChoice, onUpdateVoteThreshold);
   return [intervalId, socket];
 };
 

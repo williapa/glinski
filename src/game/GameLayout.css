@@ -171,6 +171,10 @@
   box-sizing: border-box;
 }
 
+.moveLog-config-control-full {
+  flex-basis: 100%;
+}
+
 .moveLog-config-empty {
   visibility: hidden;
 }
@@ -374,8 +378,8 @@
     left: calc(50vw + 358px); /*1231px;*/
     bottom: 60px;
     width: 314px;
-    height: calc(100vh - 257px);
-    max-height: 966px;
+    height: calc(100vh - 295px);
+    max-height: 928px;
   }
 
   .moveLog-header {
@@ -527,8 +531,8 @@
     top: 84px;
     left: 1060px;
     width: 292px;
-    height: calc(100vh - 288px);
-    max-height: 588px;
+    height: calc(100vh - 331px);
+    max-height: 553px;
   }
   
   .popup.position {
@@ -669,8 +673,8 @@
     left: 876px;
     bottom: 60px;
     width: 250px;
-    height: calc(100vh - 260px);
-    max-height: 502px;
+    height: calc(100vh - 298px);
+    max-height: 464px;
   }
 
   .moveLog-item {
@@ -837,8 +841,8 @@
     left: 676px;
     bottom: 57px;
     width: 220px;
-    height: calc(100vh - 254px);
-    max-height: 445px;
+    height: calc(100vh - 292px);
+    max-height: 407px;
   }
 
   .moveLog-item {
@@ -1001,8 +1005,8 @@
   }
 
   .moveLog-list {
-    height: calc(100vh - 247px);
-    max-height: 327px;
+    height: calc(100vh - 285px);
+    max-height: 289px;
     position: fixed;
     top: 70px;
     width: 216px;
@@ -1143,8 +1147,8 @@
     left: 11px;
     top: 526px;
     font-size: 20px;
-    min-height: 204px;
-    height: calc(100vh - 646px);
+    min-height: 242px;
+    height: calc(100vh - 611px);
     width: 448px;
   }
 
@@ -1173,7 +1177,7 @@
     margin-top: 53px;
     margin-left: -1px;
     width: 448px;
-    min-height: 54px;
+    min-height: 57px;
     height: calc(100vh - 796px);
   }
 
@@ -1314,8 +1318,8 @@
     left: 11px;
     top: 478px;
     font-size: 13px;
-    min-height: 185px;
-    height: calc(100vh - 550px);
+    min-height: 220px;
+    height: calc(100vh - 512px);
     width: calc(100vw - 22px);
     max-width: 448px;
   }
@@ -1345,7 +1349,7 @@
     width: 448px;
     margin-left: -1px;
     margin-top: 59px;
-    min-height: 29px;
+    min-height: 26px;
     height: calc(100vh - 706px);
   }
 

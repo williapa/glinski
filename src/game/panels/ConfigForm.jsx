@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 
-const ConfigForm = forwardRef(({ colorChoice, streamerAiEnabled, turnMins }, ref) => (
+const ConfigForm = forwardRef(({ colorChoice, streamerAiEnabled, turnMins, voteThreshold }, ref) => (
   <form ref={ref} hidden>
     <input
       id="turnMin"
@@ -11,7 +11,8 @@ const ConfigForm = forwardRef(({ colorChoice, streamerAiEnabled, turnMins }, ref
     <input
       id="votes"
       name="votes"
-      defaultValue={0}
+      value={voteThreshold}
+      readOnly
     />
     <input id="aiMove" type="checkbox" checked={streamerAiEnabled} readOnly />
     <input id="chatFirst" name="chatFirst" value={colorChoice} readOnly />

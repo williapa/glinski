@@ -58,6 +58,7 @@ function GameLayout({ id }) {
   const [capturedPieces, setCapturedPieces] = useState({ b: [], w: [] });
   const [gameOver, setGameOver] = useState(true);
   const [turnMins, setTurnMins] = useState(2);
+  const [voteThreshold, setVoteThreshold] = useState(0);
   const useMuted = useState(false);
   const [sound, playSound] = useState(null);
   const [startTime, setStartTime] = useState(null);
@@ -183,6 +184,7 @@ function GameLayout({ id }) {
     setVotes(result.votes);
     if (result.gameConfig) {
       setTurnMins(result.gameConfig.turnMins);
+      setVoteThreshold(result.gameConfig.votes || 0);
       setStartTime(result.gameConfig.startTime);
       setOpponent(result.gameConfig.opponent);
       setStreamerAiEnabled(!!result.gameConfig.streamerAiEnabled);
@@ -286,6 +288,13 @@ function GameLayout({ id }) {
     }
     setTurnMins(nextMins);
   }, [gameOver]);
+
+  const updateVoteThreshold = useCallback((nextVoteThreshold) => {
+    if (formRef.current) {
+      formRef.current.votes.value = nextVoteThreshold;
+    }
+    setVoteThreshold(nextVoteThreshold);
+  }, []);
 
   const toggleStreamerAi = useCallback(() => {
     setStreamerAiEnabled((enabled) => {
@@ -597,6 +606,7 @@ function GameLayout({ id }) {
         ref={formRef}
         streamerAiEnabled={streamerAiEnabled}
         turnMins={turnMins}
+        voteThreshold={voteThreshold}
       />
       <MoveLog ai={aiMove} 
         aiEnabled={streamerAiEnabled}
@@ -612,6 +622,7 @@ function GameLayout({ id }) {
         onSwitchPlayerColor={switchPlayerColor}
         onToggleAi={toggleStreamerAi}
         onUpdateTurnMins={updateTurnMins}
+        onUpdateVoteThreshold={updateVoteThreshold}
         opponent={opponent}
         postMove={postMove}
         setColorChoice={setColorChoice}
@@ -620,6 +631,7 @@ function GameLayout({ id }) {
         startTime={startTime}
         turnMins={turnMins}
         useMuted={useMuted}
+        voteThreshold={voteThreshold}
       />
       <Meter currentValue={boardEval} />
       <Ticker gameOver={gameOver} />

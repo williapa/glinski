@@ -21,6 +21,7 @@ const MoveLog = ({
   onSwitchPlayerColor,
   onToggleAi,
   onUpdateTurnMins,
+  onUpdateVoteThreshold,
   opponent,
   postMove,
   useMuted,
@@ -29,6 +30,7 @@ const MoveLog = ({
   startGame,
   startTime,
   turnMins,
+  voteThreshold,
 }) => {
   const [votes, setVotes] = useState(initialVotes);
   const [socket, setSocket] = useState(null);
@@ -57,7 +59,7 @@ const MoveLog = ({
   }
 
   const kickOff = () => {
-    const [i,s] = letChatStartGame(wrapSocketStartGame, cancel, channel, setColorChoice);
+    const [i,s] = letChatStartGame(wrapSocketStartGame, cancel, channel, setColorChoice, onUpdateVoteThreshold);
     setStartGameSocket(s);
     setStartGameInterval(i);
   }
@@ -100,7 +102,7 @@ const MoveLog = ({
     // open socket if chat turn & no socket 
       console.log('start log chat');
       const thresh = document.getElementById("votes").value;
-      const webSocket = logChat(addVote, board, () => setSocket(null), channel, enPassantPawnPosition, hilighter, chatFirst, thresh, postMove, opponent);
+      const webSocket = logChat(addVote, board, () => setSocket(null), channel, enPassantPawnPosition, hilighter, chatFirst, thresh, postMove, opponent, onUpdateVoteThreshold);
       setSocket(webSocket);
     } else if (socket && (!chatTurn || gameOver)) {
       console.log('stop log chat');
@@ -110,7 +112,7 @@ const MoveLog = ({
     }
     if (gameOver && !startGameSocket) {
       // setstartgamesocket and letchatstartgame
-      const [i,s] = letChatStartGame(wrapSocketStartGame, () => setStartGameSocket(null), channel, setColorChoice);
+      const [i,s] = letChatStartGame(wrapSocketStartGame, () => setStartGameSocket(null), channel, setColorChoice, onUpdateVoteThreshold);
       setStartGameSocket(s);
       setStartGameInterval(i);
     } else if (!gameOver && startGameSocket) {
@@ -134,7 +136,7 @@ const MoveLog = ({
         setStartGameInterval(null);
       }
     };
-  }, [board, channel, chatFirst, enPassantPawnPosition, gameOver, moves, socket]);
+  }, [board, channel, chatFirst, enPassantPawnPosition, gameOver, moves, onUpdateVoteThreshold, socket]);
 
   useEffect(() => {
     setVotes([...initialVotes]);
@@ -195,9 +197,11 @@ const MoveLog = ({
         onSwitchPlayerColor={onSwitchPlayerColor}
         onToggleAi={onToggleAi}
         onUpdateTurnMins={onUpdateTurnMins}
+        onUpdateVoteThreshold={onUpdateVoteThreshold}
         playerColorIsBlack={playerColorIsBlack}
         showAiToggle
         turnMins={turnMins}
+        voteThreshold={voteThreshold}
       />
     </div>
   );

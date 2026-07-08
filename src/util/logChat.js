@@ -14,11 +14,16 @@ let ws = null;
 // use web socket to connect to the twitch channel IRC chat
 // add moves from chat to the log 
 // disconnect when there's no time left
-const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hilighter, chatFirst, threshold, postMove, opponent) => {
+const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hilighter, chatFirst, threshold, postMove, opponent, onUpdateVoteThreshold) => {
   const moves = {};
   const voters = {};
   const votes = [];
   const movesData = {};
+
+  const getVoteThreshold = () => {
+    const currentThreshold = parseInt(document.getElementById('votes')?.value, 10);
+    return isNaN(currentThreshold) ? threshold : currentThreshold;
+  };
 
   if (!channel) return;
 
@@ -141,7 +146,7 @@ const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hili
         } else if (!moves[text].includes(username)) {
           moves[text].push(username);
         }
-        if (moves[text].length >= threshold) {
+        if (moves[text].length >= getVoteThreshold()) {
           console.log("VOTE THRESHOLD ACHIEVED - POSTING MOVE");
           // post move now 
           // todo - need to make sure votes are saved incase the client disconnects 
@@ -157,7 +162,7 @@ const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hili
         // unflash it after a certain amount of time of course 
       } else if (messageText.startsWith('!VOTE') && username === opponent) {
         // only the player who started the game can change the votes
-        textToVote(messageText);
+        textToVote(messageText, onUpdateVoteThreshold);
       } else if (messageText.startsWith('!RESIGN')) {
         // post move for other team to win 
         postMove({ winner: chatFirst ? 'b': 'w' });

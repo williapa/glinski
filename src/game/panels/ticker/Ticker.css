@@ -20,7 +20,22 @@
 .ticker .scroller {
   width: fit-content;
   display: flex;
+  align-items: center;
   animation: scrollText 30s linear infinite;
+}
+
+.ticker .twitch-separator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: inherit;
+  line-height: 0;
+}
+
+.ticker .twitch-separator img {
+  display: block;
+  width: 1em;
+  height: 1em;
 }
 
 @keyframes scrollText {

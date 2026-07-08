@@ -7,11 +7,6 @@
   min-height: 100vh;
   color: #f8fafc;
   text-align: left;
-  background:
-    linear-gradient(135deg, rgba(11, 18, 32, 0.94), rgba(24, 24, 27, 0.86)),
-    radial-gradient(circle at 25% 18%, rgba(250, 204, 21, 0.2), transparent 34%),
-    radial-gradient(circle at 78% 12%, rgba(20, 184, 166, 0.16), transparent 28%),
-    #0b1220;
 }
 
 .splash-v2-hero {
@@ -59,7 +54,7 @@
 
 .splash-v2-brand {
   margin-bottom: 20px;
-  color: #fff7d6;
+  color: #b398d6;
   font-size: clamp(1.2rem, 2vw, 1.6rem);
   font-weight: 900;
   letter-spacing: 0;
@@ -74,9 +69,9 @@
 
 .splash-v2-badge {
   margin-bottom: 18px;
-  border: 1px solid rgba(250, 204, 21, 0.28);
-  color: #fde68a;
-  background: rgba(250, 204, 21, 0.1);
+  border: 1px solid rgba(179, 152, 214, 0.34);
+  color: #d9bfff;
+  background: rgba(179, 152, 214, 0.12);
 }
 
 .splash-v2-title {
@@ -102,14 +97,14 @@
 
 .splash-v2-primary {
   min-width: 164px;
-  background: #facc15;
-  color: #171717;
+  background: rebeccapurple;
+  color: whitesmoke;
   font-weight: 900;
-  box-shadow: 0 18px 38px rgba(250, 204, 21, 0.22);
+  box-shadow: 0 18px 38px rgba(179, 152, 214, 0.26);
 }
 
 .splash-v2-primary:hover {
-  background: #fde047;
+  background: #d9bfff;
 }
 
 .splash-v2-channel-form {

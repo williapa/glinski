@@ -142,6 +142,16 @@ function SoloGameLayout() {
     playSound('startGame');
   }, [gameChanger, nextPlayerColor]);
 
+  const stopGame = useCallback(() => {
+    if (!isGameActive || gameOver) return;
+    setIsGameActive(false);
+    setGameOver(true);
+    setPromotion(false);
+    setHilightedCells({});
+    setBlock(false);
+    setClicksDisabled(true);
+  }, [gameOver, isGameActive, setClicksDisabled]);
+
   const switchPlayerColor = useCallback(() => {
     if (isGameActive && !gameOver) return;
     setNextPlayerColor((currentColor) => (currentColor === 'white' ? 'black' : 'white'));
@@ -471,10 +481,11 @@ function SoloGameLayout() {
       <CapturedPieces capturedPieces={capturedPieces} />
       <SoloMoveLog
         gameOver={gameOver}
-        isGameActive={isGameActive}
+        isGameActive={isGameActive && !gameOver}
         moves={moves}
         onHover={(startPosition, endPosition) => setFlasher({ startPosition, endPosition })}
         onStartGame={resetGame}
+        onStopGame={stopGame}
         onSwitchPlayerColor={switchPlayerColor}
         onUpdateTurnMins={updateTurnMins}
         logPlayerColor={activePlayerColor}

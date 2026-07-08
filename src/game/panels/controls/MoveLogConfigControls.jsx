@@ -8,6 +8,7 @@ function MoveLogConfigControls({
   canConfigureGame,
   isGameActive,
   onStartGame,
+  onStopGame,
   onSwitchPlayerColor,
   onToggleAi,
   onUpdateTurnMins,
@@ -21,7 +22,11 @@ function MoveLogConfigControls({
   return (
     <form className="moveLog-config" onSubmit={(event) => event.preventDefault()}>
       <div className="moveLog-config-control moveLog-config-control-full">
-        <button className="game-config-button moveLog-config-button" type="button" onClick={onStartGame}>
+        <button
+          className="game-config-button moveLog-config-button"
+          type="button"
+          onClick={isGameActive ? onStopGame : onStartGame}
+        >
           {isGameActive ? '⏹️ Stop' : '▶️ Start'}
         </button>
       </div>
@@ -56,6 +61,7 @@ function MoveLogConfigControls({
           <ConfigSwitch
             ariaLabel="Streamer AI"
             checked={aiEnabled}
+            disabled={!canConfigureGame}
             leftLabel="Off"
             onChange={onToggleAi}
             rightLabel="AI"

@@ -276,6 +276,54 @@ function GameLayout({ id }) {
     await postMove({ username });
   };
 
+  const stopGame = useCallback(() => {
+    if (gameOver) return;
+
+    setGameOver(true);
+    setVotes([]);
+    setBlock(false);
+    setPromotion(false);
+    setHilightedCells({});
+    setClicksDisabled(true);
+    saveGame({
+      board,
+      capturedPieces,
+      chatFirst,
+      check: inCheck,
+      enPassantPawnPosition,
+      gameConfig: {
+        startTime,
+        chatFirst,
+        opponent,
+        turnMins: formRef.current.turnMin.value,
+        votes: formRef.current.votes.value,
+        streamerAiEnabled,
+      },
+      gameOver: true,
+      id,
+      moveHashTable,
+      moves,
+      rng: playersRng,
+      time: '#',
+      votes: [],
+    });
+  }, [
+    board,
+    capturedPieces,
+    chatFirst,
+    enPassantPawnPosition,
+    gameOver,
+    id,
+    inCheck,
+    moveHashTable,
+    moves,
+    opponent,
+    playersRng,
+    setClicksDisabled,
+    startTime,
+    streamerAiEnabled,
+  ]);
+
   const switchPlayerColor = useCallback(() => {
     if (!gameOver) return;
     setColorChoice((currentColor) => (currentColor === 'white' ? 'black' : 'white'));
@@ -628,6 +676,7 @@ function GameLayout({ id }) {
         setColorChoice={setColorChoice}
         setFlash={setFlasher}
         startGame={startGame}
+        stopGame={stopGame}
         startTime={startTime}
         turnMins={turnMins}
         useMuted={useMuted}

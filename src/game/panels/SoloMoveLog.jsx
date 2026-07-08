@@ -10,6 +10,7 @@ function SoloMoveLog({
   moves,
   onHover,
   onStartGame,
+  onStopGame,
   onSwitchPlayerColor,
   onUpdateTurnMins,
   logPlayerColor,
@@ -85,6 +86,7 @@ function SoloMoveLog({
         canConfigureGame={canConfigureGame}
         isGameActive={isGameActive}
         onStartGame={onStartGame}
+        onStopGame={onStopGame}
         onSwitchPlayerColor={onSwitchPlayerColor}
         onUpdateTurnMins={onUpdateTurnMins}
         playerColorIsBlack={playerColorIsBlack}

@@ -29,6 +29,7 @@ const MoveLog = ({
   setFlash,
   startGame,
   startTime,
+  stopGame,
   turnMins,
   voteThreshold,
 }) => {
@@ -194,6 +195,7 @@ const MoveLog = ({
         canConfigureGame={canConfigureGame}
         isGameActive={!gameOver}
         onStartGame={wrapStartGame}
+        onStopGame={stopGame}
         onSwitchPlayerColor={onSwitchPlayerColor}
         onToggleAi={onToggleAi}
         onUpdateTurnMins={onUpdateTurnMins}

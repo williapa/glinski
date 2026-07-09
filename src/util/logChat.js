@@ -2,7 +2,6 @@ import parseIrcMessage from './parsedIrcMessage';
 import isValidPromotion from './isValidPromotion';
 import letterToNumber from './letterToNumber';
 import validateMove from "./validateMove";
-import playVideo from '../audio/playVideo';
 import textToVote from './textToVote';
 
 const COMMANDS_ACK  = 'CAP * ACK :twitch.tv/commands';
@@ -166,9 +165,7 @@ const logChat = (addMessage, board, cancel, channel, enPassantPawnPosition, hili
       } else if (messageText.startsWith('!RESIGN')) {
         // post move for other team to win 
         postMove({ winner: chatFirst ? 'b': 'w' });
-      } /* else if (['!CHICKENS', '!DOWORK', '!22S', '!DIRTYGIRL', '!TIMETRAVEL'].includes(messageText)) {
-        playVideo(messageText.substring(1).toLowerCase());
-      } */
+      }
     }
   };
 

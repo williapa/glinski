@@ -1,6 +1,6 @@
 import parseIrcMessage from './parsedIrcMessage';
-import playVideo from '../audio/playVideo';
 import textToVote from './textToVote';
+import textToTurnMins from './textToTurnMins';
 
 const COMMANDS_ACK  = 'CAP * ACK :twitch.tv/commands';
 const TAGS_ACK = 'CAP * ACK :twitch.tv/tags';
@@ -17,7 +17,7 @@ const sg = (parsedMessage, startGame, text) => {
 
 let ws = null;
 // use web socket to connect to the twitch channel IRC chat
-const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice, onUpdateVoteThreshold) => {
+const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice, onUpdateVoteThreshold, onUpdateTurnMins) => {
 
   if (!channel) return;
 
@@ -83,6 +83,9 @@ const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice, on
         if (onUpdateVoteThreshold) {
           onUpdateVoteThreshold(0);
         }
+        if (onUpdateTurnMins) {
+          onUpdateTurnMins(2);
+        }
         sg(parsedMessage, startGame, text);
       } else if (/!play/.test(text)) {
         sg(parsedMessage, startGame, text);
@@ -93,11 +96,7 @@ const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice, on
       } else if (text.startsWith('!votes')) {
         textToVote(text, onUpdateVoteThreshold);
       } else if (text.startsWith('!minutes')) {
-        const mins = parseInt(text.split(' ')[1].trim());
-        if(!isNaN(mins) && mins < 61 && mins > 0) {
-          // hack?! no sir, i do not care, in fact react will ever tell me how to use forms in the dom, go to hell.
-          document.querySelector(`form input[name='turnMin']`).value = mins;
-        }
+        textToTurnMins(text, onUpdateTurnMins);
       } else if (text.startsWith('!refresh') && username === channel) {
         window.location.reload();
       } /* else if (['!chickens', '!dowork', '!22s', '!dirtygirl', '!timetravel'].includes(text)) {
@@ -112,12 +111,12 @@ const internalLetChatStartGame = (startGame, cancel, channel, setColorChoice, on
   return ws;
 };
 
-const letChatStartGame = (startGame, cancel, channel, setColorChoice, onUpdateVoteThreshold) => {
+const letChatStartGame = (startGame, cancel, channel, setColorChoice, onUpdateVoteThreshold, onUpdateTurnMins) => {
   const intervalId = setInterval(() => {
     console.log('interval firing');
-    internalLetChatStartGame(startGame, cancel, channel, setColorChoice, onUpdateVoteThreshold);
+    internalLetChatStartGame(startGame, cancel, channel, setColorChoice, onUpdateVoteThreshold, onUpdateTurnMins);
   }, 600000);
-  const socket = internalLetChatStartGame(startGame, cancel, channel, setColorChoice, onUpdateVoteThreshold);
+  const socket = internalLetChatStartGame(startGame, cancel, channel, setColorChoice, onUpdateVoteThreshold, onUpdateTurnMins);
   return [intervalId, socket];
 };
 

@@ -60,7 +60,7 @@ const MoveLog = ({
   }
 
   const kickOff = () => {
-    const [i,s] = letChatStartGame(wrapSocketStartGame, cancel, channel, setColorChoice, onUpdateVoteThreshold);
+    const [i,s] = letChatStartGame(wrapSocketStartGame, cancel, channel, setColorChoice, onUpdateVoteThreshold, onUpdateTurnMins);
     setStartGameSocket(s);
     setStartGameInterval(i);
   }
@@ -113,7 +113,7 @@ const MoveLog = ({
     }
     if (gameOver && !startGameSocket) {
       // setstartgamesocket and letchatstartgame
-      const [i,s] = letChatStartGame(wrapSocketStartGame, () => setStartGameSocket(null), channel, setColorChoice, onUpdateVoteThreshold);
+      const [i,s] = letChatStartGame(wrapSocketStartGame, () => setStartGameSocket(null), channel, setColorChoice, onUpdateVoteThreshold, onUpdateTurnMins);
       setStartGameSocket(s);
       setStartGameInterval(i);
     } else if (!gameOver && startGameSocket) {
@@ -137,7 +137,7 @@ const MoveLog = ({
         setStartGameInterval(null);
       }
     };
-  }, [board, channel, chatFirst, enPassantPawnPosition, gameOver, moves, onUpdateVoteThreshold, socket]);
+  }, [board, channel, chatFirst, enPassantPawnPosition, gameOver, moves, onUpdateTurnMins, onUpdateVoteThreshold, socket]);
 
   useEffect(() => {
     setVotes([...initialVotes]);

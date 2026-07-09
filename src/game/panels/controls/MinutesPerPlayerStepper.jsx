@@ -1,7 +1,6 @@
 import React from 'react';
+import TURN_MIN_OPTIONS from '../../../util/turnMinOptions';
 import ConfigStepper from './ConfigStepper';
-
-const TURN_MIN_OPTIONS = [1, 2, 5, 10, 15, 20, 30, 45, 60, 90];
 
 function MinutesPerPlayerStepper({
   disabled = false,

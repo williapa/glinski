@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import freddyKonfeddy from './freddyKonfeddy';
+import drawConfetti from './drawConfetti';
 
 // uses gameOver to store winner instead of true
 // chatFirst === are you second?
@@ -21,7 +21,7 @@ const PlayerLabel = ({ check, turn, gameOver, ids, side }) => {
   }, [check, turn, gameOver, ids, side]);
   
   useEffect(() => {
-    freddyKonfeddy(gameOver);
+    drawConfetti(gameOver);
   }, [gameOver]);
   return (
     <div

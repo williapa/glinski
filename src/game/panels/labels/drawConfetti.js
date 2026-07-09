@@ -4,8 +4,7 @@ import confetti from 'canvas-confetti';
 // take it off when the game restarts
 // this is so cool
 // winner: b, w, or anything else if we don't know / game isn't over
-// todo: command to set emoji KEKW 
-const freddyKonfeddy = (winner) => {
+const drawConfetti = (winner) => {
   if (winner === 'b' || winner === 'w') {
     const black = (winner === 'b');
     const labelRectangle = document.querySelector(
@@ -27,4 +26,4 @@ const freddyKonfeddy = (winner) => {
   } 
 }
 
-export default freddyKonfeddy;
+export default drawConfetti;

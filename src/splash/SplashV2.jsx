@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Badge,
@@ -40,13 +40,13 @@ const featureCards = [
   },
   {
     icon: Bot,
-    title: 'Solo against AI',
-    copy: 'Start fast in browser and play a complete game without a Twitch setup.',
+    title: 'Play solo',
+    copy: 'Start a game in your browser and play a complete practice game.',
   },
   {
     icon: Users,
-    title: 'Chat-powered moves',
-    copy: 'Connect to a channel so viewers can vote through Twitch chat commands.',
+    title: 'Streaming support',
+    copy: 'Your chat selects the opponent\'s next move through a voting command system.',
   },
 ];
 
@@ -58,14 +58,10 @@ const SplashV2 = () => {
   const normalizedChannel = useMemo(() => normalizeChannel(channel), [channel]);
   const canPlayWithChat = normalizedChannel.length >= MIN_CHANNEL_LENGTH;
 
-  useEffect(() => {
-    document.body.classList.add('splash-v2-body');
-    return () => document.body.classList.remove('splash-v2-body');
-  }, []);
-
   const goToChannel = (event) => {
     event.preventDefault();
     if (!canPlayWithChat) return;
+    event.currentTarget.elements[0]?.blur();
     navigate(`/${normalizedChannel}`);
   };
 
@@ -92,7 +88,7 @@ const SplashV2 = () => {
               leftSection={<Sparkles size={14} />}
               variant="light"
             >
-              Hexagonal chess for browser play
+              Hexagonal chess
             </Badge>
 
             <Title order={1} className="splash-v2-title">
@@ -100,8 +96,8 @@ const SplashV2 = () => {
             </Title>
 
             <Text className="splash-v2-subtitle">
-              Glinski brings the classic chess objective onto a 91-cell hex board,
-              with a solo mode for quick games and a chat voting mode for streams.
+              Glinski brings chess onto a 91-cell hex board,
+              with solo mode for quick games, and stream mode for playing against your chat.
             </Text>
 
             <Group className="splash-v2-actions" align="stretch">
@@ -110,9 +106,9 @@ const SplashV2 = () => {
                 radius="md"
                 leftSection={<Play size={20} />}
                 onClick={() => setPlaySolo(true)}
-                className="splash-v2-primary"
+                className="splash-v2-primary primary-color"
               >
-                Play vs AI
+                Play solo
               </Button>
 
               <form className="splash-v2-channel-form" onSubmit={goToChannel}>
@@ -149,7 +145,7 @@ const SplashV2 = () => {
                 </ThemeIcon>
                 <div>
                   <Text fw={700}>Solo mode</Text>
-                  <Text size="sm">Pick a side and challenge the browser AI.</Text>
+                  <Text size="sm">Choose a color and game length, then face a practice opponent.</Text>
                 </div>
               </div>
               <div className="splash-v2-mode">
@@ -176,7 +172,7 @@ const SplashV2 = () => {
         <Container size="xl">
           <div className="splash-v2-info-heading">
             <Text className="splash-v2-kicker">What is this?</Text>
-            <Title order={2}>Hexagonal chess, designed for twitch.</Title>
+            <Title order={2}>Hexagonal chess with two ways to play.</Title>
           </div>
           <SimpleGrid cols={{ base: 1, md: 3 }} spacing="md">
             {featureCards.map(({ icon: Icon, title, copy }) => (

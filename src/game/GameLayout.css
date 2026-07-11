@@ -1,6 +1,6 @@
 .capture {
   position: absolute;
-  /*color: #445;*/
+  color: #445;
   z-index: 1;
 }
 
@@ -10,6 +10,9 @@
 
 .enter {
   animation: entrance 1.7s;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 @keyframes entrance {
@@ -61,6 +64,8 @@
 
 .moveLog-list {
   overflow-y: scroll;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -97,6 +102,9 @@
   border-bottom: 1px solid rebeccapurple;
   position: fixed; 
   padding: 12px;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .moveLog-header .count {
@@ -188,8 +196,6 @@
   padding: 0 8px;
   border: 1px solid #445;
   border-radius: 4px;
-  background: rgba(47, 255, 123, 0.9);
-  color: #445;
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
@@ -274,10 +280,6 @@
 .moveLog-config-switch.disabled {
   cursor: not-allowed;
   opacity: 0.55;
-}
-
-.game-config-button:hover {
-  background: rgba(47, 255, 123, 0.69);
 }
 
 .game-config-button-secondary:hover,
@@ -395,7 +397,9 @@
 
   .moveLog-header .count {
     font-size: 26px;
-  }.popup.position {
+  }
+  
+  .popup.position {
     top: 288px;
     left: calc(50vw - 220px);
   }
@@ -683,17 +687,9 @@
 
   .moveLog-item .timeLabel {
     font-size: 8px;
-  }/* input hack - hide stupid browser buttons so i can make the number fields less wide */
-
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
   }
-
-  input[type="number"] {
-    -moz-appearance: textfield; /* Firefox */
-  }.popup.position {
+  
+  .popup.position {
     top: 204px;
     left: 438px;
   }
@@ -849,9 +845,12 @@
     margin-top: 12px;
     font-size: 16px;
   }
+
   .moveLog-item .timeLabel {
     font-size: 8px;
-  }.popup.position {
+  }
+  
+  .popup.position {
     top: 192px;
     left: calc(262px + 7vw);
   }
@@ -875,23 +874,10 @@
   .scale {
     transform: scale(0.5) rotate(90deg);
   }
-  /*
-  940 = 225
-  913 = 232
-  */
+
   .scale.position {
-    margin-left: calc(-320px + 7vw); /* -247px; /* -321px */
+    margin-left: calc(-320px + 7vw);
     margin-top: calc(-225px - (max(0px, (941px - 100vw)) / 8));
-  }/* input hack - hide stupid browser buttons so i can make the number fields less wide */
-
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  input[type="number"] {
-    -moz-appearance: textfield; /* Firefox */
   }
 }
 
@@ -1044,16 +1030,6 @@
     min-height: 22px;
     max-height: 22px;
     z-index: 1;
-  }/* input hack - hide stupid browser buttons so i can make the number fields less wide */
-
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  input[type="number"] {
-    -moz-appearance: textfield; /* Firefox */
   }
 }
 
@@ -1212,16 +1188,6 @@
     max-height: 19px;
     font-size: 9px;
     z-index:2;
-  }/* input hack - hide stupid browser buttons so i can make the number fields less wide */
-
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
- 
-  input[type="number"] {
-    -moz-appearance: textfield; /* Firefox */
   }
 }
 
@@ -1356,9 +1322,11 @@
   .moveLog-item .timeLabel {
     top: -2px;
     font-size: 6px;
-  }.popup.position {
+  }
+  
+  .popup.position {
     top: 182px;
-    left: 220px;
+    left: 50vw;;
   }
   
   .scale {
@@ -1375,23 +1343,7 @@
   }
 
   div.ticker {
-    padding: 2px;
-    font-size: 9px;
-    top: 456px;
-    left: 11px;
-    width: 448px;
-    min-height: 16px;
-    max-height: 16px;
-  }/* input hack - hide stupid browser buttons so i can make the number fields less wide */
-
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
- 
-  input[type="number"] {
-    -moz-appearance: textfield; /* Firefox */
+    display: none;
   }
 
   .hex .middle span {
@@ -1407,7 +1359,9 @@
 @media (max-width: 500px) {
   .footer {
     z-index: 4;
-  }.scale.position {
+  }
+  
+  .scale.position {
     margin-right: calc(100vw - 446px);
     margin-top: -437px;
   }
@@ -1432,8 +1386,6 @@
   }
 
   .label {
-    /* min-height: 16px;
-    max-height: 16px; */
     height: 50px;
     min-width: 132px;
     max-width: 132px;
@@ -1444,7 +1396,7 @@
   }
 
   .label.right {
-    top: 342px;
+    top: 352px;
   }
 
   .capture {
@@ -1460,7 +1412,7 @@
 
   .clock {
     transform: scale(.2);
-    left: -120px;
+    left: -118px;
   }
 
   .clock.left {
@@ -1468,34 +1420,22 @@
   }
 
   .clock.right {
-    top: 254px;
-  }.moveLog {
-    top: 444px;
+    top: 264px;
+  }
+  
+  .moveLog {
+    top: 404px;
+    height: calc(100vh - 489px);
   }
 
   .moveLog-list {
     margin-top: 60px;
-    min-height: 95px;
-    height: calc(100vh - 711px);
-    width: 368px;
+    min-height: 73px;
+    height: calc(100vh - 681px);
+    width: calc(100vw - 22px);
   }
 
   div.ticker {
-    top: 371px;
-    left: 8px;
-    width: 337px;
-  }}
-
-@supports (-webkit-appearance: none) {
-  .safari .hex .middle span {
-    top: -4px;
-  }
-
-  .safari .hex .middle span.pawn.safari {
-    /* why do pawns not rotate like every other character, only in safari? i don't know */
-    transform: rotate(-180deg); /* give em an extra 90 degrees */
-    top: -19px;
+    display: none;
   }
 }
-
-/* css world record holder */ 

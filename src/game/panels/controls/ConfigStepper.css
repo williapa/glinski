@@ -60,3 +60,10 @@
   font-weight: 700;
   text-transform: uppercase;
 }
+
+@media (max-width: 767px) {
+  .config-stepper__button {
+    flex-basis: 72px;
+    min-width: 48px;
+  }
+}

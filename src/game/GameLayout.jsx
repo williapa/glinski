@@ -18,6 +18,7 @@ import useFetch from '../hooks/useFetch';
 import endGame from '../storage/endGame.js';
 import saveGame from '../storage/saveGame.js';
 import { useDisableClicks } from '../hooks/useDisableClicks';
+import useResponsivePageScrollLock from '../hooks/useResponsivePageScrollLock';
 import Ftr from '../footer/Ftr';
 import Clocks from './panels/labels/clock/Clocks';
 import AudioPlayer from '../audio/AudioPlayer';
@@ -31,6 +32,8 @@ import './GameLayout.css';
 const cellColors = ['beige', 'peach', 'brown']; // these correspond to class names they are not the real colors im sorry
 
 function GameLayout({ id }) {
+  useResponsivePageScrollLock();
+
   const formRef = useRef(null);
   const { setClicksDisabled } = useDisableClicks();
   const [flash, setFlash] = useState({
@@ -266,7 +269,8 @@ function GameLayout({ id }) {
       // execute the move
       const endPos = move.endPosition;
       const startPos = move.startPosition; 
-      buildOnDrop(endPos.row, endPos.col, true, move.promoted)(startPos);
+      const promotionPiece = move.promoted ? move.piece : undefined;
+      buildOnDrop(endPos.row, endPos.col, true, promotionPiece)(startPos);
     }
   };
 
@@ -395,7 +399,7 @@ function GameLayout({ id }) {
     };
   }
   // the onDrop function needs to setBoard based on the piece for which the move is being received.
-  const buildOnDrop = (row, col, streamer, promo) => {
+  const buildOnDrop = (row, col, streamer, promotionPiece) => {
     return (e, isRandom = false) => {
       if (!streamer) e.preventDefault();
       // if streamer, e is just the start position right off the bat
@@ -449,7 +453,15 @@ function GameLayout({ id }) {
         });
       } else {
         // for promotion (not using manual ui anymore that's all the stuff above)
-        const finalPiece = promo || board[startPosition.row][startPosition.col];
+        const movingPiece = board[startPosition.row][startPosition.col];
+        const validPromotionPieces = ['Queen', 'Rook', 'Bishop', 'Knight'];
+        const isValidPromotionPiece = (
+          typeof promotionPiece === 'string'
+          && typeof movingPiece === 'string'
+          && promotionPiece.charAt(0) === movingPiece.charAt(0)
+          && validPromotionPieces.includes(promotionPiece.substring(1))
+        );
+        const finalPiece = isValidPromotionPiece ? promotionPiece : movingPiece;
         board[row][col] = finalPiece;
         board[startPosition.row][startPosition.col] = 0;
         setHilightedCells({});
@@ -474,7 +486,7 @@ function GameLayout({ id }) {
         const thisIsTheMove = {
           time: Date.now(),
           piece: finalPiece,
-          promoted: !!promo,
+          promoted: isValidPromotionPiece,
           gameOver: isGameOver,
           removedPiece,
           endPosition: {
@@ -602,7 +614,7 @@ function GameLayout({ id }) {
           <div key={`row${index}`} className='hex-row' style={{ marginLeft: Math.abs(index - 5) * 53 }}>
             { row.map((cell, i) => {
               // todo: marking this as important for when implementing chatter client
-              const movable = cell && cell.charAt(0) === turn;
+              const movable = typeof cell === 'string' && cell.charAt(0) === turn;
               const rowColorOffset = index % 3;
               let cellColor = cellColors[(i + rowColorOffset) % 3];
               if (index > 5) {

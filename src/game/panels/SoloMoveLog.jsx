@@ -40,7 +40,7 @@ function SoloMoveLog({
   return (
     <div className="moveLog">
       <LogLabel gameOver={gameOver} useMuted={[false, () => {}]} />
-      <ul ref={topRef} className="moveLog-list">
+      <ul ref={topRef} className="moveLog-list" data-scroll-lock-scrollable>
         {isGameActive ? (
           <li className="moveLog-item">
             <span className="timeLabel">{new Date(startTime).toLocaleTimeString()} </span>

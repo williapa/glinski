@@ -152,7 +152,7 @@ const MoveLog = ({
   return (
     <div className="moveLog">
       <LogLabel useMuted={useMuted} startGame={wrapStartGame} gameOver={gameOver} turnCount={moves.length} />
-      <ul ref={topRef} className="moveLog-list">
+      <ul ref={topRef} className="moveLog-list" data-scroll-lock-scrollable>
         { startTime  ? (
           <li className="moveLog-item">
             <span className="timeLabel">{new Date(startTime).toLocaleTimeString()} </span>

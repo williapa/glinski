@@ -19,6 +19,7 @@ import Meter from './panels/labels/meter/Meter.jsx';
 import hashRepeatedThrice from '../util/hashRepeatedThrice.js';
 import evaluateBoard from '../worker/ai/evaluateBoard.js';
 import { useDisableClicks } from '../hooks/useDisableClicks.js';
+import useResponsivePageScrollLock from '../hooks/useResponsivePageScrollLock.js';
 import './GameBoard.css';
 import './GameLayout.css';
 
@@ -55,6 +56,8 @@ const createInitialState = (colorChoice) => {
 };
 
 function SoloGameLayout() {
+  useResponsivePageScrollLock();
+
   const { setClicksDisabled } = useDisableClicks();
   const [flash, setFlash] = useState(createInitialFlash);
   const [boardEval, setBoardEval] = useState(0);

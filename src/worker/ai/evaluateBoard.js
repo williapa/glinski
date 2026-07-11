@@ -27,27 +27,6 @@ const fileReducer = (acc, file, row) => {
   }, acc);
 };
 
-const calculatePiece = (piece, isEndGame, position) => {
-  const positionString = (piece.substring(1) === "King" && isEndGame)? piece + "Endgame" : piece;
-  const col = position.col || position.column;
-  return pieceValues[piece.substring(1)] + positionIncentives[positionString][position.row][col];
-}
-
-// todo: technically this does not correctly calculate a en passant capture's delta but the diff would be slight. 
-// i fixed this in calculateMoveDelta and I actually dont even use this fn 
-const calculateDelta = (previousValue, move, endGame) => {
-  const { startPosition, endPosition, removedPiece, startingPiece, promotion, isEndGame } = move;
-  const startingPieceAndPositionValue = calculatePiece(startingPiece, isEndGame, startPosition); //  pieceValues[startingPiece.substring(1)] + positionIncentives[startingPiece][startPosition.row][startPosition.column];
-  const endingPiece = promotion || startingPiece;
-  const endingPieceAndPositionValue = calculatePiece(endingPiece, isEndGame, endPosition); // pieceValues[endingPiece.substring(1)] + positionIncentives[`${endingPiece}${(endGame && isKing) ? 'Endgame': ''}`][]
-  const captureValue = !!removedPiece ? calculatePiece(removedPiece, isEndGame, endPosition) : 0; //  pieceValues[removedPiece.substring(1)] + positionIncentives[removedPiece];
-  let delta = endingPieceAndPositionValue - startingPieceAndPositionValue + captureValue;
-  if (startingPiece.charAt(0) === 'b') {
-    delta = -delta;
-  }
-  return previousValue + delta;
-};
-
 // + favors white, - favors black
 const evaluateBoard = (board, optimizeEval) => {
   const endGame = isEndGame(board);
@@ -59,5 +38,4 @@ const evaluateBoard = (board, optimizeEval) => {
 }
 
 export default evaluateBoard;
-
 

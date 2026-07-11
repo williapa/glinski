@@ -30,7 +30,7 @@ const minimize = (alpha, beta, board, capturedPieces, chatFirst, depth, enPassan
 
   for (const coords of moves) {
     // apply move and get the updated board, capturedPieces, enPassant. aka "FEN" whatever that is MAN
-    const { newBoard, newCapturedPieces, newEnPassantPosition, removedPiece, scoreDelta, startingPiece } = applyMove(board, capturedPieces, coords, enPassantPawnPosition, isEndGameYet);
+    const { newBoard, newCapturedPieces, newEnPassantPosition, scoreDelta } = applyMove(board, capturedPieces, coords, enPassantPawnPosition, isEndGameYet);
     const [evaluation] = maximize(alpha, beta, newBoard, newCapturedPieces, chatFirst, depth - 1, newEnPassantPosition, odd, isChatsMove, (initialScore + scoreDelta));
 
     if(!move) {

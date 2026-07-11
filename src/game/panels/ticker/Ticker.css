@@ -8,7 +8,7 @@
   width: 1132px;  /* Full width of the viewport */
   white-space: nowrap;
   overflow: hidden;
-  background-color: white; /* Light grey background, adjust as needed */
+  background: white; /* Light grey background, adjust as needed */
   color: #445; /*&*/ /* #333 Dark text color, adjust as needed */
   padding: 4px 0;
   font-family: Arial, sans-serif;

@@ -23,7 +23,7 @@ function MoveLogConfigControls({
     <form className="moveLog-config" onSubmit={(event) => event.preventDefault()}>
       <div className="moveLog-config-control moveLog-config-control-full">
         <button
-          className="game-config-button moveLog-config-button"
+          className="game-config-button moveLog-config-button primary-color"
           type="button"
           onClick={isGameActive ? onStopGame : onStartGame}
         >

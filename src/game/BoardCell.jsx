@@ -1,5 +1,6 @@
 import React from 'react';
 import DraggablePiece from './DraggablePiece';
+import { createDropTargetProps } from './dragStrategies';
 
 const ROWS = "KJIHGFEDCBA";
 
@@ -26,6 +27,7 @@ function BoardCell(props) {
   const activePlayerSide = playerSide || (chatFirst ? 'b' : 'w');
   const activePlayerColor = activePlayerSide === 'b' ? 'black' : 'white';
   const controlsEnabled = typeof playerCanMove === 'boolean' ? playerCanMove : true;
+  const dropTargetProps = createDropTargetProps({ onDragOver, onDrop });
 
   return (
   <div 
@@ -45,8 +47,8 @@ function BoardCell(props) {
         color: pieceColor === 'white' ? pieceColor : "#445",
         textShadow: `1.5px 1.5px 3px ${pieceColor === 'white' ? 'black': 'lightgrey' }, 1.5px -1.5px 3px ${pieceColor === 'white' ? 'black': 'lightgrey' }, -1.5px 1.5px 3px ${pieceColor === 'white' ? 'black': 'lightgrey' }, -1.5px -1.5px 3px ${pieceColor === 'white' ? 'black': 'lightgrey' }`
       }}
-      onDragOver={onDragOver}
-      onDrop={onDrop}
+      data-board-cell="true"
+      {...dropTargetProps}
     >
       <DraggablePiece 
         turn={turn}

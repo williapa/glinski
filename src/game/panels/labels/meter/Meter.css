@@ -55,10 +55,17 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 600px) and (min-width: 480px) {
   .vertical-meter-container {
     left: 440px;
     top: 22px;
     height: 420px;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .vertical-meter-container {
+    display: none;
   }
 }

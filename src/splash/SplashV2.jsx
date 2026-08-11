@@ -83,21 +83,13 @@ const SplashV2 = () => {
               <span>Glinski</span>
             </Group>
 
-            <Badge
-              className="splash-v2-badge"
-              leftSection={<Sparkles size={14} />}
-              variant="light"
-            >
-              Hexagonal chess
-            </Badge>
-
             <Title order={1} className="splash-v2-title">
-              Play hexagonal chess with an AI or your Twitch chat.
+              Play hexagonal chess in your browser.
             </Title>
 
             <Text className="splash-v2-subtitle">
-              Glinski brings chess onto a 91-cell hex board,
-              with solo mode for quick games, and stream mode for playing against your chat.
+              Glinski chess features a 91-cell hex board,
+              a solo mode for quick games, and stream mode for playing against chat.
             </Text>
 
             <Group className="splash-v2-actions" align="stretch">

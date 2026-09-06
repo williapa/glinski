@@ -44,14 +44,19 @@ const createDragOverProbe = () => {
   return event;
 };
 
-const createDragPreview = ({ piece, team, fontSize }) => {
-  const el = document.createElement('span');
-  el.textContent = piece;
+const createDragPreview = (pieceElement) => {
+  const el = pieceElement.cloneNode(true);
+  const { width, height } = pieceElement.getBoundingClientRect();
+  const { color } = window.getComputedStyle(pieceElement);
+
   el.style.background = 'none';
+  el.style.color = color;
   el.style.position = 'fixed';
-  el.style.fontSize = `${fontSize}px`;
   el.style.top = '-10000px';
-  el.style.color = team === 'w' ? 'white' : '#445';
+  el.style.left = '-10000px';
+  el.style.width = `${width}px`;
+  el.style.height = `${height}px`;
+  el.style.transform = 'none';
   document.body.appendChild(el);
   return el;
 };
@@ -68,7 +73,6 @@ export const createPieceDragProps = ({
   canDrag,
   cellContent,
   col,
-  dragPreview,
   onCancel,
   onStart,
   row,
@@ -77,7 +81,7 @@ export const createPieceDragProps = ({
   onDragStart: (event) => {
     if (!canDrag) return;
 
-    const previewElement = createDragPreview(dragPreview);
+    const previewElement = createDragPreview(event.currentTarget);
     const { offsetWidth: width, offsetHeight: height } = previewElement;
     event.dataTransfer.setDragImage(previewElement, width / 2, height / 2);
     event.dataTransfer.setData(DRAG_DATA_TYPE, JSON.stringify({ row, col }));

@@ -1346,8 +1346,9 @@
     display: none;
   }
 
-  .hex .middle span {
-    font-size: 60px;
+  .hex .middle .chess-piece {
+    width: 60px;
+    height: 60px;
   }
 
   body {

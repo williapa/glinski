@@ -43,10 +43,6 @@ function BoardCell(props) {
     <div className={`top ${cellColor}`}/>
     <div 
       className={`middle ${cellColor}`} 
-      style={{ 
-        color: pieceColor === 'white' ? pieceColor : "#445",
-        textShadow: `1.5px 1.5px 3px ${pieceColor === 'white' ? 'black': 'lightgrey' }, 1.5px -1.5px 3px ${pieceColor === 'white' ? 'black': 'lightgrey' }, -1.5px 1.5px 3px ${pieceColor === 'white' ? 'black': 'lightgrey' }, -1.5px -1.5px 3px ${pieceColor === 'white' ? 'black': 'lightgrey' }`
-      }}
       data-board-cell="true"
       {...dropTargetProps}
     >
